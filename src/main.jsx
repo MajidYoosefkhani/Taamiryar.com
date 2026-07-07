@@ -2,14 +2,33 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 
-// Mock storage for local dev (Vercel will use real Anthropic storage)
+// Storage using localStorage for Vercel deployment
 if (!window.storage) {
-  const store = {};
   window.storage = {
-    get: async (key) => store[key] ? { key, value: store[key] } : null,
-    set: async (key, value) => { store[key] = value; return { key, value }; },
-    delete: async (key) => { delete store[key]; return { key, deleted: true }; },
-    list: async (prefix) => ({ keys: Object.keys(store).filter(k => !prefix || k.startsWith(prefix)) }),
+    get: async (key) => {
+      try {
+        const value = localStorage.getItem(key);
+        return value ? { key, value } : null;
+      } catch(e) { return null; }
+    },
+    set: async (key, value) => {
+      try {
+        localStorage.setItem(key, value);
+        return { key, value };
+      } catch(e) { return null; }
+    },
+    delete: async (key) => {
+      try {
+        localStorage.removeItem(key);
+        return { key, deleted: true };
+      } catch(e) { return null; }
+    },
+    list: async (prefix) => {
+      try {
+        const keys = Object.keys(localStorage).filter(k => !prefix || k.startsWith(prefix));
+        return { keys };
+      } catch(e) { return { keys: [] }; }
+    },
   };
 }
 

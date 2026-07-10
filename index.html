@@ -1,4 +1,3 @@
-cat > /mnt/user-data/outputs/taamiryar/index.html << 'EOF'
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -15,19 +14,3 @@ cat > /mnt/user-data/outputs/taamiryar/index.html << 'EOF'
   <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
-EOF
-
-cat > /mnt/user-data/outputs/taamiryar/vite.config.js << 'EOF'
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-export default defineConfig({
-  plugins: [react()],
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-  }
-})
-EOF
-
-echo "done"

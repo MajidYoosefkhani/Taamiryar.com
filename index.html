@@ -1,14 +1,33 @@
+cat > /mnt/user-data/outputs/taamiryar/index.html << 'EOF'
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="تعمیریار — تشخیص هوشمند مشکل دستگاه و یافتن نزدیک‌ترین تعمیرگاه" />
-    <title>taamiryar.com | دستیار هوشمند تعمیرات</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>" />
-  </head>
-  <body style="margin:0;background:#030712">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>taamiryar.com | دستیار هوشمند تعمیرات</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #030712; color: #f1f5f9; font-family: Tahoma, Arial, sans-serif; direction: rtl; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
 </html>
+EOF
+
+cat > /mnt/user-data/outputs/taamiryar/vite.config.js << 'EOF'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+  }
+})
+EOF
+
+echo "done"

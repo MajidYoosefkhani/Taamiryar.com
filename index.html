@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="تعمیریار — تشخیص هوشمند خرابی دستگاه و یافتن تعمیرکار نزدیک"/>
-<title>تعمیریار | dستیار هوشمند تعمیرات</title>
+<title>تعمیریار | دستیار هوشمند تعمیرات</title>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -12,10 +12,10 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#030712;color:#f1f5f9;font-family:Tahoma,Arial,sans-serif;direction:rtl;min-height:100vh;overflow-x:hidden}
-::-webkit-scrollbar{width:5px}
+body{background:#030712;color:#f1f5f9;font-family:Tahoma,Arial,sans-serif;direction:rtl;min-height:100vh;overflow-x:hidden;font-size:16px}
+::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-thumb{background:#0e4f6a;border-radius:3px}
-::placeholder{color:#2a4a5a!important}
+::placeholder{color:#2a4a5a!important;font-size:15px}
 select option{background:#0a0f1e;color:#e2e8f0}
 a{text-decoration:none}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
@@ -24,34 +24,52 @@ a{text-decoration:none}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes spinR{to{transform:rotate(-360deg)}}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(14,165,233,.4)}70%{box-shadow:0 0 0 12px rgba(14,165,233,0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(14,165,233,.4)}70%{box-shadow:0 0 0 14px rgba(14,165,233,0)}}
 @keyframes ripple{0%{transform:scale(1);opacity:.4}100%{transform:scale(2.8);opacity:0}}
 @keyframes gradMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes particleMove{0%{transform:translateY(0) translateX(0)}100%{transform:translateY(-100vh) translateX(50px)}}
+@keyframes slideIn{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const {useState,useEffect,useRef,useCallback}=React;
+const {useState,useEffect,useRef}=React;
 
-// ── DATA ────────────────────────────────────────────────────────────────────
 const CATS=[
-  {icon:"📱",label:"موبایل و تبلت"},{icon:"💻",label:"لپ‌تاپ"},{icon:"🖥️",label:"کامپیوتر"},
-  {icon:"❄️",label:"یخچال و فریزر"},{icon:"🌬️",label:"کولر گازی"},{icon:"💨",label:"کولر آبی"},
-  {icon:"🌡️",label:"پکیج و شوفاژ"},{icon:"🫧",label:"ماشین لباسشویی"},{icon:"🍽️",label:"ماشین ظرفشویی"},
-  {icon:"🍳",label:"اجاق گاز"},{icon:"🔥",label:"فر و مایکروویو"},{icon:"📺",label:"تلویزیون"},
-  {icon:"🎮",label:"کنسول بازی"},{icon:"🖨️",label:"پرینتر"},{icon:"📷",label:"دوربین"},
-  {icon:"🎵",label:"سیستم صوتی"},{icon:"🌀",label:"جاروبرقی"},{icon:"👕",label:"اتو و بخارشوی"},
-  {icon:"☕",label:"قهوه‌ساز"},{icon:"🥤",label:"مخلوط‌کن"},{icon:"🔌",label:"برق و سیم‌کشی"},
-  {icon:"🚿",label:"لوله‌کشی"},{icon:"🚗",label:"لوازم خودرو"},{icon:"🔋",label:"باتری و UPS"},
-  {icon:"⌚",label:"ساعت"},{icon:"🪟",label:"درب و پنجره"},{icon:"🛁",label:"وان و جکوزی"},
-  {icon:"💡",label:"روشنایی و LED"},{icon:"📡",label:"آنتن و ماهواره"},{icon:"🔧",label:"سایر"}
+  {icon:"📱",label:"موبایل و تبلت"},
+  {icon:"💻",label:"لپ‌تاپ"},
+  {icon:"🖥️",label:"کامپیوتر"},
+  {icon:"❄️",label:"یخچال و فریزر"},
+  {icon:"🌬️",label:"کولر گازی"},
+  {icon:"💨",label:"کولر آبی"},
+  {icon:"🌡️",label:"پکیج و شوفاژ"},
+  {icon:"🫧",label:"ماشین لباسشویی"},
+  {icon:"🍽️",label:"ماشین ظرفشویی"},
+  {icon:"🍳",label:"اجاق گاز"},
+  {icon:"🔥",label:"فر و مایکروویو"},
+  {icon:"📺",label:"تلویزیون"},
+  {icon:"🎮",label:"کنسول بازی"},
+  {icon:"🖨️",label:"پرینتر"},
+  {icon:"📷",label:"دوربین"},
+  {icon:"🎵",label:"سیستم صوتی"},
+  {icon:"🌀",label:"جاروبرقی"},
+  {icon:"👕",label:"اتو و بخارشوی"},
+  {icon:"☕",label:"قهوه‌ساز"},
+  {icon:"🥤",label:"مخلوط‌کن"},
+  {icon:"🔌",label:"برق و سیم‌کشی"},
+  {icon:"🚿",label:"لوله‌کشی"},
+  {icon:"🚗",label:"لوازم خودرو"},
+  {icon:"🔋",label:"باتری و UPS"},
+  {icon:"⌚",label:"ساعت"},
+  {icon:"🪟",label:"درب و پنجره"},
+  {icon:"🛁",label:"وان و جکوزی"},
+  {icon:"💡",label:"روشنایی و LED"},
+  {icon:"📡",label:"آنتن و ماهواره"},
+  {icon:"🔧",label:"سایر"},
 ];
-const CITIES=["تهران","اصفهان","شیراز","مشهد","تبریز","کرج","اهواز","قم","رشت","کرمانشاه","همدان","ارومیه","زاهدان","بندرعباس","یزد","بوشهر","گرگان","اراک","سمنان","سایر"];
-const SUGGESTIONS=["یخچالم برفک می‌زنه","گوشیم شارژ نمیگیره","ماشین لباسشویی آب نمیکشه","کولر گازی سرد نمی‌کنه","لپ‌تاپم روشن نمیشه","تلویزیونم تصویر نداره","پکیجم آب گرم نمیده","اجاق گازم روشن نمیشه"];
+
+const CITIES=["تهران","اصفهان","شیراز","مشهد","تبریز","کرج","اهواز","قم","رشت","کرمانشاه","همدان","ارومیه","زاهدان","بندرعباس","یزد","بوشهر","گرگان","اراک","سایر"];
+const SUGGESTIONS=["یخچالم برفک می‌زنه","گوشیم شارژ نمیگیره","ماشین لباسشویی آب نمیکشه","کولر سرد نمی‌کنه","لپ‌تاپم روشن نمیشه","تلویزیون تصویر نداره","پکیج آب گرم نمیده","اجاق گاز روشن نمیشه"];
 const FAKE_REVIEWS=[
   {name:"علی م.",city:"تهران",text:"خیلی سریع مشکل یخچالمو تشخیص داد!",rating:5,date:"۲ روز پیش"},
   {name:"سارا ک.",city:"اصفهان",text:"تعمیرکار خوبی معرفی کرد. ممنون",rating:5,date:"۵ روز پیش"},
@@ -59,14 +77,12 @@ const FAKE_REVIEWS=[
   {name:"مریم ح.",city:"مشهد",text:"عالی! مشکل کولرم رو خودم درست کردم",rating:5,date:"۱۰ روز پیش"},
 ];
 
-// ── STORAGE ──────────────────────────────────────────────────────────────────
 const store={
   get:k=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch{return null;}},
   set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}},
 };
 
-// ── HOOKS ────────────────────────────────────────────────────────────────────
-function useTyping(text,speed=12){
+function useTyping(text,speed=14){
   const [d,setD]=useState("");const [done,setDone]=useState(false);
   useEffect(()=>{
     if(!text){setD("");setDone(false);return;}
@@ -77,18 +93,7 @@ function useTyping(text,speed=12){
   return{displayed:d,done};
 }
 
-function useCounter(target,duration=2000){
-  const [val,setVal]=useState(0);
-  useEffect(()=>{
-    if(!target)return;
-    let start=null;
-    const step=ts=>{if(!start)start=ts;const p=Math.min((ts-start)/duration,1);setVal(Math.floor(p*target));if(p<1)requestAnimationFrame(step);};
-    requestAnimationFrame(step);
-  },[target]);
-  return val;
-}
-
-// ── PARTICLES ────────────────────────────────────────────────────────────────
+// Particles
 const Particles=()=>{
   const ref=useRef(null);
   useEffect(()=>{
@@ -97,12 +102,12 @@ const Particles=()=>{
     let W=c.width=window.innerWidth,H=c.height=window.innerHeight;
     const onR=()=>{W=c.width=window.innerWidth;H=c.height=window.innerHeight;};
     window.addEventListener("resize",onR);
-    const pts=Array.from({length:50},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.3}));
+    const pts=Array.from({length:40},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.5+.4}));
     let raf;
     const draw=()=>{
       ctx.clearRect(0,0,W,H);
-      pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle="rgba(56,189,248,.25)";ctx.fill();});
-      pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<130){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(56,189,248,${.05*(1-d/130)})`;ctx.lineWidth=.6;ctx.stroke();}}));
+      pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle="rgba(56,189,248,.22)";ctx.fill();});
+      pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(56,189,248,${.05*(1-d/120)})`;ctx.lineWidth=.6;ctx.stroke();}}));
       raf=requestAnimationFrame(draw);
     };
     draw();
@@ -111,15 +116,13 @@ const Particles=()=>{
   return <canvas ref={ref} style={{position:"fixed",inset:0,zIndex:0,pointerEvents:"none"}}/>;
 };
 
-// ── GEAR ─────────────────────────────────────────────────────────────────────
-const Gear=({size=60,speed=12,opacity=.08,reverse=false})=>{
+const Gear=({size=60,speed=12,opacity=.07,reverse=false})=>{
   const teeth=10,r=size/2,ri=r*.68,rt=r*.88,pts=[];
   for(let i=0;i<teeth;i++){const a=(i/teeth)*Math.PI*2,aw=Math.PI/teeth*.55;pts.push(`${rt*Math.cos(a-aw)},${rt*Math.sin(a-aw)}`);pts.push(`${r*Math.cos(a-aw*.3)},${r*Math.sin(a-aw*.3)}`);pts.push(`${r*Math.cos(a+aw*.3)},${r*Math.sin(a+aw*.3)}`);pts.push(`${rt*Math.cos(a+aw)},${rt*Math.sin(a+aw)}`);}
   return <svg width={size*2} height={size*2} viewBox={`${-size} ${-size} ${size*2} ${size*2}`} style={{animation:`${reverse?"spinR":"spin"} ${speed}s linear infinite`,display:"block"}}><polygon points={pts.join(" ")} fill="none" stroke="#38bdf8" strokeWidth="1.5" opacity={opacity}/><circle r={ri} fill="none" stroke="#38bdf8" strokeWidth="1" opacity={opacity}/><circle r={r*.2} fill="#38bdf8" opacity={opacity*.8}/></svg>;
 };
 
-// ── MAP ──────────────────────────────────────────────────────────────────────
-const Map=({lat,lng,onPick,readonly,markers=[]})=>{
+const MapComp=({lat,lng,onPick,readonly,markers=[]})=>{
   const ref=useRef(null),inst=useRef(null),mark=useRef(null);
   useEffect(()=>{
     if(!window.L||!ref.current)return;
@@ -128,73 +131,98 @@ const Map=({lat,lng,onPick,readonly,markers=[]})=>{
     const map=L.map(ref.current).setView([lat||35.6892,lng||51.389],lat?14:10);
     inst.current=map;
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OSM",maxZoom:19}).addTo(map);
-    const mkIcon=(c1,c2)=>L.divIcon({className:"",html:`<div style="width:26px;height:26px;background:linear-gradient(135deg,${c1},${c2});border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid white;box-shadow:0 3px 10px ${c1}80"></div>`,iconSize:[26,26],iconAnchor:[13,26]});
+    const mkIcon=(c1,c2)=>L.divIcon({className:"",html:`<div style="width:28px;height:28px;background:linear-gradient(135deg,${c1},${c2});border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid white;box-shadow:0 3px 10px ${c1}80"></div>`,iconSize:[28,28],iconAnchor:[14,28]});
     if(lat&&lng)mark.current=L.marker([lat,lng],{icon:mkIcon("#0ea5e9","#6366f1")}).addTo(map);
-    markers.forEach(m=>L.marker([m.lat,m.lng],{icon:mkIcon("#f59e0b","#ef4444")}).addTo(map).bindPopup(`<b>${m.name}</b><br/>${m.city}`));
+    markers.forEach(m=>L.marker([m.lat,m.lng],{icon:mkIcon("#f59e0b","#ef4444")}).addTo(map).bindPopup(`<b style="font-family:Tahoma">${m.name}</b><br/><span style="font-family:Tahoma">${m.city}</span>`));
     if(!readonly)map.on("click",e=>{const{lat:la,lng:ln}=e.latlng;if(mark.current)map.removeLayer(mark.current);mark.current=L.marker([la,ln],{icon:mkIcon("#0ea5e9","#6366f1")}).addTo(map);onPick&&onPick(la,ln);});
     return()=>{if(inst.current){inst.current.remove();inst.current=null;}};
   },[lat,lng,readonly,markers.length]);
-  return <div ref={ref} style={{width:"100%",height:"100%",borderRadius:12}}/>;
+  return <div ref={ref} style={{width:"100%",height:"100%",borderRadius:14}}/>;
 };
 
-// ── UI COMPONENTS ─────────────────────────────────────────────────────────────
-const Card=({children,style={}})=><div style={{background:"rgba(255,255,255,.02)",border:"1px solid rgba(56,189,248,.1)",borderRadius:16,padding:20,backdropFilter:"blur(8px)",...style}}>{children}</div>;
-
-const Btn=({children,onClick,primary=true,small=false,full=false,disabled=false,style={}})=>(
-  <button onClick={onClick} disabled={disabled} style={{background:primary?"linear-gradient(135deg,#0ea5e9,#6366f1)":"transparent",border:`1px solid ${primary?"transparent":"rgba(56,189,248,.2)"}`,color:primary?"#fff":"#64748b",borderRadius:10,padding:small?"7px 14px":"11px 22px",fontFamily:"Tahoma,Arial,sans-serif",fontWeight:700,fontSize:small?11:13,cursor:disabled?"not-allowed":"pointer",opacity:disabled?.6:1,transition:"all .2s",boxShadow:primary?"0 4px 20px rgba(14,165,233,.3)":"none",width:full?"100%":"auto",...style}}
-    onMouseEnter={e=>{if(!disabled&&primary){e.currentTarget.style.transform="translateY(-1px)";e.currentTarget.style.boxShadow="0 8px 28px rgba(14,165,233,.5)";}}}
-    onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow=primary?"0 4px 20px rgba(14,165,233,.3)":"none";}}
+// Big readable button
+const BigBtn=({children,onClick,secondary=false,disabled=false,full=false})=>(
+  <button onClick={onClick} disabled={disabled} style={{
+    background:secondary?"rgba(255,255,255,.04)":"linear-gradient(135deg,#0ea5e9,#6366f1)",
+    border:secondary?"2px solid rgba(56,189,248,.25)":"2px solid transparent",
+    color:secondary?"#94a3b8":"#fff",
+    borderRadius:16,
+    padding:"16px 28px",
+    fontFamily:"Tahoma,Arial,sans-serif",
+    fontWeight:700,
+    fontSize:17,
+    cursor:disabled?"not-allowed":"pointer",
+    opacity:disabled?.5:1,
+    transition:"all .2s",
+    boxShadow:secondary?"none":"0 6px 24px rgba(14,165,233,.35)",
+    width:full?"100%":"auto",
+    letterSpacing:.3,
+    lineHeight:1.4,
+  }}
+    onMouseEnter={e=>{if(!disabled&&!secondary){e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 10px 32px rgba(14,165,233,.5)";}}}
+    onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow=secondary?"none":"0 6px 24px rgba(14,165,233,.35)";}}
   >{children}</button>
 );
 
+const Card=({children,style={}})=>(
+  <div style={{background:"rgba(255,255,255,.025)",border:"1px solid rgba(56,189,248,.12)",borderRadius:18,padding:22,backdropFilter:"blur(8px)",...style}}>
+    {children}
+  </div>
+);
+
 const Field=({label,value,onChange,placeholder,multiline,type="text"})=>(
-  <div style={{marginBottom:14}}>
-    {label&&<label style={{display:"block",color:"#475569",fontSize:11,marginBottom:5,letterSpacing:1.2,textTransform:"uppercase"}}>{label}</label>}
+  <div style={{marginBottom:18}}>
+    {label&&<label style={{display:"block",color:"#64748b",fontSize:14,marginBottom:8,fontWeight:600}}>{label}</label>}
     {multiline
-      ?<textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={3} style={{width:"100%",background:"#0a0f1e",border:"1px solid rgba(56,189,248,.12)",borderRadius:10,color:"#e2e8f0",padding:"10px 13px",fontSize:13,fontFamily:"Tahoma,Arial,sans-serif",resize:"vertical",outline:"none",boxSizing:"border-box",lineHeight:1.7,transition:"border .2s"}} onFocus={e=>e.target.style.borderColor="rgba(56,189,248,.4)"} onBlur={e=>e.target.style.borderColor="rgba(56,189,248,.12)"}/>
-      :<input type={type} value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} style={{width:"100%",background:"#0a0f1e",border:"1px solid rgba(56,189,248,.12)",borderRadius:10,color:"#e2e8f0",padding:"10px 13px",fontSize:13,fontFamily:"Tahoma,Arial,sans-serif",outline:"none",boxSizing:"border-box",transition:"border .2s"}} onFocus={e=>e.target.style.borderColor="rgba(56,189,248,.4)"} onBlur={e=>e.target.style.borderColor="rgba(56,189,248,.12)"}/>
+      ?<textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={3} style={{width:"100%",background:"#0a0f1e",border:"2px solid rgba(56,189,248,.15)",borderRadius:12,color:"#e2e8f0",padding:"13px 16px",fontSize:16,fontFamily:"Tahoma,Arial,sans-serif",resize:"vertical",outline:"none",boxSizing:"border-box",lineHeight:1.7,transition:"border .2s"}} onFocus={e=>e.target.style.borderColor="rgba(56,189,248,.5)"} onBlur={e=>e.target.style.borderColor="rgba(56,189,248,.15)"}/>
+      :<input type={type} value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} style={{width:"100%",background:"#0a0f1e",border:"2px solid rgba(56,189,248,.15)",borderRadius:12,color:"#e2e8f0",padding:"13px 16px",fontSize:16,fontFamily:"Tahoma,Arial,sans-serif",outline:"none",boxSizing:"border-box",transition:"border .2s"}} onFocus={e=>e.target.style.borderColor="rgba(56,189,248,.5)"} onBlur={e=>e.target.style.borderColor="rgba(56,189,248,.15)"}/>
     }
   </div>
 );
 
 const Sel=({label,value,onChange,options})=>(
-  <div style={{marginBottom:14}}>
-    {label&&<label style={{display:"block",color:"#475569",fontSize:11,marginBottom:5,letterSpacing:1.2,textTransform:"uppercase"}}>{label}</label>}
-    <select value={value} onChange={e=>onChange(e.target.value)} style={{width:"100%",background:"#0a0f1e",border:"1px solid rgba(56,189,248,.12)",borderRadius:10,color:value?"#e2e8f0":"#2a4a5a",padding:"10px 13px",fontSize:13,fontFamily:"Tahoma,Arial,sans-serif",outline:"none",boxSizing:"border-box",cursor:"pointer",appearance:"none"}}>
+  <div style={{marginBottom:18}}>
+    {label&&<label style={{display:"block",color:"#64748b",fontSize:14,marginBottom:8,fontWeight:600}}>{label}</label>}
+    <select value={value} onChange={e=>onChange(e.target.value)} style={{width:"100%",background:"#0a0f1e",border:"2px solid rgba(56,189,248,.15)",borderRadius:12,color:value?"#e2e8f0":"#2a4a5a",padding:"13px 16px",fontSize:16,fontFamily:"Tahoma,Arial,sans-serif",outline:"none",boxSizing:"border-box",cursor:"pointer",appearance:"none"}}>
       <option value="">انتخاب کنید...</option>
       {options.map(o=><option key={o} value={o}>{o}</option>)}
     </select>
   </div>
 );
 
-const Stars=({n=5})=><span>{Array.from({length:5},(_,i)=><span key={i} style={{color:i<n?"#f59e0b":"#1e3a4a",fontSize:14}}>★</span>)}</span>;
+const Stars=({n=5,size=20})=><span>{Array.from({length:5},(_,i)=><span key={i} style={{color:i<n?"#f59e0b":"#1e3a4a",fontSize:size}}>★</span>)}</span>;
 
-const Toast=({msg,onClose})=>(
-  <div style={{position:"fixed",bottom:100,left:"50%",transform:"translateX(-50%)",background:"linear-gradient(135deg,#0ea5e9,#6366f1)",color:"#fff",borderRadius:14,padding:"12px 24px",fontSize:13,fontWeight:700,zIndex:200,animation:"slideIn .3s ease",boxShadow:"0 8px 32px rgba(14,165,233,.4)",fontFamily:"Tahoma,Arial,sans-serif",whiteSpace:"nowrap"}}>
+const Toast=({msg})=>(
+  <div style={{position:"fixed",bottom:110,left:"50%",transform:"translateX(-50%)",background:"linear-gradient(135deg,#0ea5e9,#6366f1)",color:"#fff",borderRadius:16,padding:"14px 28px",fontSize:15,fontWeight:700,zIndex:200,animation:"slideIn .3s ease",boxShadow:"0 8px 32px rgba(14,165,233,.4)",fontFamily:"Tahoma,Arial,sans-serif",whiteSpace:"nowrap",maxWidth:"90vw",textAlign:"center"}}>
     {msg}
   </div>
 );
 
-// ── MAIN APP ──────────────────────────────────────────────────────────────────
 function App(){
   const [tab,setTab]=useState("home");
   const [shops,setShops]=useState(()=>store.get("taamiryar_shops")||[]);
   const [reviews,setReviews]=useState(()=>store.get("taamiryar_reviews")||FAKE_REVIEWS);
-  const [query,setQuery]=useState("");const [selCat,setSelCat]=useState(null);
-  const [diagPhase,setDiagPhase]=useState("idle");const [diagResult,setDiagResult]=useState("");
+  const [query,setQuery]=useState("");
+  const [selCat,setSelCat]=useState(null);
+  const [diagPhase,setDiagPhase]=useState("idle");
+  const [diagResult,setDiagResult]=useState("");
   const [dots,setDots]=useState(0);
   const {displayed,done}=useTyping(diagResult);
   const [form,setForm]=useState({name:"",owner:"",phone:"",telegram:"",instagram:"",city:"",address:"",services:[],lat:null,lng:null,desc:""});
-  const [regStep,setRegStep]=useState(0);const [saving,setSaving]=useState(false);
-  const [findCity,setFindCity]=useState("");const [findCat,setFindCat]=useState("");
+  const [regStep,setRegStep]=useState(0);
+  const [saving,setSaving]=useState(false);
+  const [findCity,setFindCity]=useState("");
+  const [findCat,setFindCat]=useState("");
   const [findResults,setFindResults]=useState(null);
-  const [uLat,setULat]=useState(null);const [uLng,setULng]=useState(null);const [locLoad,setLocLoad]=useState(false);
-  const [showTip,setShowTip]=useState(false);const [tipAmt,setTipAmt]=useState("");
-  const [showReview,setShowReview]=useState(false);const [revForm,setRevForm]=useState({name:"",city:"",text:"",rating:5});
+  const [uLat,setULat]=useState(null);
+  const [uLng,setULng]=useState(null);
+  const [locLoad,setLocLoad]=useState(false);
+  const [showTip,setShowTip]=useState(false);
+  const [tipAmt,setTipAmt]=useState("");
+  const [showReview,setShowReview]=useState(false);
+  const [revForm,setRevForm]=useState({name:"",city:"",text:"",rating:5});
   const [toast,setToast]=useState(null);
   const [mounted,setMounted]=useState(false);
-  const shopCount=useCounter(shops.length+1240,1800);
-  const fixCount=useCounter(8430,2000);
 
   useEffect(()=>{setTimeout(()=>setMounted(true),100);},[]);
   useEffect(()=>{if(toast){const t=setTimeout(()=>setToast(null),3000);return()=>clearTimeout(t);}},[toast]);
@@ -209,7 +237,7 @@ function App(){
     if(!fq.trim())return;
     setDiagPhase("loading");setDiagResult("");
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:`تو متخصص تعمیرات حرفه‌ای ایرانی هستی.\nمشکل کاربر: ${fq}\n\nپاسخ کوتاه و مفید به فارسی روان بده:\n\n🔍 **تشخیص احتمالی:** (یه جمله)\n\n⚠️ **دلایل رایج:**\n• ...\n• ...\n\n🛠️ **راه‌حل اولیه:**\n۱. ...\n۲. ...\n\n💰 **تخمین هزینه تعمیر:** (اگه نیاز به متخصص بود)\n\n✅ **توصیه نهایی:** (خودت درست کن یا متخصص بیار؟)`}]})});
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:`تو متخصص تعمیرات حرفه‌ای ایرانی هستی.\nمشکل کاربر: ${fq}\n\nپاسخ کوتاه و مفید به فارسی روان بده:\n\n🔍 تشخیص احتمالی: (یه جمله ساده)\n\n⚠️ دلایل رایج:\n• ...\n• ...\n\n🛠️ راه‌حل اولیه:\n۱. ...\n۲. ...\n\n💰 تخمین هزینه تعمیر:\n\n✅ توصیه نهایی:`}]})});
       const data=await res.json();
       setDiagResult(data.content?.[0]?.text||"متأسفم، خطایی رخ داد.");
     }catch{setDiagResult("❌ خطا در اتصال. لطفاً دوباره تلاش کنید.");}
@@ -217,173 +245,169 @@ function App(){
   };
 
   const dist=(a,b,c,d)=>{const R=6371,dL=(c-a)*Math.PI/180,dl=(d-b)*Math.PI/180,x=Math.sin(dL/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));};
-  const doFind=()=>{let r=[...shops];if(findCity)r=r.filter(s=>s.city===findCity);if(findCat)r=r.filter(s=>s.services.some(sv=>sv===findCat));if(uLat&&uLng)r=r.map(s=>({...s,distance:s.lat&&s.lng?dist(uLat,uLng,s.lat,s.lng):null})).sort((a,b)=>(a.distance||999)-(b.distance||999));setFindResults(r);};
-  const getLoc=()=>{setLocLoad(true);navigator.geolocation.getCurrentPosition(p=>{setULat(p.coords.latitude);setULng(p.coords.longitude);setLocLoad(false);setToast("✓ موقعیت شما دریافت شد");},()=>{setLocLoad(false);setToast("❌ دسترسی به موقعیت رد شد");});};
+
+  const doFind=()=>{
+    let r=[...shops];
+    if(findCity)r=r.filter(s=>s.city===findCity);
+    if(findCat)r=r.filter(s=>s.services.includes(findCat));
+    if(uLat&&uLng)r=r.map(s=>({...s,distance:s.lat&&s.lng?dist(uLat,uLng,s.lat,s.lng):null})).sort((a,b)=>(a.distance||999)-(b.distance||999));
+    setFindResults(r);
+  };
+
+  const getLoc=()=>{
+    setLocLoad(true);
+    navigator.geolocation.getCurrentPosition(
+      p=>{setULat(p.coords.latitude);setULng(p.coords.longitude);setLocLoad(false);setToast("✓ موقعیت شما دریافت شد");},
+      ()=>{setLocLoad(false);setToast("❌ دسترسی به موقعیت رد شد");}
+    );
+  };
 
   const submitShop=()=>{
     if(!form.name||!form.phone||!form.city)return;
     setSaving(true);
-    setTimeout(()=>{const shop={...form,id:Date.now(),createdAt:new Date().toISOString()};saveShops([...shops,shop]);setSaving(false);setRegStep(3);setToast("🎉 تعمیرگاه با موفقیت ثبت شد!");},800);
+    setTimeout(()=>{
+      const shop={...form,id:Date.now(),createdAt:new Date().toISOString()};
+      saveShops([...shops,shop]);
+      setSaving(false);setRegStep(3);
+      setToast("🎉 تعمیرگاه با موفقیت ثبت شد!");
+    },800);
   };
 
   const submitReview=()=>{
     if(!revForm.name||!revForm.text)return;
-    const r={...revForm,date:"همین الان"};
-    const updated=[r,...reviews];setReviews(updated);store.set("taamiryar_reviews",updated);
+    const updated=[{...revForm,date:"همین الان"},...reviews];
+    setReviews(updated);store.set("taamiryar_reviews",updated);
     setShowReview(false);setRevForm({name:"",city:"",text:"",rating:5});
-    setToast("💛 نظر شما ثبت شد. ممنون!");
+    setToast("💛 نظر شما ثبت شد!");
   };
 
-  const tabs=[{id:"home",icon:"🏠",label:"خانه"},{id:"diagnose",icon:"🔍",label:"تشخیص"},{id:"find",icon:"📍",label:"تعمیرگاه"},{id:"register",icon:"✏️",label:"ثبت‌نام"}];
+  const tabs=[
+    {id:"home",icon:"🏠",label:"خانه"},
+    {id:"diagnose",icon:"🔍",label:"تشخیص خرابی"},
+    {id:"find",icon:"📍",label:"تعمیرگاه"},
+    {id:"register",icon:"✏️",label:"ثبت‌نام"},
+  ];
 
-  const gradText={background:"linear-gradient(135deg,#38bdf8,#818cf8)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"};
+  const grad={background:"linear-gradient(135deg,#38bdf8,#818cf8)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"};
 
   return (
-    <div style={{minHeight:"100vh",background:"#030712",paddingBottom:80,position:"relative",opacity:mounted?1:0,transition:"opacity .5s ease"}}>
+    <div style={{minHeight:"100vh",background:"#030712",paddingBottom:100,position:"relative",opacity:mounted?1:0,transition:"opacity .5s"}}>
       <Particles/>
-      {/* Ambient blobs */}
       <div style={{position:"fixed",top:-150,right:-100,width:500,height:500,borderRadius:"50%",background:"radial-gradient(circle,rgba(14,165,233,.07) 0%,transparent 65%)",zIndex:0,pointerEvents:"none"}}/>
       <div style={{position:"fixed",bottom:-100,left:-100,width:400,height:400,borderRadius:"50%",background:"radial-gradient(circle,rgba(99,102,241,.06) 0%,transparent 65%)",zIndex:0,pointerEvents:"none"}}/>
-      {/* Gears */}
       <div style={{position:"fixed",top:70,left:-35,zIndex:1,pointerEvents:"none"}}><Gear size={70} speed={20}/></div>
-      <div style={{position:"fixed",bottom:110,right:-25,zIndex:1,pointerEvents:"none"}}><Gear size={85} speed={26} reverse/></div>
-      <div style={{position:"fixed",top:"45%",left:10,zIndex:1,pointerEvents:"none"}}><Gear size={35} speed={14} reverse/></div>
+      <div style={{position:"fixed",bottom:120,right:-25,zIndex:1,pointerEvents:"none"}}><Gear size={85} speed={26} reverse/></div>
 
-      {/* ── HEADER ── */}
-      <header style={{position:"sticky",top:0,zIndex:50,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"13px 20px",borderBottom:"1px solid rgba(56,189,248,.07)",backdropFilter:"blur(24px)",background:"rgba(3,7,18,.88)"}}>
-        <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{width:38,height:38,borderRadius:11,background:"linear-gradient(135deg,#0ea5e9,#6366f1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,animation:"pulse 2.5s ease-in-out infinite",cursor:"pointer"}} onClick={()=>setTab("home")}>🔧</div>
+      {/* HEADER */}
+      <header style={{position:"sticky",top:0,zIndex:50,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 20px",borderBottom:"1px solid rgba(56,189,248,.08)",backdropFilter:"blur(24px)",background:"rgba(3,7,18,.9)"}}>
+        <div style={{display:"flex",alignItems:"center",gap:12,cursor:"pointer"}} onClick={()=>setTab("home")}>
+          <div style={{width:44,height:44,borderRadius:13,background:"linear-gradient(135deg,#0ea5e9,#6366f1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,animation:"pulse 2.5s ease-in-out infinite",flexShrink:0}}>🔧</div>
           <div>
-            <div style={{fontSize:19,fontWeight:900,letterSpacing:-0.5,...gradText}}>تعمیریار</div>
-            <div style={{fontSize:9,color:"#1e4a6a",letterSpacing:2,textTransform:"uppercase"}}>taamiryar.com</div>
+            <div style={{fontSize:22,fontWeight:900,letterSpacing:-.5,...grad}}>تعمیریار</div>
+            <div style={{fontSize:10,color:"#1e4a6a",letterSpacing:2}}>taamiryar.com</div>
           </div>
         </div>
-        <div style={{display:"flex",gap:8,alignItems:"center"}}>
-          <div style={{textAlign:"center",display:"none"}}>
-            <div style={{fontSize:12,fontWeight:700,color:"#38bdf8"}}>{shops.length}</div>
-            <div style={{fontSize:9,color:"#1e3a4a"}}>تعمیرگاه</div>
-          </div>
-          <button onClick={()=>setShowTip(true)} style={{background:"transparent",border:"1px solid rgba(56,189,248,.2)",color:"#38bdf8",borderRadius:20,padding:"6px 14px",fontFamily:"Tahoma,Arial,sans-serif",fontSize:11,cursor:"pointer",fontWeight:600,transition:"all .2s"}} onMouseEnter={e=>{e.currentTarget.style.background="rgba(56,189,248,.08)";}} onMouseLeave={e=>{e.currentTarget.style.background="transparent";}}>☕ حمایت</button>
-        </div>
+        <button onClick={()=>setShowTip(true)} style={{background:"transparent",border:"2px solid rgba(56,189,248,.25)",color:"#38bdf8",borderRadius:22,padding:"9px 18px",fontFamily:"Tahoma,Arial,sans-serif",fontSize:13,cursor:"pointer",fontWeight:700,transition:"all .2s",whiteSpace:"nowrap"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(56,189,248,.1)"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>☕ حمایت</button>
       </header>
 
-      {/* ── BOTTOM NAV ── */}
-      <nav style={{position:"fixed",bottom:0,left:0,right:0,zIndex:50,background:"rgba(3,7,18,.96)",backdropFilter:"blur(24px)",borderTop:"1px solid rgba(56,189,248,.08)",display:"flex",padding:"8px 0 env(safe-area-inset-bottom,12px)"}}>
+      {/* BOTTOM NAV */}
+      <nav style={{position:"fixed",bottom:0,left:0,right:0,zIndex:50,background:"rgba(3,7,18,.97)",backdropFilter:"blur(24px)",borderTop:"1px solid rgba(56,189,248,.1)",display:"flex",padding:"10px 0 16px"}}>
         {tabs.map(t=>(
-          <button key={t.id} onClick={()=>setTab(t.id)} style={{flex:1,background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:3,padding:"4px 0",transition:"all .2s"}}>
-            <span style={{fontSize:20,opacity:tab===t.id?1:.3,transition:"all .25s",filter:tab===t.id?"none":"grayscale(1)"}}>{t.icon}</span>
-            <span style={{fontSize:9,fontFamily:"Tahoma,Arial,sans-serif",color:tab===t.id?"#38bdf8":"#2a3a4a",fontWeight:tab===t.id?700:400,transition:"all .2s"}}>{t.label}</span>
-            {tab===t.id&&<div style={{width:20,height:2,background:"linear-gradient(90deg,#38bdf8,#818cf8)",borderRadius:1,transition:"all .3s"}}/>}
+          <button key={t.id} onClick={()=>setTab(t.id)} style={{flex:1,background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"4px 2px",transition:"all .2s"}}>
+            <span style={{fontSize:24,opacity:tab===t.id?1:.3,transition:"all .25s",filter:tab===t.id?"none":"grayscale(1)"}}>{t.icon}</span>
+            <span style={{fontSize:10,fontFamily:"Tahoma,Arial,sans-serif",color:tab===t.id?"#38bdf8":"#2a3a4a",fontWeight:tab===t.id?700:400,transition:"all .2s",lineHeight:1.3,textAlign:"center"}}>{t.label}</span>
+            {tab===t.id&&<div style={{width:24,height:3,background:"linear-gradient(90deg,#38bdf8,#818cf8)",borderRadius:2}}/>}
           </button>
         ))}
       </nav>
 
-      <main style={{position:"relative",zIndex:5,maxWidth:700,margin:"0 auto",padding:"20px 16px 20px"}}>
+      <main style={{position:"relative",zIndex:5,maxWidth:700,margin:"0 auto",padding:"24px 16px 20px"}}>
 
-        {/* ══════════ HOME ══════════ */}
+        {/* ══ HOME ══ */}
         {tab==="home"&&(
           <div style={{animation:"fadeUp .5s ease"}}>
             {/* Hero */}
-            <div style={{textAlign:"center",padding:"36px 0 32px"}}>
+            <div style={{textAlign:"center",padding:"32px 0 28px"}}>
               <div style={{position:"relative",display:"inline-block",marginBottom:24}}>
-                <div style={{width:80,height:80,borderRadius:22,background:"linear-gradient(135deg,#0c2a3a,#0e1a3a)",border:"1px solid rgba(56,189,248,.25)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:36,margin:"0 auto",boxShadow:"0 0 50px rgba(14,165,233,.15)",animation:"float 4s ease-in-out infinite"}}>🔧</div>
-                {[1,2,3].map(i=><div key={i} style={{position:"absolute",inset:-9*i,borderRadius:22+9*i,border:"1px solid rgba(56,189,248,.08)",animation:`ripple ${1.6+i*.7}s ease-out ${i*.35}s infinite`,pointerEvents:"none"}}/>)}
+                <div style={{width:88,height:88,borderRadius:24,background:"linear-gradient(135deg,#0c2a3a,#0e1a3a)",border:"2px solid rgba(56,189,248,.25)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:40,margin:"0 auto",boxShadow:"0 0 60px rgba(14,165,233,.18)",animation:"float 4s ease-in-out infinite"}}>🔧</div>
+                {[1,2].map(i=><div key={i} style={{position:"absolute",inset:-10*i,borderRadius:24+10*i,border:"1px solid rgba(56,189,248,.08)",animation:`ripple ${1.8+i*.7}s ease-out ${i*.4}s infinite`,pointerEvents:"none"}}/>)}
               </div>
-              <h1 style={{fontSize:"clamp(24px,5vw,36px)",fontWeight:900,marginBottom:12,...gradText,lineHeight:1.3}}>دستیار هوشمند تعمیرات</h1>
-              <p style={{color:"#475569",fontSize:14,lineHeight:1.9,maxWidth:420,margin:"0 auto 28px"}}>تشخیص مشکل دستگاهت با هوش مصنوعی + یافتن نزدیک‌ترین تعمیرکار</p>
+              <h1 style={{fontSize:"clamp(26px,6vw,40px)",fontWeight:900,marginBottom:12,...grad,lineHeight:1.3}}>دستیار هوشمند تعمیرات</h1>
+              <p style={{color:"#64748b",fontSize:16,lineHeight:1.9,maxWidth:420,margin:"0 auto 28px"}}>
+                مشکل دستگاهت رو بگو — تشخیص بگیر و نزدیک‌ترین تعمیرکار رو پیدا کن
+              </p>
               <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
-                <Btn onClick={()=>setTab("diagnose")}>🔍 تشخیص مشکل</Btn>
-                <Btn onClick={()=>setTab("find")} primary={false}>📍 یافتن تعمیرگاه</Btn>
+                <BigBtn onClick={()=>setTab("diagnose")}>🔍 تشخیص خرابی</BigBtn>
+                <BigBtn onClick={()=>setTab("find")} secondary>📍 پیدا کردن تعمیرگاه</BigBtn>
               </div>
             </div>
 
             {/* Stats */}
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:28}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,marginBottom:28}}>
               {[
-                {n:shopCount,label:"تعمیرگاه",icon:"🏪"},
-                {n:fixCount,label:"تعمیر انجام شده",icon:"✅"},
-                {n:reviews.length,label:"نظر کاربران",icon:"⭐"},
+                {n:`${shops.length+1240}+`,label:"تعمیرگاه",icon:"🏪"},
+                {n:"۸۴۳۰+",label:"تعمیر انجام شده",icon:"✅"},
+                {n:`${reviews.length}`,label:"نظر کاربران",icon:"⭐"},
               ].map((s,i)=>(
-                <Card key={i} style={{textAlign:"center",padding:"16px 8px"}}>
-                  <div style={{fontSize:22,marginBottom:4}}>{s.icon}</div>
-                  <div style={{fontSize:20,fontWeight:900,...gradText}}>{s.n.toLocaleString("fa")}</div>
-                  <div style={{fontSize:10,color:"#334155",marginTop:2}}>{s.label}</div>
+                <Card key={i} style={{textAlign:"center",padding:"18px 8px"}}>
+                  <div style={{fontSize:26,marginBottom:6}}>{s.icon}</div>
+                  <div style={{fontSize:22,fontWeight:900,...grad}}>{s.n}</div>
+                  <div style={{fontSize:12,color:"#475569",marginTop:4,lineHeight:1.4}}>{s.label}</div>
                 </Card>
               ))}
             </div>
 
-            {/* Feature cards */}
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:28}}>
-              {[
-                {icon:"🔍",title:"تشخیص AI",desc:"مشکل دستگاهت رو بگو، راه‌حل و تخمین هزینه بگیر",tab:"diagnose",c:"#0ea5e9"},
-                {icon:"📍",title:"تعمیرگاه نزدیک",desc:"بر اساس موقعیت، نزدیک‌ترین تعمیرکار رو پیدا کن",tab:"find",c:"#6366f1"},
-                {icon:"✏️",title:"ثبت تعمیرگاه",desc:"تعمیرگاهت رو رایگان ثبت کن و مشتری بگیر",tab:"register",c:"#f59e0b"},
-                {icon:"💬",title:"نظرات کاربران",desc:"تجربه دیگران رو بخون و نظرت رو بنویس",tab:"reviews",c:"#10b981"},
-              ].map(c=>(
-                <button key={c.title} onClick={()=>c.tab==="reviews"?setTab("home"):setTab(c.tab)} style={{background:"rgba(255,255,255,.02)",border:`1px solid ${c.c}20`,borderRadius:16,padding:16,cursor:"pointer",textAlign:"right",transition:"all .25s",width:"100%"}}
-                  onMouseEnter={e=>{e.currentTarget.style.border=`1px solid ${c.c}50`;e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow=`0 12px 28px ${c.c}18`;}}
-                  onMouseLeave={e=>{e.currentTarget.style.border=`1px solid ${c.c}20`;e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}
-                >
-                  <div style={{fontSize:28,marginBottom:10}}>{c.icon}</div>
-                  <div style={{fontSize:13,fontWeight:700,color:"#e2e8f0",marginBottom:5}}>{c.title}</div>
-                  <div style={{fontSize:11,color:"#334155",lineHeight:1.6}}>{c.desc}</div>
-                </button>
-              ))}
-            </div>
-
-            {/* Categories */}
-            <Card style={{marginBottom:28}}>
-              <div style={{fontSize:11,color:"#38bdf8",letterSpacing:1.5,textTransform:"uppercase",marginBottom:16}}>دسته‌بندی خدمات</div>
-              <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+            {/* Big category grid */}
+            <Card style={{marginBottom:24}}>
+              <div style={{fontSize:16,fontWeight:700,color:"#e2e8f0",marginBottom:16}}>📋 دسته‌بندی خدمات</div>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10}}>
                 {CATS.map(c=>(
-                  <button key={c.label} onClick={()=>{setSelCat(c);setTab("diagnose");}} style={{background:"rgba(255,255,255,.02)",border:"1px solid rgba(255,255,255,.06)",borderRadius:20,padding:"6px 12px",fontSize:11,fontFamily:"Tahoma,Arial,sans-serif",color:"#475569",cursor:"pointer",display:"flex",alignItems:"center",gap:4,transition:"all .2s"}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(56,189,248,.3)";e.currentTarget.style.color="#38bdf8";}}
-                    onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,.06)";e.currentTarget.style.color="#475569";}}
-                  ><span>{c.icon}</span>{c.label}</button>
+                  <button key={c.label} onClick={()=>{setSelCat(c);setTab("diagnose");}} style={{background:"rgba(255,255,255,.03)",border:"2px solid rgba(56,189,248,.1)",borderRadius:14,padding:"14px 8px",cursor:"pointer",textAlign:"center",transition:"all .2s",display:"flex",flexDirection:"column",alignItems:"center",gap:6}}
+                    onMouseEnter={e=>{e.currentTarget.style.border="2px solid rgba(56,189,248,.35)";e.currentTarget.style.background="rgba(56,189,248,.06)";e.currentTarget.style.transform="scale(1.03)";}}
+                    onMouseLeave={e=>{e.currentTarget.style.border="2px solid rgba(56,189,248,.1)";e.currentTarget.style.background="rgba(255,255,255,.03)";e.currentTarget.style.transform="scale(1)";}}
+                  >
+                    <span style={{fontSize:28}}>{c.icon}</span>
+                    <span style={{fontSize:11,color:"#94a3b8",fontFamily:"Tahoma,Arial,sans-serif",lineHeight:1.4}}>{c.label}</span>
+                  </button>
                 ))}
               </div>
             </Card>
 
-            {/* Reviews preview */}
-            <div style={{marginBottom:28}}>
+            {/* Reviews */}
+            <div style={{marginBottom:24}}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
-                <div style={{fontSize:14,fontWeight:700,color:"#e2e8f0"}}>نظرات کاربران</div>
-                <button onClick={()=>setShowReview(true)} style={{background:"transparent",border:"1px solid rgba(56,189,248,.2)",color:"#38bdf8",borderRadius:20,padding:"5px 12px",fontFamily:"Tahoma,Arial,sans-serif",fontSize:11,cursor:"pointer"}}>+ نظر بده</button>
+                <div style={{fontSize:16,fontWeight:700,color:"#e2e8f0"}}>💬 نظرات کاربران</div>
+                <button onClick={()=>setShowReview(true)} style={{background:"transparent",border:"2px solid rgba(56,189,248,.2)",color:"#38bdf8",borderRadius:20,padding:"8px 16px",fontFamily:"Tahoma,Arial,sans-serif",fontSize:13,cursor:"pointer",fontWeight:600}}>+ نظر بده</button>
               </div>
-              <div style={{display:"grid",gap:10}}>
-                {reviews.slice(0,3).map((r,i)=>(
-                  <Card key={i} style={{padding:"14px 16px"}}>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
-                      <div style={{display:"flex",alignItems:"center",gap:8}}>
-                        <div style={{width:32,height:32,borderRadius:"50%",background:"linear-gradient(135deg,rgba(56,189,248,.2),rgba(99,102,241,.2))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:"#38bdf8"}}>{r.name[0]}</div>
-                        <div>
-                          <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>{r.name}</div>
-                          <div style={{fontSize:10,color:"#334155"}}>{r.city}</div>
-                        </div>
-                      </div>
-                      <div style={{textAlign:"left"}}>
-                        <Stars n={r.rating}/>
-                        <div style={{fontSize:9,color:"#1e3a4a",marginTop:2}}>{r.date}</div>
+              {reviews.slice(0,3).map((r,i)=>(
+                <Card key={i} style={{marginBottom:10,padding:"16px 18px"}}>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
+                    <div style={{display:"flex",alignItems:"center",gap:10}}>
+                      <div style={{width:40,height:40,borderRadius:"50%",background:"linear-gradient(135deg,rgba(56,189,248,.2),rgba(99,102,241,.2))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:700,color:"#38bdf8",flexShrink:0}}>{r.name[0]}</div>
+                      <div>
+                        <div style={{fontSize:14,fontWeight:700,color:"#e2e8f0"}}>{r.name}</div>
+                        <div style={{fontSize:12,color:"#475569"}}>{r.city} · {r.date}</div>
                       </div>
                     </div>
-                    <div style={{fontSize:12,color:"#94a3b8",lineHeight:1.7}}>{r.text}</div>
-                  </Card>
-                ))}
-              </div>
+                    <Stars n={r.rating} size={18}/>
+                  </div>
+                  <div style={{fontSize:14,color:"#94a3b8",lineHeight:1.8}}>{r.text}</div>
+                </Card>
+              ))}
             </div>
 
             {/* Recent shops */}
             {shops.length>0&&(
               <Card>
-                <div style={{fontSize:11,color:"#38bdf8",letterSpacing:1.5,textTransform:"uppercase",marginBottom:14}}>آخرین تعمیرگاه‌های ثبت‌شده</div>
-                {shops.slice(-4).reverse().map(s=>(
-                  <div key={s.id} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:"1px solid rgba(56,189,248,.05)"}}>
-                    <div style={{width:38,height:38,borderRadius:10,background:"linear-gradient(135deg,rgba(14,165,233,.12),rgba(99,102,241,.12))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>🔧</div>
+                <div style={{fontSize:16,fontWeight:700,color:"#e2e8f0",marginBottom:14}}>🏪 آخرین تعمیرگاه‌های ثبت‌شده</div>
+                {shops.slice(-3).reverse().map(s=>(
+                  <div key={s.id} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 0",borderBottom:"1px solid rgba(56,189,248,.06)"}}>
+                    <div style={{width:42,height:42,borderRadius:12,background:"rgba(14,165,233,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>🔧</div>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:700,color:"#e2e8f0",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{s.name}</div>
-                      <div style={{fontSize:11,color:"#334155"}}>📍 {s.city} · {s.services.slice(0,2).map(sv=>sv.split(" ").slice(1).join(" ")||sv).join("، ")}</div>
+                      <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{s.name}</div>
+                      <div style={{fontSize:12,color:"#475569",marginTop:2}}>📍 {s.city}</div>
                     </div>
-                    <a href={`tel:${s.phone}`} style={{fontSize:11,color:"#38bdf8",background:"rgba(56,189,248,.08)",border:"1px solid rgba(56,189,248,.15)",borderRadius:8,padding:"4px 8px",whiteSpace:"nowrap"}}>📞</a>
+                    <a href={`tel:${s.phone}`} style={{fontSize:13,color:"#38bdf8",background:"rgba(56,189,248,.08)",border:"2px solid rgba(56,189,248,.2)",borderRadius:10,padding:"8px 14px",whiteSpace:"nowrap",fontWeight:600,fontFamily:"Tahoma"}}>📞 تماس</a>
                   </div>
                 ))}
               </Card>
@@ -391,232 +415,254 @@ function App(){
           </div>
         )}
 
-        {/* ══════════ DIAGNOSE ══════════ */}
+        {/* ══ DIAGNOSE ══ */}
         {tab==="diagnose"&&(
           <div style={{animation:"fadeUp .4s ease"}}>
-            <div style={{marginBottom:20}}>
-              <h2 style={{fontSize:22,fontWeight:900,marginBottom:6,...gradText}}>تشخیص هوشمند</h2>
-              <p style={{color:"#334155",fontSize:12}}>مشکل دستگاهت رو بگو — AI تشخیص می‌ده</p>
+            <div style={{marginBottom:24}}>
+              <h2 style={{fontSize:24,fontWeight:900,marginBottom:8,...grad}}>🔍 تشخیص خرابی</h2>
+              <p style={{color:"#64748b",fontSize:15,lineHeight:1.7}}>دستگاه خراب رو انتخاب کن یا مشکلت رو بنویس</p>
             </div>
 
             {diagPhase==="idle"&&(<>
-              {/* Cat chips */}
-              <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16}}>
+              {/* Category grid - big and readable */}
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:20}}>
                 {CATS.map(c=>(
-                  <button key={c.label} onClick={()=>setSelCat(selCat?.label===c.label?null:c)} style={{background:selCat?.label===c.label?"rgba(56,189,248,.15)":"rgba(255,255,255,.02)",border:`1px solid ${selCat?.label===c.label?"rgba(56,189,248,.4)":"rgba(255,255,255,.06)"}`,color:selCat?.label===c.label?"#38bdf8":"#475569",borderRadius:20,padding:"6px 12px",fontSize:11,fontFamily:"Tahoma,Arial,sans-serif",cursor:"pointer",transition:"all .2s",display:"flex",alignItems:"center",gap:4,boxShadow:selCat?.label===c.label?"0 0 12px rgba(56,189,248,.2)":"none"}}>
-                    <span>{c.icon}</span>{c.label}
+                  <button key={c.label} onClick={()=>setSelCat(selCat?.label===c.label?null:c)} style={{
+                    background:selCat?.label===c.label?"rgba(56,189,248,.15)":"rgba(255,255,255,.03)",
+                    border:`2px solid ${selCat?.label===c.label?"rgba(56,189,248,.5)":"rgba(255,255,255,.08)"}`,
+                    color:selCat?.label===c.label?"#38bdf8":"#94a3b8",
+                    borderRadius:14,padding:"14px 6px",cursor:"pointer",textAlign:"center",
+                    transition:"all .2s",display:"flex",flexDirection:"column",alignItems:"center",gap:6,
+                    boxShadow:selCat?.label===c.label?"0 0 16px rgba(56,189,248,.2)":"none",
+                  }}
+                    onMouseEnter={e=>{if(selCat?.label!==c.label){e.currentTarget.style.border="2px solid rgba(56,189,248,.3)";e.currentTarget.style.background="rgba(56,189,248,.05)";}}}
+                    onMouseLeave={e=>{if(selCat?.label!==c.label){e.currentTarget.style.border="2px solid rgba(255,255,255,.08)";e.currentTarget.style.background="rgba(255,255,255,.03)";}}}
+                  >
+                    <span style={{fontSize:30}}>{c.icon}</span>
+                    <span style={{fontSize:11,lineHeight:1.4,fontFamily:"Tahoma,Arial,sans-serif"}}>{c.label}</span>
                   </button>
                 ))}
               </div>
-              {/* Input */}
-              <Card style={{marginBottom:14,padding:6}}>
-                <textarea value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();diagnose();}}} placeholder={selCat?`مشکل ${selCat.label}ت رو توضیح بده...`:"مشکل دستگاهت رو توضیح بده..."} rows={3} style={{width:"100%",background:"transparent",border:"none",outline:"none",color:"#e2e8f0",fontSize:14,fontFamily:"Tahoma,Arial,sans-serif",padding:"14px 16px 6px",resize:"none",lineHeight:1.7}}/>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"6px 12px 10px"}}>
-                  <span style={{fontSize:10,color:"#1e3a4a"}}>Enter برای ارسال</span>
-                  <Btn onClick={()=>diagnose()} small>تشخیص بده ←</Btn>
+
+              {selCat&&<div style={{background:"rgba(56,189,248,.08)",border:"2px solid rgba(56,189,248,.25)",borderRadius:14,padding:"12px 16px",marginBottom:16,fontSize:15,color:"#38bdf8",display:"flex",alignItems:"center",gap:8,fontWeight:600}}>
+                <span style={{fontSize:22}}>{selCat.icon}</span>
+                <span>{selCat.label} انتخاب شد</span>
+                <button onClick={()=>setSelCat(null)} style={{marginRight:"auto",background:"none",border:"none",color:"#64748b",cursor:"pointer",fontSize:18,padding:"0 4px"}}>✕</button>
+              </div>}
+
+              {/* Text input - large */}
+              <Card style={{marginBottom:16,padding:8}}>
+                <textarea value={query} onChange={e=>setQuery(e.target.value)}
+                  onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();diagnose();}}}
+                  placeholder={selCat?`مشکل ${selCat.label}ت رو اینجا بنویس...`:"مشکل دستگاهت رو اینجا بنویس..."}
+                  rows={3}
+                  style={{width:"100%",background:"transparent",border:"none",outline:"none",color:"#e2e8f0",fontSize:17,fontFamily:"Tahoma,Arial,sans-serif",padding:"16px",resize:"none",lineHeight:1.8}}
+                />
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 12px 12px"}}>
+                  <span style={{fontSize:12,color:"#1e3a4a"}}>Enter برای ارسال</span>
+                  <BigBtn onClick={()=>diagnose()}>تشخیص بده ←</BigBtn>
                 </div>
               </Card>
-              {/* Suggestions */}
-              <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                {SUGGESTIONS.map(s=>(
-                  <button key={s} onClick={()=>{setQuery(s);setTimeout(()=>diagnose(s),50);}} style={{background:"transparent",border:"1px solid rgba(255,255,255,.05)",color:"#334155",borderRadius:12,padding:"5px 11px",fontSize:11,fontFamily:"Tahoma,Arial,sans-serif",cursor:"pointer",transition:"all .2s"}} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(56,189,248,.25)";e.currentTarget.style.color="#38bdf8";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,.05)";e.currentTarget.style.color="#334155";}}>{s}</button>
-                ))}
+
+              {/* Suggestions - big pills */}
+              <div style={{marginBottom:8}}>
+                <div style={{fontSize:13,color:"#475569",marginBottom:10,fontWeight:600}}>مشکلات رایج:</div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+                  {SUGGESTIONS.map(s=>(
+                    <button key={s} onClick={()=>{setQuery(s);setTimeout(()=>diagnose(s),50);}}
+                      style={{background:"rgba(255,255,255,.03)",border:"2px solid rgba(255,255,255,.08)",color:"#64748b",borderRadius:12,padding:"10px 16px",fontSize:14,fontFamily:"Tahoma,Arial,sans-serif",cursor:"pointer",transition:"all .2s",lineHeight:1.3}}
+                      onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(56,189,248,.3)";e.currentTarget.style.color="#38bdf8";e.currentTarget.style.background="rgba(56,189,248,.05)";}}
+                      onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,.08)";e.currentTarget.style.color="#64748b";e.currentTarget.style.background="rgba(255,255,255,.03)";}}
+                    >{s}</button>
+                  ))}
+                </div>
               </div>
             </>)}
 
             {diagPhase==="loading"&&(
               <div style={{textAlign:"center",padding:"80px 0",animation:"fadeIn .3s ease"}}>
-                <div style={{position:"relative",width:100,height:100,margin:"0 auto 28px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                  <div style={{position:"absolute",top:0,left:10}}><Gear size={38} speed={4} opacity={.6}/></div>
-                  <div style={{position:"absolute",bottom:0,right:10}}><Gear size={28} speed={3} opacity={.5} reverse/></div>
-                  <div style={{width:20,height:20,borderRadius:"50%",background:"linear-gradient(135deg,#38bdf8,#818cf8)",boxShadow:"0 0 24px rgba(56,189,248,.8)",animation:"pulse 1.5s ease-in-out infinite"}}/>
+                <div style={{position:"relative",width:110,height:110,margin:"0 auto 32px",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  <div style={{position:"absolute",top:0,left:12}}><Gear size={42} speed={4} opacity={.6}/></div>
+                  <div style={{position:"absolute",bottom:0,right:12}}><Gear size={30} speed={3} opacity={.5} reverse/></div>
+                  <div style={{width:24,height:24,borderRadius:"50%",background:"linear-gradient(135deg,#38bdf8,#818cf8)",boxShadow:"0 0 28px rgba(56,189,248,.9)",animation:"pulse 1.5s ease-in-out infinite"}}/>
                 </div>
-                <div style={{fontSize:16,fontWeight:700,...gradText}}>در حال تشخیص{".".repeat(dots)}</div>
-                <div style={{color:"#1e3a4a",fontSize:11,marginTop:8}}>هوش مصنوعی مشکل رو بررسی می‌کنه</div>
+                <div style={{fontSize:18,fontWeight:700,...grad,marginBottom:8}}>در حال تشخیص{".".repeat(dots)}</div>
+                <div style={{color:"#475569",fontSize:14}}>هوش مصنوعی مشکل رو بررسی می‌کنه</div>
               </div>
             )}
 
             {diagPhase==="result"&&(
               <div style={{animation:"fadeUp .4s ease"}}>
-                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
-                  <Btn onClick={()=>{setDiagPhase("idle");setDiagResult("");setQuery("");setSelCat(null);}} primary={false} small>← سوال جدید</Btn>
-                  <div style={{flex:1,height:1,background:"rgba(56,189,248,.08)"}}/>
-                  <span style={{fontSize:10,color:"#1e3a4a"}}>پاسخ AI</span>
+                <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:18}}>
+                  <BigBtn secondary onClick={()=>{setDiagPhase("idle");setDiagResult("");setQuery("");setSelCat(null);}}>← سوال جدید</BigBtn>
+                  <div style={{flex:1,height:1,background:"rgba(56,189,248,.1)"}}/>
                 </div>
-                {selCat&&<div style={{background:"rgba(56,189,248,.05)",border:"1px solid rgba(56,189,248,.1)",borderRadius:10,padding:"8px 14px",marginBottom:12,fontSize:12,color:"#475569",display:"flex",alignItems:"center",gap:6}}>
-                  <span>{selCat.icon}</span><span>{selCat.label}</span><span style={{color:"#1e3a4a"}}>·</span><span>{query}</span>
-                </div>}
-                <Card style={{fontSize:13,lineHeight:2.1,color:"#cbd5e1",whiteSpace:"pre-wrap",minHeight:200,padding:"22px",marginBottom:16}}>
-                  {displayed}{!done&&<span style={{animation:"blink .7s step-end infinite",color:"#38bdf8"}}>▌</span>}
+                <Card style={{fontSize:15,lineHeight:2.1,color:"#cbd5e1",whiteSpace:"pre-wrap",minHeight:200,padding:"24px",marginBottom:16}}>
+                  {displayed}{!done&&<span style={{animation:"blink .7s step-end infinite",color:"#38bdf8",fontSize:18}}>▌</span>}
                 </Card>
                 {done&&(
-                  <div style={{background:"linear-gradient(135deg,rgba(14,165,233,.05),rgba(99,102,241,.05))",border:"1px solid rgba(56,189,248,.1)",borderRadius:16,padding:"20px",textAlign:"center",animation:"fadeUp .4s ease"}}>
-                    <div style={{fontSize:12,color:"#475569",marginBottom:14}}>نزدیک‌ترین تعمیرگاه رو هم پیدا کن؟</div>
-                    <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-                      <Btn onClick={()=>setTab("find")} small>📍 یافتن تعمیرگاه</Btn>
-                      <Btn onClick={()=>setShowTip(true)} primary={false} small>☕ حمایت</Btn>
-                      <Btn onClick={()=>{setShowReview(true);}} primary={false} small>💬 نظر بده</Btn>
+                  <Card style={{textAlign:"center",padding:"24px",background:"linear-gradient(135deg,rgba(14,165,233,.05),rgba(99,102,241,.05))"}}>
+                    <div style={{fontSize:15,color:"#64748b",marginBottom:16}}>نزدیک‌ترین تعمیرگاه رو هم پیدا کن؟</div>
+                    <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
+                      <BigBtn onClick={()=>setTab("find")}>📍 یافتن تعمیرگاه</BigBtn>
+                      <BigBtn secondary onClick={()=>setShowReview(true)}>💬 نظر بده</BigBtn>
                     </div>
-                  </div>
+                  </Card>
                 )}
               </div>
             )}
           </div>
         )}
 
-        {/* ══════════ FIND ══════════ */}
+        {/* ══ FIND ══ */}
         {tab==="find"&&(
           <div style={{animation:"fadeUp .4s ease"}}>
-            <div style={{marginBottom:20}}>
-              <h2 style={{fontSize:22,fontWeight:900,marginBottom:6,...gradText}}>یافتن تعمیرگاه</h2>
-              <p style={{color:"#334155",fontSize:12}}>نزدیک‌ترین تعمیرگاه رو پیدا کن</p>
+            <div style={{marginBottom:24}}>
+              <h2 style={{fontSize:24,fontWeight:900,marginBottom:8,...grad}}>📍 یافتن تعمیرگاه</h2>
+              <p style={{color:"#64748b",fontSize:15}}>نزدیک‌ترین تعمیرگاه رو پیدا کن</p>
             </div>
-            <Card style={{marginBottom:16,padding:16}}>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
-                <Sel label="شهر" value={findCity} onChange={setFindCity} options={CITIES}/>
-                <Sel label="نوع خدمات" value={findCat} onChange={setFindCat} options={CATS.map(c=>`${c.icon} ${c.label}`)}/>
+
+            <Card style={{marginBottom:16,padding:18}}>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:14}}>
+                <Sel label="🏙️ شهر" value={findCity} onChange={setFindCity} options={CITIES}/>
+                <Sel label="🔧 نوع خدمات" value={findCat} onChange={setFindCat} options={CATS.map(c=>`${c.icon} ${c.label}`)}/>
               </div>
-              <div style={{display:"flex",gap:8}}>
-                <Btn onClick={doFind} full style={{flex:1}}>🔍 جستجو</Btn>
-                <Btn onClick={getLoc} primary={false} style={{padding:"10px 14px",fontSize:11,whiteSpace:"nowrap"}}>{locLoad?"...":"📡 موقعیت"}</Btn>
+              <div style={{display:"flex",gap:10}}>
+                <BigBtn onClick={doFind} full>🔍 جستجو</BigBtn>
+                <button onClick={getLoc} style={{background:"rgba(255,255,255,.04)",border:"2px solid rgba(56,189,248,.2)",color:"#38bdf8",borderRadius:14,padding:"14px 18px",fontFamily:"Tahoma,Arial,sans-serif",fontSize:15,cursor:"pointer",fontWeight:700,whiteSpace:"nowrap",transition:"all .2s"}}>{locLoad?"...":"📡 موقعیت"}</button>
               </div>
-              {uLat&&<div style={{fontSize:11,color:"#10b981",marginTop:10,textAlign:"center"}}>✓ موقعیت دریافت شد — نتایج بر اساس فاصله مرتب می‌شن</div>}
+              {uLat&&<div style={{fontSize:13,color:"#10b981",marginTop:12,textAlign:"center",background:"rgba(16,185,129,.06)",border:"1px solid rgba(16,185,129,.15)",borderRadius:10,padding:"8px"}}>✓ موقعیت دریافت شد — نتایج بر اساس فاصله مرتب می‌شن</div>}
             </Card>
 
             {findResults===null&&shops.length===0&&(
-              <div style={{textAlign:"center",padding:"50px 0",color:"#1e3a4a"}}>
-                <div style={{fontSize:48,marginBottom:14,animation:"float 3s ease-in-out infinite"}}>🏪</div>
-                <div style={{fontSize:14,marginBottom:6,color:"#334155"}}>هنوز تعمیرگاهی ثبت نشده</div>
-                <div style={{fontSize:12,color:"#1e3a4a",marginBottom:20}}>اولین نفر باش!</div>
-                <Btn onClick={()=>setTab("register")} small>ثبت تعمیرگاه</Btn>
+              <div style={{textAlign:"center",padding:"60px 20px"}}>
+                <div style={{fontSize:56,marginBottom:16,animation:"float 3s ease-in-out infinite"}}>🏪</div>
+                <div style={{fontSize:16,color:"#64748b",marginBottom:8}}>هنوز تعمیرگاهی ثبت نشده</div>
+                <div style={{fontSize:13,color:"#334155",marginBottom:24}}>اولین نفر باش!</div>
+                <BigBtn onClick={()=>setTab("register")}>✏️ ثبت تعمیرگاه</BigBtn>
               </div>
             )}
 
             {findResults!==null&&findResults.length===0&&(
-              <div style={{textAlign:"center",padding:"50px 0"}}>
-                <div style={{fontSize:48,marginBottom:14}}>😕</div>
-                <div style={{color:"#334155",fontSize:13}}>تعمیرگاهی با این مشخصات پیدا نشد</div>
+              <div style={{textAlign:"center",padding:"60px 20px"}}>
+                <div style={{fontSize:56,marginBottom:16}}>😕</div>
+                <div style={{color:"#64748b",fontSize:15}}>تعمیرگاهی با این مشخصات پیدا نشد</div>
               </div>
             )}
 
-            {((findResults!==null&&findResults.length>0)||(findResults===null&&shops.length>0))&&(
-              <>
-                <div style={{height:220,borderRadius:14,overflow:"hidden",marginBottom:16,border:"1px solid rgba(56,189,248,.12)"}}>
-                  <Map lat={uLat||35.6892} lng={uLng||51.389} readonly markers={(findResults||shops).filter(s=>s.lat&&s.lng).map(s=>({lat:s.lat,lng:s.lng,name:s.name,city:s.city}))}/>
-                </div>
-                <div style={{fontSize:11,color:"#38bdf8",marginBottom:12,letterSpacing:.5}}>{(findResults||shops).length} تعمیرگاه یافت شد</div>
-                {(findResults||shops).map(s=>(
-                  <Card key={s.id} style={{marginBottom:10,padding:16,transition:"all .25s",cursor:"default"}}
-                    onMouseEnter={e=>{e.currentTarget.style.border="1px solid rgba(56,189,248,.28)";e.currentTarget.style.transform="translateY(-1px)";}}
-                    onMouseLeave={e=>{e.currentTarget.style.border="1px solid rgba(56,189,248,.1)";e.currentTarget.style.transform="none";}}
-                  >
-                    <div style={{display:"flex",alignItems:"flex-start",gap:12}}>
-                      <div style={{width:46,height:46,borderRadius:12,background:"linear-gradient(135deg,rgba(14,165,233,.15),rgba(99,102,241,.15))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>🔧</div>
-                      <div style={{flex:1}}>
-                        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
-                          <span style={{fontSize:14,fontWeight:700,color:"#e2e8f0"}}>{s.name}</span>
-                          {s.distance!=null&&<span style={{fontSize:10,color:"#38bdf8",background:"rgba(56,189,248,.1)",borderRadius:8,padding:"3px 8px",whiteSpace:"nowrap"}}>{s.distance<1?`${(s.distance*1000).toFixed(0)}m`:`${s.distance.toFixed(1)}km`}</span>}
-                        </div>
-                        {s.owner&&<div style={{fontSize:11,color:"#475569",marginBottom:4}}>👤 {s.owner}</div>}
-                        <div style={{fontSize:11,color:"#334155",marginBottom:8}}>📍 {s.city}{s.address?` · ${s.address}`:""}</div>
-                        <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:10}}>
-                          {s.services.slice(0,5).map(sv=><span key={sv} style={{fontSize:9,color:"#475569",background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",borderRadius:8,padding:"2px 7px"}}>{sv}</span>)}
-                          {s.services.length>5&&<span style={{fontSize:9,color:"#38bdf8"}}>+{s.services.length-5}</span>}
-                        </div>
-                        {s.desc&&<div style={{fontSize:11,color:"#334155",marginBottom:10,lineHeight:1.7,background:"rgba(255,255,255,.02)",borderRadius:8,padding:"6px 10px"}}>{s.desc}</div>}
-                        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                          {s.phone&&<a href={`tel:${s.phone}`} style={{fontSize:11,color:"#38bdf8",background:"rgba(56,189,248,.08)",border:"1px solid rgba(56,189,248,.15)",borderRadius:8,padding:"6px 12px",display:"flex",alignItems:"center",gap:4}}>📞 {s.phone}</a>}
-                          {s.telegram&&<a href={`https://t.me/${s.telegram}`} target="_blank" style={{fontSize:11,color:"#818cf8",background:"rgba(99,102,241,.08)",border:"1px solid rgba(99,102,241,.15)",borderRadius:8,padding:"6px 12px"}}>✈️ @{s.telegram}</a>}
-                          {s.instagram&&<a href={`https://instagram.com/${s.instagram}`} target="_blank" style={{fontSize:11,color:"#f472b6",background:"rgba(244,114,182,.08)",border:"1px solid rgba(244,114,182,.15)",borderRadius:8,padding:"6px 12px"}}>📸 {s.instagram}</a>}
-                        </div>
+            {((findResults!==null&&findResults.length>0)||(findResults===null&&shops.length>0))&&(<>
+              <div style={{height:240,borderRadius:16,overflow:"hidden",marginBottom:18,border:"2px solid rgba(56,189,248,.15)"}}>
+                <MapComp lat={uLat||35.6892} lng={uLng||51.389} readonly markers={(findResults||shops).filter(s=>s.lat&&s.lng).map(s=>({lat:s.lat,lng:s.lng,name:s.name,city:s.city}))}/>
+              </div>
+              <div style={{fontSize:13,color:"#38bdf8",marginBottom:12,fontWeight:600}}>{(findResults||shops).length} تعمیرگاه یافت شد</div>
+              {(findResults||shops).map(s=>(
+                <Card key={s.id} style={{marginBottom:12,padding:18,transition:"all .25s"}}
+                  onMouseEnter={e=>{e.currentTarget.style.border="1px solid rgba(56,189,248,.3)";e.currentTarget.style.transform="translateY(-2px)";}}
+                  onMouseLeave={e=>{e.currentTarget.style.border="1px solid rgba(56,189,248,.12)";e.currentTarget.style.transform="none";}}
+                >
+                  <div style={{display:"flex",alignItems:"flex-start",gap:14}}>
+                    <div style={{width:52,height:52,borderRadius:14,background:"linear-gradient(135deg,rgba(14,165,233,.15),rgba(99,102,241,.15))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>🔧</div>
+                    <div style={{flex:1}}>
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+                        <span style={{fontSize:16,fontWeight:700,color:"#e2e8f0"}}>{s.name}</span>
+                        {s.distance!=null&&<span style={{fontSize:12,color:"#38bdf8",background:"rgba(56,189,248,.1)",borderRadius:10,padding:"4px 10px",fontWeight:600}}>{s.distance<1?`${(s.distance*1000).toFixed(0)} متر`:`${s.distance.toFixed(1)} کیلومتر`}</span>}
+                      </div>
+                      {s.owner&&<div style={{fontSize:13,color:"#64748b",marginBottom:4}}>👤 {s.owner}</div>}
+                      <div style={{fontSize:13,color:"#475569",marginBottom:10}}>📍 {s.city}{s.address?` — ${s.address}`:""}</div>
+                      <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}}>
+                        {s.services.slice(0,4).map(sv=><span key={sv} style={{fontSize:11,color:"#64748b",background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.08)",borderRadius:10,padding:"3px 9px"}}>{sv}</span>)}
+                        {s.services.length>4&&<span style={{fontSize:11,color:"#38bdf8"}}>+{s.services.length-4} مورد دیگر</span>}
+                      </div>
+                      {s.desc&&<div style={{fontSize:13,color:"#475569",marginBottom:12,lineHeight:1.7,background:"rgba(255,255,255,.02)",borderRadius:10,padding:"8px 12px"}}>{s.desc}</div>}
+                      <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                        {s.phone&&<a href={`tel:${s.phone}`} style={{fontSize:13,color:"#38bdf8",background:"rgba(56,189,248,.08)",border:"2px solid rgba(56,189,248,.2)",borderRadius:10,padding:"8px 16px",display:"flex",alignItems:"center",gap:6,fontWeight:700}}>📞 {s.phone}</a>}
+                        {s.telegram&&<a href={`https://t.me/${s.telegram}`} target="_blank" style={{fontSize:13,color:"#818cf8",background:"rgba(99,102,241,.08)",border:"2px solid rgba(99,102,241,.2)",borderRadius:10,padding:"8px 14px",fontWeight:600}}>✈️ تلگرام</a>}
+                        {s.instagram&&<a href={`https://instagram.com/${s.instagram}`} target="_blank" style={{fontSize:13,color:"#f472b6",background:"rgba(244,114,182,.08)",border:"2px solid rgba(244,114,182,.2)",borderRadius:10,padding:"8px 14px",fontWeight:600}}>📸 اینستا</a>}
                       </div>
                     </div>
-                  </Card>
-                ))}
-              </>
-            )}
+                  </div>
+                </Card>
+              ))}
+            </>)}
           </div>
         )}
 
-        {/* ══════════ REGISTER ══════════ */}
+        {/* ══ REGISTER ══ */}
         {tab==="register"&&(
           <div style={{animation:"fadeUp .4s ease"}}>
-            <div style={{marginBottom:20}}>
-              <h2 style={{fontSize:22,fontWeight:900,marginBottom:6,...gradText}}>ثبت تعمیرگاه</h2>
-              <p style={{color:"#334155",fontSize:12}}>رایگان — در taamiryar.com دیده بشو</p>
+            <div style={{marginBottom:24}}>
+              <h2 style={{fontSize:24,fontWeight:900,marginBottom:8,...grad}}>✏️ ثبت تعمیرگاه</h2>
+              <p style={{color:"#64748b",fontSize:15}}>رایگان — در taamiryar.com دیده بشو</p>
             </div>
 
             {regStep===3?(
               <div style={{textAlign:"center",padding:"50px 20px",animation:"fadeUp .5s ease"}}>
-                <div style={{fontSize:64,marginBottom:20,animation:"float 3s ease-in-out infinite"}}>🎉</div>
-                <div style={{fontSize:22,fontWeight:900,marginBottom:10,...gradText}}>ثبت شد!</div>
-                <div style={{color:"#475569",fontSize:13,marginBottom:28,lineHeight:2}}>
+                <div style={{fontSize:72,marginBottom:20,animation:"float 3s ease-in-out infinite"}}>🎉</div>
+                <div style={{fontSize:24,fontWeight:900,marginBottom:10,...grad}}>ثبت شد!</div>
+                <div style={{color:"#64748b",fontSize:15,marginBottom:28,lineHeight:2}}>
                   تعمیرگاه <strong style={{color:"#e2e8f0"}}>{form.name}</strong><br/>
-                  با موفقیت در taamiryar.com ثبت شد.<br/>
-                  کاربران می‌تونن شما رو پیدا کنن.
+                  با موفقیت در taamiryar.com ثبت شد
                 </div>
-                <div style={{display:"flex",gap:10,justifyContent:"center"}}>
-                  <Btn primary={false} small onClick={()=>{setRegStep(0);setForm({name:"",owner:"",phone:"",telegram:"",instagram:"",city:"",address:"",services:[],lat:null,lng:null,desc:""});}}>ثبت دیگری</Btn>
-                  <Btn small onClick={()=>setTab("find")}>مشاهده در نقشه</Btn>
+                <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
+                  <BigBtn secondary onClick={()=>{setRegStep(0);setForm({name:"",owner:"",phone:"",telegram:"",instagram:"",city:"",address:"",services:[],lat:null,lng:null,desc:""});}}>ثبت تعمیرگاه دیگر</BigBtn>
+                  <BigBtn onClick={()=>setTab("find")}>مشاهده در نقشه</BigBtn>
                 </div>
               </div>
             ):(
               <>
-                {/* Steps */}
-                <div style={{display:"flex",gap:6,marginBottom:28}}>
+                <div style={{display:"flex",gap:8,marginBottom:28}}>
                   {["اطلاعات","خدمات","موقعیت"].map((l,i)=>(
                     <div key={i} style={{flex:1}}>
-                      <div style={{height:3,borderRadius:2,background:i<=regStep?"linear-gradient(90deg,#0ea5e9,#6366f1)":"rgba(56,189,248,.08)",transition:"all .4s"}}/>
-                      <div style={{fontSize:10,color:i===regStep?"#38bdf8":i<regStep?"#475569":"#1e3a4a",marginTop:5,textAlign:"center",fontWeight:i===regStep?700:400}}>{l}</div>
+                      <div style={{height:4,borderRadius:2,background:i<=regStep?"linear-gradient(90deg,#0ea5e9,#6366f1)":"rgba(56,189,248,.1)",transition:"all .4s"}}/>
+                      <div style={{fontSize:12,color:i===regStep?"#38bdf8":i<regStep?"#64748b":"#1e3a4a",marginTop:6,textAlign:"center",fontWeight:i===regStep?700:400}}>{l}</div>
                     </div>
                   ))}
                 </div>
 
                 {regStep===0&&<Card>
-                  <Field label="نام تعمیرگاه *" value={form.name} onChange={ff("name")} placeholder="تعمیرگاه رضایی"/>
-                  <Field label="نام صاحب" value={form.owner} onChange={ff("owner")} placeholder="علی رضایی"/>
-                  <Field label="شماره تماس *" value={form.phone} onChange={ff("phone")} placeholder="09121234567" type="tel"/>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-                    <Field label="تلگرام (بدون @)" value={form.telegram} onChange={ff("telegram")} placeholder="username"/>
-                    <Field label="اینستاگرام (بدون @)" value={form.instagram} onChange={ff("instagram")} placeholder="username"/>
+                  <Field label="🏪 نام تعمیرگاه *" value={form.name} onChange={ff("name")} placeholder="مثلاً: تعمیرگاه رضایی"/>
+                  <Field label="👤 نام صاحب" value={form.owner} onChange={ff("owner")} placeholder="نام و نام خانوادگی"/>
+                  <Field label="📞 شماره تماس *" value={form.phone} onChange={ff("phone")} placeholder="09121234567" type="tel"/>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+                    <Field label="✈️ تلگرام" value={form.telegram} onChange={ff("telegram")} placeholder="username"/>
+                    <Field label="📸 اینستاگرام" value={form.instagram} onChange={ff("instagram")} placeholder="username"/>
                   </div>
-                  <Sel label="شهر *" value={form.city} onChange={ff("city")} options={CITIES}/>
-                  <Field label="آدرس کامل" value={form.address} onChange={ff("address")} placeholder="خیابان، کوچه، پلاک..." multiline/>
-                  <Btn onClick={()=>{if(form.name&&form.phone&&form.city)setRegStep(1);}} full disabled={!form.name||!form.phone||!form.city}>مرحله بعد ←</Btn>
+                  <Sel label="🏙️ شهر *" value={form.city} onChange={ff("city")} options={CITIES}/>
+                  <Field label="📍 آدرس کامل" value={form.address} onChange={ff("address")} placeholder="خیابان، کوچه، پلاک..." multiline/>
+                  <BigBtn onClick={()=>{if(form.name&&form.phone&&form.city)setRegStep(1);}} full disabled={!form.name||!form.phone||!form.city}>مرحله بعد ←</BigBtn>
                 </Card>}
 
                 {regStep===1&&<Card>
-                  <div style={{fontSize:11,color:"#475569",letterSpacing:1.2,textTransform:"uppercase",marginBottom:16}}>خدمات ارائه شده *</div>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:20}}>
-                    {CATS.map(c=>(
-                      <button key={c.label} onClick={()=>tog(`${c.icon} ${c.label}`)} style={{background:form.services.includes(`${c.icon} ${c.label}`)?"rgba(56,189,248,.15)":"rgba(255,255,255,.02)",border:`1px solid ${form.services.includes(`${c.icon} ${c.label}`)?"rgba(56,189,248,.4)":"rgba(255,255,255,.07)"}`,color:form.services.includes(`${c.icon} ${c.label}`)?"#38bdf8":"#475569",borderRadius:20,padding:"7px 14px",fontSize:11,fontFamily:"Tahoma,Arial,sans-serif",cursor:"pointer",transition:"all .2s",display:"flex",alignItems:"center",gap:4}}>
-                        <span>{c.icon}</span>{c.label}
-                      </button>
-                    ))}
+                  <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:16}}>🔧 خدمات ارائه شده را انتخاب کنید *</div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10,marginBottom:20}}>
+                    {CATS.map(c=>{
+                      const key=`${c.icon} ${c.label}`;
+                      const sel=form.services.includes(key);
+                      return <button key={key} onClick={()=>tog(key)} style={{background:sel?"rgba(56,189,248,.12)":"rgba(255,255,255,.02)",border:`2px solid ${sel?"rgba(56,189,248,.4)":"rgba(255,255,255,.08)"}`,color:sel?"#38bdf8":"#64748b",borderRadius:12,padding:"12px 10px",fontFamily:"Tahoma,Arial,sans-serif",cursor:"pointer",transition:"all .2s",display:"flex",alignItems:"center",gap:8,fontSize:13,boxShadow:sel?"0 0 12px rgba(56,189,248,.15)":"none"}}>
+                        <span style={{fontSize:20}}>{c.icon}</span><span>{c.label}</span>
+                      </button>;
+                    })}
                   </div>
-                  <Field label="توضیحات بیشتر" value={form.desc} onChange={ff("desc")} placeholder="مثلاً: ۱۵ سال سابقه، گارانتی ۶ ماهه، تعمیر در محل..." multiline/>
-                  <div style={{display:"flex",gap:8,marginTop:4}}>
-                    <Btn primary={false} small onClick={()=>setRegStep(0)}>→ قبلی</Btn>
-                    <Btn onClick={()=>{if(form.services.length>0)setRegStep(2);}} disabled={form.services.length===0} style={{flex:1}}>مرحله بعد ←</Btn>
+                  <Field label="📝 توضیحات بیشتر" value={form.desc} onChange={ff("desc")} placeholder="مثلاً: ۱۵ سال سابقه، گارانتی ۶ ماهه، تعمیر در محل..." multiline/>
+                  <div style={{display:"flex",gap:12}}>
+                    <BigBtn secondary onClick={()=>setRegStep(0)}>→ قبلی</BigBtn>
+                    <BigBtn onClick={()=>{if(form.services.length>0)setRegStep(2);}} disabled={form.services.length===0} full>مرحله بعد ←</BigBtn>
                   </div>
                 </Card>}
 
                 {regStep===2&&<Card>
-                  <div style={{fontSize:11,color:"#475569",letterSpacing:1.2,textTransform:"uppercase",marginBottom:8}}>موقعیت روی نقشه</div>
-                  <div style={{fontSize:11,color:"#334155",marginBottom:14,lineHeight:1.7}}>روی نقشه کلیک کن تا موقعیت دقیق تعمیرگاهت مشخص بشه (اختیاری)</div>
-                  <div style={{height:260,borderRadius:12,overflow:"hidden",marginBottom:14,border:"1px solid rgba(56,189,248,.12)"}}>
-                    <Map lat={form.lat||35.6892} lng={form.lng||51.389} onPick={(la,ln)=>setForm(p=>({...p,lat:la,lng:ln}))}/>
+                  <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:8}}>🗺️ موقعیت روی نقشه</div>
+                  <div style={{fontSize:14,color:"#64748b",marginBottom:16,lineHeight:1.7}}>روی نقشه ضربدر بزن تا موقعیت دقیق تعمیرگاهت مشخص بشه (اختیاری)</div>
+                  <div style={{height:280,borderRadius:14,overflow:"hidden",marginBottom:16,border:"2px solid rgba(56,189,248,.15)"}}>
+                    <MapComp lat={form.lat||35.6892} lng={form.lng||51.389} onPick={(la,ln)=>setForm(p=>({...p,lat:la,lng:ln}))}/>
                   </div>
-                  {form.lat&&<div style={{fontSize:11,color:"#10b981",marginBottom:14,textAlign:"center",background:"rgba(16,185,129,.05)",border:"1px solid rgba(16,185,129,.15)",borderRadius:8,padding:"6px"}}>✓ موقعیت انتخاب شد</div>}
-
-                  {/* Payment note */}
-                  <div style={{background:"rgba(245,158,11,.05)",border:"1px solid rgba(245,158,11,.15)",borderRadius:10,padding:"12px 14px",marginBottom:14,fontSize:11,color:"#92400e",lineHeight:1.7}}>
-                    💳 <strong>درگاه پرداخت ایرانی:</strong> به زودی امکان پرداخت از طریق زرین‌پال و سامان‌کیش اضافه می‌شه.
+                  {form.lat&&<div style={{fontSize:13,color:"#10b981",marginBottom:16,textAlign:"center",background:"rgba(16,185,129,.06)",border:"1px solid rgba(16,185,129,.2)",borderRadius:10,padding:"10px"}}>✓ موقعیت انتخاب شد</div>}
+                  <div style={{background:"rgba(245,158,11,.05)",border:"1px solid rgba(245,158,11,.15)",borderRadius:12,padding:"14px 16px",marginBottom:16,fontSize:13,color:"#a16207",lineHeight:1.8}}>
+                    💳 <strong>درگاه پرداخت ایرانی:</strong><br/>به زودی امکان پرداخت آنلاین از طریق زرین‌پال اضافه می‌شه.
                   </div>
-
-                  <div style={{display:"flex",gap:8}}>
-                    <Btn primary={false} small onClick={()=>setRegStep(1)}>→ قبلی</Btn>
-                    <Btn onClick={submitShop} disabled={saving} style={{flex:1}}>{saving?"در حال ثبت...":"✓ ثبت رایگان تعمیرگاه"}</Btn>
+                  <div style={{display:"flex",gap:12}}>
+                    <BigBtn secondary onClick={()=>setRegStep(1)}>→ قبلی</BigBtn>
+                    <BigBtn onClick={submitShop} disabled={saving} full>{saving?"در حال ثبت...":"✓ ثبت رایگان تعمیرگاه"}</BigBtn>
                   </div>
                 </Card>}
               </>
@@ -625,59 +671,58 @@ function App(){
         )}
       </main>
 
-      {/* ══════════ REVIEW MODAL ══════════ */}
+      {/* REVIEW MODAL */}
       {showReview&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.88)",backdropFilter:"blur(16px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100,padding:20,animation:"fadeIn .2s ease"}} onClick={()=>setShowReview(false)}>
-          <div onClick={e=>e.stopPropagation()} style={{background:"#070d1a",border:"1px solid rgba(56,189,248,.15)",borderRadius:24,padding:"28px 24px",width:"100%",maxWidth:380,animation:"fadeUp .3s ease"}}>
-            <div style={{fontSize:28,textAlign:"center",marginBottom:12}}>💬</div>
-            <div style={{fontSize:17,fontWeight:900,textAlign:"center",marginBottom:20,...gradText}}>نظرت رو بنویس</div>
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.9)",backdropFilter:"blur(16px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100,padding:20,animation:"fadeIn .2s ease"}} onClick={()=>setShowReview(false)}>
+          <div onClick={e=>e.stopPropagation()} style={{background:"#070d1a",border:"2px solid rgba(56,189,248,.15)",borderRadius:24,padding:"28px 24px",width:"100%",maxWidth:400,animation:"slideIn .3s ease"}}>
+            <div style={{fontSize:32,textAlign:"center",marginBottom:14}}>💬</div>
+            <div style={{fontSize:20,fontWeight:900,textAlign:"center",marginBottom:22,...grad}}>نظرت رو بنویس</div>
             <Field label="نام شما" value={revForm.name} onChange={v=>setRevForm(p=>({...p,name:v}))} placeholder="علی محمدی"/>
             <Sel label="شهر" value={revForm.city} onChange={v=>setRevForm(p=>({...p,city:v}))} options={CITIES}/>
-            <div style={{marginBottom:14}}>
-              <label style={{display:"block",color:"#475569",fontSize:11,marginBottom:8,letterSpacing:1.2,textTransform:"uppercase"}}>امتیاز</label>
-              <div style={{display:"flex",gap:6}}>
+            <div style={{marginBottom:18}}>
+              <label style={{display:"block",color:"#64748b",fontSize:14,marginBottom:10,fontWeight:600}}>امتیاز</label>
+              <div style={{display:"flex",gap:8}}>
                 {[1,2,3,4,5].map(n=>(
-                  <button key={n} onClick={()=>setRevForm(p=>({...p,rating:n}))} style={{fontSize:24,background:"none",border:"none",cursor:"pointer",opacity:n<=revForm.rating?1:.25,transition:"all .15s"}}>★</button>
+                  <button key={n} onClick={()=>setRevForm(p=>({...p,rating:n}))} style={{fontSize:32,background:"none",border:"none",cursor:"pointer",opacity:n<=revForm.rating?1:.2,transition:"all .15s",padding:"4px"}}>★</button>
                 ))}
               </div>
             </div>
             <Field label="نظر شما" value={revForm.text} onChange={v=>setRevForm(p=>({...p,text:v}))} placeholder="تجربه‌ات رو بنویس..." multiline/>
-            <div style={{display:"flex",gap:8}}>
-              <Btn onClick={submitReview} disabled={!revForm.name||!revForm.text} style={{flex:1}}>ثبت نظر</Btn>
-              <Btn primary={false} onClick={()=>setShowReview(false)} style={{padding:"11px 16px"}}>✕</Btn>
+            <div style={{display:"flex",gap:10}}>
+              <BigBtn onClick={submitReview} disabled={!revForm.name||!revForm.text} full>ثبت نظر</BigBtn>
+              <BigBtn secondary onClick={()=>setShowReview(false)} style={{padding:"14px 20px"}}>✕</BigBtn>
             </div>
           </div>
         </div>
       )}
 
-      {/* ══════════ TIP MODAL ══════════ */}
+      {/* TIP MODAL */}
       {showTip&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.88)",backdropFilter:"blur(16px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100,padding:20,animation:"fadeIn .2s ease"}} onClick={()=>setShowTip(false)}>
-          <div onClick={e=>e.stopPropagation()} style={{background:"#070d1a",border:"1px solid rgba(56,189,248,.15)",borderRadius:24,padding:"32px 26px",width:"100%",maxWidth:360,textAlign:"center",animation:"fadeUp .3s ease",position:"relative",overflow:"hidden"}}>
-            <div style={{position:"absolute",top:-60,left:"50%",transform:"translateX(-50%)",width:240,height:120,background:"radial-gradient(ellipse,rgba(56,189,248,.1) 0%,transparent 70%)",pointerEvents:"none"}}/>
-            <div style={{fontSize:40,marginBottom:14}}>☕</div>
-            <div style={{fontSize:20,fontWeight:900,marginBottom:8,...gradText}}>یه قهوه بریز!</div>
-            <div style={{color:"#475569",fontSize:12,marginBottom:24,lineHeight:1.9}}>taamiryar.com رایگانه.<br/>با حمایتت کمک کن بهترش کنیم 🙏</div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.9)",backdropFilter:"blur(16px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100,padding:20,animation:"fadeIn .2s ease"}} onClick={()=>setShowTip(false)}>
+          <div onClick={e=>e.stopPropagation()} style={{background:"#070d1a",border:"2px solid rgba(56,189,248,.15)",borderRadius:24,padding:"32px 26px",width:"100%",maxWidth:380,textAlign:"center",animation:"slideIn .3s ease",position:"relative",overflow:"hidden"}}>
+            <div style={{position:"absolute",top:-60,left:"50%",transform:"translateX(-50%)",width:250,height:130,background:"radial-gradient(ellipse,rgba(56,189,248,.1) 0%,transparent 70%)",pointerEvents:"none"}}/>
+            <div style={{fontSize:44,marginBottom:14}}>☕</div>
+            <div style={{fontSize:22,fontWeight:900,marginBottom:10,...grad}}>یه قهوه بریز!</div>
+            <div style={{color:"#64748b",fontSize:14,marginBottom:26,lineHeight:1.9}}>تعمیریار رایگانه.<br/>با حمایتت بهترش می‌کنیم 🙏</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:22}}>
               {[{a:"$1",e:"☕",l:"یه قهوه"},{a:"$3",e:"🍕",l:"یه پیتزا"},{a:"$5",e:"🚀",l:"حامی ویژه"},{a:"$10",e:"💎",l:"قهرمان"}].map(({a,e,l})=>(
-                <button key={a} onClick={()=>setTipAmt(a)} style={{background:tipAmt===a?"linear-gradient(135deg,rgba(14,165,233,.2),rgba(99,102,241,.2))":"rgba(255,255,255,.02)",border:`1px solid ${tipAmt===a?"rgba(56,189,248,.4)":"rgba(255,255,255,.05)"}`,color:tipAmt===a?"#38bdf8":"#475569",borderRadius:14,padding:"14px 8px",fontFamily:"Tahoma,Arial,sans-serif",cursor:"pointer",transition:"all .2s",boxShadow:tipAmt===a?"0 0 16px rgba(56,189,248,.2)":"none"}}>
-                  <div style={{fontSize:22,marginBottom:4}}>{e}</div>
-                  <div style={{fontSize:14,fontWeight:800}}>{a}</div>
-                  <div style={{fontSize:9,opacity:.6,marginTop:2}}>{l}</div>
+                <button key={a} onClick={()=>setTipAmt(a)} style={{background:tipAmt===a?"linear-gradient(135deg,rgba(14,165,233,.2),rgba(99,102,241,.2))":"rgba(255,255,255,.03)",border:`2px solid ${tipAmt===a?"rgba(56,189,248,.5)":"rgba(255,255,255,.06)"}`,color:tipAmt===a?"#38bdf8":"#64748b",borderRadius:16,padding:"16px 8px",fontFamily:"Tahoma,Arial,sans-serif",cursor:"pointer",transition:"all .2s",boxShadow:tipAmt===a?"0 0 20px rgba(56,189,248,.2)":"none"}}>
+                  <div style={{fontSize:26,marginBottom:6}}>{e}</div>
+                  <div style={{fontSize:16,fontWeight:800}}>{a}</div>
+                  <div style={{fontSize:11,opacity:.6,marginTop:4}}>{l}</div>
                 </button>
               ))}
             </div>
-            <div style={{fontSize:10,color:"#1e3a4a",marginBottom:16}}>PayPal · Crypto · International Card</div>
+            <div style={{fontSize:11,color:"#1e3a4a",marginBottom:18}}>PayPal · Crypto · International Card</div>
             <div style={{display:"flex",gap:10}}>
-              <Btn onClick={()=>{if(tipAmt){setToast(`💛 ممنون از حمایت ${tipAmt}ت!`);setShowTip(false);}}} disabled={!tipAmt} style={{flex:1}}>{tipAmt?`💛 ${tipAmt} حمایت`:"مبلغ رو انتخاب کن"}</Btn>
-              <Btn primary={false} onClick={()=>setShowTip(false)} style={{padding:"11px 14px"}}>✕</Btn>
+              <BigBtn onClick={()=>{if(tipAmt){setToast(`💛 ممنون از حمایت ${tipAmt}ت!`);setShowTip(false);}}} disabled={!tipAmt} full>{tipAmt?`💛 ${tipAmt} حمایت کن`:"ابتدا مبلغ را انتخاب کن"}</BigBtn>
+              <BigBtn secondary onClick={()=>setShowTip(false)}>✕</BigBtn>
             </div>
           </div>
         </div>
       )}
 
-      {/* Toast */}
-      {toast&&<Toast msg={toast} onClose={()=>setToast(null)}/>}
+      {toast&&<Toast msg={toast}/>}
     </div>
   );
 }

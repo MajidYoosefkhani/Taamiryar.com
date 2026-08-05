@@ -3,375 +3,792 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>تعمیریار | دستیار هوشمند تعمیرات</title>
+<meta name="description" content="تعمیریار — هوش مصنوعی تعمیرات | AI Repair Assistant | مساعد إصلاح ذكي"/>
+<title>تعمیریار | AI Repair</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-:root{--c1:#00c6ff;--c2:#7b2ff7;--bg:#000000;--s1:#080808;--s2:#0f0f0f;--t1:#e8f0ff;--t2:#8fafd4;--t3:#4a6a90}
+/* ══════════════════════════════════════════
+   RESET & TOKENS
+══════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:#000000;color:var(--t1);font-family:Tahoma,Arial,sans-serif;direction:rtl;min-height:100vh;overflow-x:hidden;padding-bottom:90px}
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-thumb{background:linear-gradient(#00c6ff,#7b2ff7);border-radius:3px}
-::placeholder{color:#2a4a6a!important}
-select,option{background:#0a0a0a;color:#e8f0ff}
+:root{
+  --black:#000;--white:#fff;
+  --cyan:#00e5ff;--purple:#b347ff;--gold:#ffd700;
+  --cyan2:#00b8cc;--purple2:#8b2fd4;
+  --g:linear-gradient(135deg,#00e5ff,#b347ff);
+  --gr:linear-gradient(135deg,#b347ff,#00e5ff);
+  --s1:#080808;--s2:#0c0c0c;--s3:#101010;
+  --b:rgba(0,229,255,.1);--bp:rgba(179,71,255,.1);
+  --t1:#f0f4ff;--t2:#7a9cc0;--t3:#3a5a78;
+  --r:18px;--r2:12px;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:#000;color:var(--t1);font-family:Tahoma,Arial,'Segoe UI',sans-serif;direction:rtl;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--g);border-radius:2px}
 a{text-decoration:none;color:inherit}
+img{max-width:100%}
+button,select,input,textarea{font-family:inherit}
+::placeholder{color:var(--t3)!important}
+select option{background:#080808;color:#f0f4ff}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+/* ══════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes spinR{to{transform:rotate(-360deg)}}
-@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(0,198,255,.2)}50%{box-shadow:0 0 45px rgba(0,198,255,.5)}}
-@keyframes ripple{0%{transform:scale(.9);opacity:.5}100%{transform:scale(2.6);opacity:0}}
 @keyframes blink{50%{opacity:0}}
-@keyframes slideUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,.4)}70%{box-shadow:0 0 0 16px rgba(0,229,255,0)}}
+@keyframes ripple{0%{transform:scale(.8);opacity:.6}100%{transform:scale(3);opacity:0}}
 @keyframes gradX{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes scanline{0%{top:-5%}100%{top:105%}}
+@keyframes glow{0%,100%{text-shadow:0 0 20px rgba(0,229,255,.4)}50%{text-shadow:0 0 50px rgba(0,229,255,.8),0 0 100px rgba(179,71,255,.4)}}
+@keyframes counter{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@keyframes borderGlow{0%,100%{border-color:rgba(0,229,255,.2)}50%{border-color:rgba(179,71,255,.4)}}
+@keyframes heroText{0%{opacity:0;transform:translateY(40px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes particleFloat{0%{transform:translateY(0) translateX(0);opacity:.8}100%{transform:translateY(-100vh) translateX(40px);opacity:0}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
 
-.card{background:var(--s1);border:1px solid rgba(0,198,255,.1);border-radius:16px;padding:18px;margin-bottom:14px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:none;border-radius:12px;padding:12px 20px;font-family:Tahoma,Arial,sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .25s;white-space:nowrap}
-.btn-p{background:linear-gradient(135deg,#00c6ff,#7b2ff7);color:#fff;box-shadow:0 4px 20px rgba(0,198,255,.28)}
-.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,198,255,.45)}
-.btn-g{background:transparent;border:1.5px solid rgba(0,198,255,.22);color:var(--t2)}
-.btn-g:hover{border-color:rgba(0,198,255,.45);color:var(--c1)}
-.btn-sm{padding:8px 15px;font-size:12px;border-radius:10px}
-.inp{width:100%;background:#0a0a0a;border:1.5px solid rgba(0,198,255,.12);border-radius:12px;color:var(--t1);padding:12px 14px;font-size:14px;font-family:Tahoma,Arial,sans-serif;outline:none;transition:all .25s;box-sizing:border-box}
-.inp:focus{border-color:rgba(0,198,255,.45);box-shadow:0 0 0 3px rgba(0,198,255,.07)}
-.lbl{display:block;color:var(--t3);font-size:11px;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
-.fld{margin-bottom:14px}
-.gt{background:linear-gradient(135deg,#00c6ff,#7b2ff7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.bdg{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:3px 9px;border-radius:7px}
-.bdg-b{background:rgba(0,198,255,.1);color:#00c6ff;border:1px solid rgba(0,198,255,.2)}
+/* ══════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════ */
+.full{width:100%;max-width:100%}
+.wrap{width:100%;padding:0 20px}
+@media(min-width:768px){.wrap{padding:0 40px}}
+@media(min-width:1200px){.wrap{padding:0 80px}}
+
+/* ══════════════════════════════════════════
+   BG EFFECTS
+══════════════════════════════════════════ */
+#canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.grid-overlay{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,229,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.02) 1px,transparent 1px);
+  background-size:50px 50px}
+.blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px)}
+.scanline{position:fixed;width:100%;height:2px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.08),transparent);
+  z-index:1;pointer-events:none;animation:scanline 6s linear infinite}
+.gear-fixed{position:fixed;pointer-events:none;z-index:1}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+header{position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(0,0,0,.88);backdrop-filter:blur(32px);
+  border-bottom:1px solid rgba(0,229,255,.08)}
+.header-inner{display:flex;align-items:center;gap:16px;padding:14px 20px}
+@media(min-width:768px){.header-inner{padding:14px 40px}}
+.logo{display:flex;align-items:center;gap:12px;cursor:pointer;flex-shrink:0;user-select:none}
+.logo-icon{width:44px;height:44px;border-radius:14px;
+  background:var(--g);display:flex;align-items:center;justify-content:center;
+  font-size:20px;animation:pulse 3s ease-in-out infinite;flex-shrink:0}
+.logo-text{font-size:20px;font-weight:900;letter-spacing:-.5px;
+  background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-size:9px;color:var(--t3);letter-spacing:2px;margin-top:1px}
+.header-search{flex:1;display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(0,229,255,.15);
+  border-radius:32px;padding:10px 16px;transition:all .3s;max-width:560px}
+.header-search:focus-within{border-color:rgba(0,229,255,.4);background:rgba(0,229,255,.04);
+  box-shadow:0 0 0 4px rgba(0,229,255,.06)}
+.header-search input{flex:1;background:transparent;border:none;outline:none;color:var(--t1);font-size:13px}
+.header-search .go{background:var(--g);border:none;border-radius:20px;padding:7px 16px;
+  color:#000;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;
+  flex-shrink:0;transition:all .2s}
+.header-search .go:hover{transform:scale(1.05);filter:brightness(1.1)}
+.lang-btn{display:flex;gap:4px;flex-shrink:0}
+.lang-opt{background:transparent;border:1px solid rgba(0,229,255,.15);color:var(--t3);
+  border-radius:8px;padding:5px 10px;font-size:11px;cursor:pointer;transition:all .2s}
+.lang-opt.active{background:var(--b);color:var(--cyan);border-color:rgba(0,229,255,.35)}
+.support-hdr{background:var(--g);border:none;border-radius:20px;padding:8px 16px;
+  color:#000;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;
+  flex-shrink:0;transition:all .2s}
+.support-hdr:hover{transform:translateY(-1px);filter:brightness(1.1)}
+
+/* ══════════════════════════════════════════
+   STATS BAR
+══════════════════════════════════════════ */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid rgba(0,229,255,.06)}
+.stat-item{text-align:center;padding:7px 4px;border-right:1px solid rgba(0,229,255,.06)}
+.stat-item:last-child{border-right:none}
+.stat-n{font-size:14px;font-weight:900}
+.stat-l{font-size:9px;color:var(--t3);margin-top:1px}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(0,0,0,.96);backdrop-filter:blur(32px);
+  border-top:1px solid rgba(0,229,255,.08);
+  display:flex;padding:10px 0 max(14px,env(safe-area-inset-bottom))}
+.nb{flex:1;background:none;border:none;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:2px 4px;position:relative;transition:all .2s}
+.nb .ni{font-size:22px;opacity:.28;filter:grayscale(1);transition:all .25s}
+.nb .nl{font-size:9px;color:var(--t3);transition:all .2s;font-weight:500}
+.nb.on .ni{opacity:1;filter:none;filter:drop-shadow(0 0 8px #00e5ff)}
+.nb.on .nl{color:var(--cyan)}
+.nb-ind{position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  width:30px;height:3px;background:var(--g);border-radius:2px}
+
+/* ══════════════════════════════════════════
+   PAGES
+══════════════════════════════════════════ */
+.page{display:none;padding-top:130px;padding-bottom:100px;min-height:100vh;
+  animation:fadeUp .45s ease}
+.page.on{display:block}
+
+/* ══════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════ */
+.card{background:var(--s1);border:1px solid rgba(0,229,255,.1);
+  border-radius:var(--r);padding:22px;margin-bottom:16px;
+  transition:all .3s;animation:borderGlow 4s ease-in-out infinite}
+.card:hover{border-color:rgba(0,229,255,.25);box-shadow:0 12px 40px rgba(0,229,255,.07)}
+.card-p{border-color:rgba(179,71,255,.15);animation:none}
+.card-p:hover{border-color:rgba(179,71,255,.3);box-shadow:0 12px 40px rgba(179,71,255,.07)}
+
+/* ══════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  border:none;border-radius:var(--r2);padding:13px 24px;
+  font-weight:800;font-size:14px;cursor:pointer;transition:all .25s;white-space:nowrap}
+.btn-p{background:var(--g);color:#000;box-shadow:0 6px 28px rgba(0,229,255,.3)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,229,255,.5);filter:brightness(1.08)}
+.btn-p:active{transform:translateY(0)}
+.btn-g{background:transparent;border:1.5px solid rgba(0,229,255,.25);color:var(--t2)}
+.btn-g:hover{border-color:rgba(0,229,255,.5);color:var(--cyan);background:rgba(0,229,255,.05)}
+.btn-gold{background:linear-gradient(135deg,#ffd700,#ff9500);color:#000;
+  box-shadow:0 6px 28px rgba(255,215,0,.35)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,215,0,.5)}
+.btn-sm{padding:9px 18px;font-size:12px;border-radius:10px}
+.btn-full{width:100%}
+
+/* ══════════════════════════════════════════
+   FORM
+══════════════════════════════════════════ */
+.inp{width:100%;background:#080808;border:1.5px solid rgba(0,229,255,.12);
+  border-radius:var(--r2);color:var(--t1);padding:13px 15px;font-size:14px;
+  outline:none;transition:all .25s;box-sizing:border-box}
+.inp:focus{border-color:rgba(0,229,255,.45);box-shadow:0 0 0 3px rgba(0,229,255,.07);background:#0a0a0a}
+.lbl{display:block;color:var(--t3);font-size:11px;margin-bottom:6px;
+  font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.fld{margin-bottom:15px}
+.gt{background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gt2{background:var(--gr);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gold-text{background:linear-gradient(135deg,#ffd700,#ff9500);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ══════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════ */
+.bdg{display:inline-flex;align-items:center;gap:4px;font-size:10px;
+  font-weight:700;padding:3px 10px;border-radius:8px;letter-spacing:.3px}
+.bdg-c{background:rgba(0,229,255,.1);color:#00e5ff;border:1px solid rgba(0,229,255,.2)}
+.bdg-p{background:rgba(179,71,255,.1);color:#c97eff;border:1px solid rgba(179,71,255,.2)}
 .bdg-g{background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.2)}
-.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,198,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,198,255,.025) 1px,transparent 1px);background-size:44px 44px}
-.blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(90px)}
-.page{display:none;animation:fadeUp .4s ease}
-.page.active{display:block}
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(0,0,0,.97);backdrop-filter:blur(28px);border-top:1px solid rgba(0,198,255,.09);display:flex;padding:9px 0 14px}
-.nav-btn{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:3px 2px;position:relative}
-.nav-btn .ic{font-size:22px;opacity:.3;filter:grayscale(1);transition:all .25s}
-.nav-btn .lb{font-size:9px;color:var(--t3);font-family:Tahoma,Arial,sans-serif;transition:all .2s}
-.nav-btn.active .ic{opacity:1;filter:none;filter:drop-shadow(0 0 6px #00c6ff)}
-.nav-btn.active .lb{color:#00c6ff}
-.nav-ind{position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:28px;height:2.5px;background:linear-gradient(90deg,#00c6ff,#7b2ff7);border-radius:2px}
-.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px}
-.cat-btn{background:var(--s2);border:1px solid rgba(255,255,255,.06);border-radius:13px;padding:12px 5px;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .25s;width:100%}
-.cat-btn:hover{transform:translateY(-3px);border-color:rgba(0,198,255,.3);background:rgba(0,198,255,.07)}
-.cat-btn.sel{border-color:rgba(0,198,255,.5);background:rgba(0,198,255,.1)}
-.cat-ic{font-size:24px;line-height:1}
-.cat-lb{font-size:9px;color:var(--t2);line-height:1.3;font-family:Tahoma,Arial,sans-serif}
-.shop-card{background:var(--s1);border:1px solid rgba(0,198,255,.1);border-radius:16px;padding:15px;margin-bottom:10px;transition:all .3s}
-.shop-card:hover{border-color:rgba(0,198,255,.25);transform:translateY(-2px)}
-.rev-card{background:var(--s1);border:1px solid rgba(0,198,255,.07);border-radius:14px;padding:14px;margin-bottom:10px}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;animation:fadeIn .2s ease}
-.modal{background:#080808;border:1px solid rgba(0,198,255,.18);border-radius:22px;padding:26px 22px;width:100%;max-width:400px;animation:slideUp .3s ease;box-shadow:0 40px 80px rgba(0,0,0,.8)}
-.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#00c6ff,#7b2ff7);color:#fff;border-radius:14px;padding:11px 22px;font-size:13px;font-weight:700;z-index:300;animation:slideUp .3s ease;box-shadow:0 8px 28px rgba(0,198,255,.4);white-space:nowrap;max-width:90vw;text-align:center;pointer-events:none}
+.bdg-gold{background:rgba(255,215,0,.1);color:#ffd700;border:1px solid rgba(255,215,0,.2)}
+
+/* ══════════════════════════════════════════
+   DIVIDER
+══════════════════════════════════════════ */
+.div{height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.15),transparent);margin:18px 0}
+
+/* ══════════════════════════════════════════
+   CAT GRID
+══════════════════════════════════════════ */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:9px}
+.cat-btn{background:#0a0a0a;border:1px solid rgba(255,255,255,.06);
+  border-radius:14px;padding:13px 6px;cursor:pointer;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  transition:all .25s;width:100%}
+.cat-btn:hover{transform:translateY(-4px);border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.06);box-shadow:0 8px 20px rgba(0,229,255,.1)}
+.cat-btn.sel{border-color:rgba(0,229,255,.5);background:rgba(0,229,255,.1);box-shadow:0 0 16px rgba(0,229,255,.2)}
+.cat-ic{font-size:26px;line-height:1}
+.cat-lb{font-size:9px;color:var(--t2);line-height:1.3}
+
+/* ══════════════════════════════════════════
+   SHOP CARD
+══════════════════════════════════════════ */
+.shop-card{background:var(--s1);border:1px solid rgba(0,229,255,.1);
+  border-radius:var(--r);padding:16px;margin-bottom:10px;transition:all .3s}
+.shop-card:hover{border-color:rgba(0,229,255,.25);transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,229,255,.08)}
+
+/* ══════════════════════════════════════════
+   REVIEW CARD
+══════════════════════════════════════════ */
+.rev-card{background:var(--s1);border:1px solid rgba(0,229,255,.07);
+  border-radius:var(--r);padding:16px;margin-bottom:10px}
+
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);
+  backdrop-filter:blur(20px);display:flex;align-items:center;
+  justify-content:center;z-index:300;padding:20px;animation:fadeIn .2s ease}
+.modal{background:#060606;border:1px solid rgba(0,229,255,.2);
+  border-radius:24px;padding:28px 24px;width:100%;max-width:420px;
+  animation:slideUp .3s ease;box-shadow:0 50px 100px rgba(0,0,0,.8),0 0 80px rgba(0,229,255,.06)}
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+  background:var(--g);color:#000;border-radius:16px;padding:13px 26px;
+  font-size:13px;font-weight:800;z-index:400;animation:slideUp .3s ease;
+  box-shadow:0 8px 32px rgba(0,229,255,.4);white-space:nowrap;
+  max-width:92vw;text-align:center;pointer-events:none}
+
+/* ══════════════════════════════════════════
+   HERO SECTION
+══════════════════════════════════════════ */
+.hero{min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  position:relative;padding:140px 20px 100px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);
+  border-radius:32px;padding:8px 18px;font-size:12px;color:var(--cyan);
+  font-weight:600;margin-bottom:28px;animation:heroText 1s ease .2s both}
+.hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:pulse 2s ease-in-out infinite}
+.hero-title{font-size:clamp(36px,7vw,80px);font-weight:900;line-height:1.1;
+  margin-bottom:20px;animation:heroText 1s ease .4s both}
+.hero-sub{font-size:clamp(14px,2vw,18px);color:var(--t2);line-height:1.9;
+  max-width:640px;margin:0 auto 40px;animation:heroText 1s ease .6s both}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  animation:heroText 1s ease .8s both}
+.hero-icon-wrap{position:relative;display:inline-block;margin-bottom:30px;
+  animation:heroText 1s ease 0s both}
+.hero-icon{width:100px;height:100px;border-radius:28px;
+  background:linear-gradient(135deg,#0a1a28,#0d1436);
+  border:2px solid rgba(0,229,255,.22);display:flex;align-items:center;
+  justify-content:center;font-size:46px;margin:0 auto;
+  animation:float 4s ease-in-out infinite;
+  box-shadow:0 0 80px rgba(0,229,255,.15),inset 0 1px 0 rgba(255,255,255,.04)}
+.rip{position:absolute;border-radius:32px;border:1px solid rgba(0,229,255,.06);pointer-events:none}
+.scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  color:var(--t3);font-size:11px;animation:float 2s ease-in-out infinite}
+.scroll-arrow{width:24px;height:24px;border-left:2px solid rgba(0,229,255,.3);
+  border-bottom:2px solid rgba(0,229,255,.3);transform:rotate(-45deg);margin-top:4px}
+
+/* ══════════════════════════════════════════
+   FEATURE SECTION (homepage)
+══════════════════════════════════════════ */
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+@media(min-width:768px){.features-grid{grid-template-columns:repeat(4,1fr)}}
+.feat-card{border-radius:var(--r);padding:18px 14px;cursor:pointer;
+  text-align:center;transition:all .3s;border:1px solid transparent}
+.feat-card:hover{transform:translateY(-5px)}
+
+/* ══════════════════════════════════════════
+   SUPPORT SECTION
+══════════════════════════════════════════ */
+.support-wrap{background:linear-gradient(135deg,rgba(0,229,255,.04),rgba(179,71,255,.04));
+  border:1px solid rgba(0,229,255,.15);border-radius:24px;padding:36px 24px;
+  text-align:center;position:relative;overflow:hidden;margin-bottom:20px}
+.support-wrap::before{content:"";position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:300px;height:150px;background:radial-gradient(ellipse,rgba(0,229,255,.08) 0%,transparent 70%);pointer-events:none}
+.tip-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+@media(min-width:480px){.tip-grid{grid-template-columns:repeat(4,1fr)}}
+.tip-btn{background:#0a0a0a;border:1.5px solid rgba(255,255,255,.07);
+  border-radius:16px;padding:16px 8px;cursor:pointer;transition:all .25s;text-align:center}
+.tip-btn:hover{transform:translateY(-3px)}
+.tip-btn.sel{background:linear-gradient(135deg,rgba(0,229,255,.12),rgba(179,71,255,.12));
+  border-color:rgba(0,229,255,.45);box-shadow:0 0 20px rgba(0,229,255,.2)}
+
+/* ══════════════════════════════════════════
+   STEPS
+══════════════════════════════════════════ */
+.steps{display:flex;gap:6px;margin-bottom:22px}
 .step-bar{flex:1;height:3px;border-radius:2px;transition:background .4s}
-.star{color:#f59e0b;cursor:pointer;font-size:20px;transition:all .15s}
-.star.off{color:rgba(245,158,11,.2)}
-.search-wrap{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(0,198,255,.15);border-radius:28px;padding:8px 13px;flex:1;max-width:480px;transition:all .3s}
-.search-wrap:focus-within{border-color:rgba(0,198,255,.38);background:rgba(0,198,255,.04)}
-.search-inp{flex:1;background:transparent;border:none;outline:none;color:var(--t1);font-size:13px;font-family:Tahoma,Arial,sans-serif}
-.go-btn{background:linear-gradient(135deg,#00c6ff,#7b2ff7);border:none;border-radius:20px;padding:6px 14px;color:#fff;font-family:Tahoma,Arial,sans-serif;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap;transition:transform .2s;flex-shrink:0}
-.go-btn:hover{transform:scale(1.04)}
-.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,198,255,.15),transparent);margin:14px 0}
-.sug-btn{background:rgba(0,198,255,.05);border:1px solid rgba(0,198,255,.12);color:var(--t2);border-radius:20px;padding:7px 13px;font-size:12px;font-family:Tahoma,Arial,sans-serif;cursor:pointer;transition:all .2s}
-.sug-btn:hover{color:#00c6ff;background:rgba(0,198,255,.1);border-color:rgba(0,198,255,.28)}
-.cursor{display:inline-block;animation:blink .7s step-end infinite;color:#00c6ff;font-size:16px}
-.gear-fix{position:fixed;pointer-events:none;z-index:1}
+.step-lbl{font-size:10px;margin-top:5px;text-align:center;transition:color .4s}
+
+/* ══════════════════════════════════════════
+   TESTIMONIALS
+══════════════════════════════════════════ */
+.testi-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;
+  scrollbar-width:none;-ms-overflow-style:none}
+.testi-scroll::-webkit-scrollbar{display:none}
+.testi-card{min-width:280px;background:var(--s1);border:1px solid rgba(0,229,255,.08);
+  border-radius:var(--r);padding:18px;flex-shrink:0}
+
+/* ══════════════════════════════════════════
+   NUMBERS SECTION
+══════════════════════════════════════════ */
+.nums-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(min-width:600px){.nums-grid{grid-template-columns:repeat(4,1fr)}}
+.num-card{background:var(--s1);border:1px solid rgba(0,229,255,.1);
+  border-radius:var(--r);padding:20px;text-align:center}
+.num-n{font-size:32px;font-weight:900;line-height:1;margin-bottom:4px}
+.num-l{font-size:12px;color:var(--t3)}
+
+/* ══════════════════════════════════════════
+   CURSOR
+══════════════════════════════════════════ */
+.cursor{display:inline-block;animation:blink .7s step-end infinite;color:var(--cyan);font-size:16px}
+
+/* ══════════════════════════════════════════
+   SECTION TITLE
+══════════════════════════════════════════ */
+.sec-title{font-size:clamp(20px,4vw,32px);font-weight:900;margin-bottom:8px}
+.sec-sub{color:var(--t3);font-size:13px;margin-bottom:24px;line-height:1.7}
+
+/* ══════════════════════════════════════════
+   LANG STYLES
+══════════════════════════════════════════ */
+.lang-en .fa,.lang-ar .fa{display:none}
+.lang-en .en,.lang-ar .ar{display:inline}
+.lang-fa .en,.lang-fa .ar{display:none}
+.lang-fa .fa{display:inline}
+.lang-en .en-block,.lang-ar .ar-block{display:block}
+.lang-fa .en-block,.lang-fa .ar-block{display:none}
+.lang-fa .fa-block{display:block}
+.lang-en .fa-block,.lang-ar .fa-block{display:none}
+
+/* Sug pills */
+.sug{background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.12);
+  color:var(--t2);border-radius:20px;padding:8px 15px;font-size:12px;
+  cursor:pointer;transition:all .2s;white-space:nowrap}
+.sug:hover{color:var(--cyan);background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.3)}
 </style>
 </head>
-<body>
+<body class="lang-fa">
 
-<canvas id="canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none"></canvas>
-<div class="grid-bg"></div>
-<div class="blob" style="top:-200px;right:-150px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,198,255,.06),transparent 65%)"></div>
-<div class="blob" style="bottom:-150px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(123,47,247,.05),transparent 65%)"></div>
-
-<!-- Gears -->
-<div class="gear-fix" style="top:60px;left:-42px"><canvas id="g1" width="150" height="150"></canvas></div>
-<div class="gear-fix" style="bottom:110px;right:-32px"><canvas id="g2" width="180" height="180"></canvas></div>
-<div class="gear-fix" style="top:45%;right:8px"><canvas id="g3" width="70" height="70"></canvas></div>
+<!-- BG -->
+<canvas id="canvas"></canvas>
+<div class="grid-overlay"></div>
+<div class="blob" style="top:-250px;right:-180px;width:700px;height:700px;background:radial-gradient(circle,rgba(0,229,255,.05),transparent 65%)"></div>
+<div class="blob" style="bottom:-200px;left:-150px;width:600px;height:600px;background:radial-gradient(circle,rgba(179,71,255,.04),transparent 65%)"></div>
+<div class="scanline"></div>
+<div class="gear-fixed" id="gear1" style="top:70px;left:-50px"><canvas id="g1" width="160" height="160"></canvas></div>
+<div class="gear-fixed" id="gear2" style="bottom:120px;right:-40px"><canvas id="g2" width="190" height="190"></canvas></div>
+<div class="gear-fixed" style="top:40%;right:12px"><canvas id="g3" width="75" height="75"></canvas></div>
 
 <!-- HEADER -->
-<header style="position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(0,198,255,.08);backdrop-filter:blur(28px);background:rgba(0,0,0,.92)">
-  <div style="display:flex;align-items:center;gap:12px;padding:12px 16px 10px">
-    <div onclick="showTab('home')" style="display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0">
-      <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#00c6ff,#7b2ff7);display:flex;align-items:center;justify-content:center;font-size:19px;animation:glow 3s ease-in-out infinite;flex-shrink:0">🔧</div>
+<header>
+  <div class="header-inner">
+    <div class="logo" onclick="showPage('home')">
+      <div class="logo-icon">🔧</div>
       <div>
-        <div class="gt" style="font-size:17px;font-weight:900;letter-spacing:-.4px">تعمیریار</div>
-        <div style="font-size:9px;color:#1e4a6a;letter-spacing:2px">taamiryar.com</div>
+        <div class="logo-text">تعمیریار</div>
+        <div class="logo-sub">taamiryar.com</div>
       </div>
     </div>
-    <div class="search-wrap">
-      <span style="font-size:16px;flex-shrink:0">🔍</span>
-      <input class="search-inp" id="hq" placeholder="مشکل دستگاهت رو بنویس..." onkeydown="if(event.key==='Enter')doSearch()"/>
-      <button class="go-btn" onclick="doSearch()">تشخیص ←</button>
+    <div class="header-search">
+      <span style="font-size:17px;flex-shrink:0">🔍</span>
+      <input id="hq" placeholder="مشکل دستگاهت رو بنویس..." onkeydown="if(event.key==='Enter')doSearch()"/>
+      <button class="go" onclick="doSearch()">
+        <span class="fa">تشخیص ←</span>
+        <span class="en" style="display:none">Diagnose →</span>
+        <span class="ar" style="display:none">تشخيص ←</span>
+      </button>
     </div>
-    <button class="btn btn-g btn-sm" onclick="openTip()" style="flex-shrink:0;padding:8px 13px">💛 حمایت</button>
+    <div class="lang-btn">
+      <button class="lang-opt active" onclick="setLang('fa')">FA</button>
+      <button class="lang-opt" onclick="setLang('en')">EN</button>
+      <button class="lang-opt" onclick="setLang('ar')">AR</button>
+    </div>
+    <button class="support-hdr" onclick="openTip()">💛 <span class="fa">حمایت</span><span class="en" style="display:none">Support</span><span class="ar" style="display:none">دعم</span></button>
   </div>
-  <!-- Stats -->
-  <div id="stats-bar" style="display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(0,198,255,.07)">
-    <div style="text-align:center;padding:6px 4px;border-right:1px solid rgba(0,198,255,.07)"><div id="sc" style="font-size:13px;font-weight:800;color:#00c6ff">۱۲۴۰+</div><div style="font-size:9px;color:#2a4a6a">تعمیرگاه</div></div>
-    <div style="text-align:center;padding:6px 4px;border-right:1px solid rgba(0,198,255,.07)"><div style="font-size:13px;font-weight:800;color:#10b981">۸۴۳۰</div><div style="font-size:9px;color:#2a4a6a">تعمیر</div></div>
-    <div style="text-align:center;padding:6px 4px;border-right:1px solid rgba(0,198,255,.07)"><div style="font-size:13px;font-weight:800;color:#f59e0b">۴.۸★</div><div style="font-size:9px;color:#2a4a6a">امتیاز</div></div>
-    <div style="text-align:center;padding:6px 4px"><div id="rc" style="font-size:13px;font-weight:800;color:#7b2ff7">۴</div><div style="font-size:9px;color:#2a4a6a">نظر</div></div>
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-n gt" id="sc">۱۲۴۰+</div><div class="stat-l"><span class="fa">تعمیرگاه</span><span class="en" style="display:none">Shops</span><span class="ar" style="display:none">ورش</span></div></div>
+    <div class="stat-item"><div class="stat-n" style="color:#10b981">۸۴۳۰</div><div class="stat-l"><span class="fa">تعمیر انجام شده</span><span class="en" style="display:none">Repairs Done</span><span class="ar" style="display:none">تصليح منجز</span></div></div>
+    <div class="stat-item"><div class="stat-n" style="color:#f59e0b">۴.۸★</div><div class="stat-l"><span class="fa">امتیاز</span><span class="en" style="display:none">Rating</span><span class="ar" style="display:none">تقييم</span></div></div>
+    <div class="stat-item"><div class="stat-n" style="color:#b347ff" id="rc">۴</div><div class="stat-l"><span class="fa">نظر کاربران</span><span class="en" style="display:none">Reviews</span><span class="ar" style="display:none">مراجعات</span></div></div>
   </div>
 </header>
 
 <!-- NAV -->
 <nav class="nav">
-  <button class="nav-btn active" id="nb-home" onclick="showTab('home')"><div class="nav-ind"></div><span class="ic">🏠</span><span class="lb">خانه</span></button>
-  <button class="nav-btn" id="nb-diag" onclick="showTab('diag')"><span class="ic">🤖</span><span class="lb">تشخیص AI</span></button>
-  <button class="nav-btn" id="nb-find" onclick="showTab('find')"><span class="ic">📍</span><span class="lb">تعمیرگاه</span></button>
-  <button class="nav-btn" id="nb-reg" onclick="showTab('reg')"><span class="ic">✏️</span><span class="lb">ثبت‌نام</span></button>
+  <button class="nb on" id="nb-home" onclick="showPage('home')">
+    <div class="nb-ind"></div>
+    <span class="ni">🏠</span>
+    <span class="nl"><span class="fa">خانه</span><span class="en" style="display:none">Home</span><span class="ar" style="display:none">الرئيسية</span></span>
+  </button>
+  <button class="nb" id="nb-diag" onclick="showPage('diag')">
+    <span class="ni">🤖</span>
+    <span class="nl"><span class="fa">تشخیص AI</span><span class="en" style="display:none">AI Diag</span><span class="ar" style="display:none">تشخيص</span></span>
+  </button>
+  <button class="nb" id="nb-find" onclick="showPage('find')">
+    <span class="ni">📍</span>
+    <span class="nl"><span class="fa">تعمیرگاه</span><span class="en" style="display:none">Find Shop</span><span class="ar" style="display:none">ورشة</span></span>
+  </button>
+  <button class="nb" id="nb-reg" onclick="showPage('reg')">
+    <span class="ni">✏️</span>
+    <span class="nl"><span class="fa">ثبت‌نام</span><span class="en" style="display:none">Register</span><span class="ar" style="display:none">تسجيل</span></span>
+  </button>
 </nav>
 
-<!-- MAIN -->
-<main style="position:relative;z-index:5;max-width:720px;margin:0 auto;padding:20px 14px">
+<!-- ════════════════════════════════════════
+     HOME PAGE
+════════════════════════════════════════ -->
+<div id="page-home" class="page on">
+  <div class="wrap">
 
-  <!-- HOME -->
-  <div id="page-home" class="page active">
-    <!-- Hero -->
-    <div style="text-align:center;padding:26px 0 28px">
-      <div style="position:relative;display:inline-block;margin-bottom:20px">
-        <div style="width:86px;height:86px;border-radius:24px;background:linear-gradient(135deg,#0a1a28,#0d1630);border:1.5px solid rgba(0,198,255,.22);display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto;animation:float 4s ease-in-out infinite;box-shadow:0 0 55px rgba(0,198,255,.13)">🔧</div>
-        <div style="position:absolute;inset:-10px;border-radius:34px;border:1px solid rgba(0,198,255,.07);animation:ripple 2s ease-out .4s infinite;pointer-events:none"></div>
-        <div style="position:absolute;inset:-20px;border-radius:44px;border:1px solid rgba(0,198,255,.04);animation:ripple 2.5s ease-out .8s infinite;pointer-events:none"></div>
+    <!-- HERO -->
+    <section class="hero" style="padding-top:0;padding-bottom:60px">
+      <div class="hero-badge">
+        <div class="dot"></div>
+        <span class="fa">هوش مصنوعی تعمیرات ایران</span>
+        <span class="en" style="display:none">Iran's #1 AI Repair Assistant</span>
+        <span class="ar" style="display:none">مساعد إصلاح ذكي</span>
       </div>
-      <h1 class="gt" style="font-size:clamp(22px,5vw,36px);font-weight:900;margin-bottom:10px;line-height:1.25">هوش مصنوعی<br/>در خدمت تعمیرات</h1>
-      <p style="color:var(--t3);font-size:14px;line-height:1.9;max-width:400px;margin:0 auto 24px">مشکل دستگاهت رو از کادر بالا بنویس<br/>یا از دسته‌بندی انتخاب کن</p>
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-p" onclick="showTab('diag')">🤖 تشخیص هوشمند</button>
-        <button class="btn btn-g" onclick="showTab('find')">📍 یافتن تعمیرگاه</button>
+      <div class="hero-icon-wrap">
+        <div class="hero-icon">🔧</div>
+        <div class="rip" style="inset:-12px;border-radius:38px;animation:ripple 2s ease-out .4s infinite"></div>
+        <div class="rip" style="inset:-24px;border-radius:50px;animation:ripple 2.5s ease-out .8s infinite"></div>
+      </div>
+      <h1 class="hero-title">
+        <span class="fa"><span class="gt">هوش مصنوعی</span><br/>در خدمت تعمیرات</span>
+        <span class="en" style="display:none"><span class="gt">AI-Powered</span><br/>Repair Assistant</span>
+        <span class="ar" style="display:none"><span class="gt">الذكاء الاصطناعي</span><br/>لخدمة التصليح</span>
+      </h1>
+      <p class="hero-sub">
+        <span class="fa">مشکل دستگاهت رو بگو — تشخیص هوشمند، راه‌حل عملی و نزدیک‌ترین تعمیرکار رو در چند ثانیه پیدا کن</span>
+        <span class="en" style="display:none">Describe your device issue — get smart diagnosis, practical solution, and find the nearest repair shop in seconds</span>
+        <span class="ar" style="display:none">أخبرنا بمشكلة جهازك — احصل على تشخيص ذكي وحل عملي وأقرب ورشة تصليح في ثوانٍ</span>
+      </p>
+      <div class="hero-btns">
+        <button class="btn btn-p" onclick="showPage('diag')" style="font-size:15px;padding:15px 30px">
+          🤖 <span class="fa">تشخیص هوشمند</span><span class="en" style="display:none">AI Diagnosis</span><span class="ar" style="display:none">تشخيص ذكي</span>
+        </button>
+        <button class="btn btn-gold" onclick="openTip()" style="font-size:15px;padding:15px 30px">
+          💛 <span class="fa">از ما حمایت کن</span><span class="en" style="display:none">Support Us</span><span class="ar" style="display:none">ادعمنا</span>
+        </button>
+        <button class="btn btn-g" onclick="showPage('find')" style="font-size:15px;padding:15px 28px">
+          📍 <span class="fa">یافتن تعمیرگاه</span><span class="en" style="display:none">Find Shop</span><span class="ar" style="display:none">ابحث عن ورشة</span>
+        </button>
+      </div>
+      <div class="scroll-hint">
+        <span class="fa">اسکرول کن</span><span class="en" style="display:none">Scroll</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </section>
+
+    <!-- NUMBERS -->
+    <section style="margin-bottom:40px">
+      <div class="nums-grid">
+        <div class="num-card"><div class="num-n gt" id="hn1">۱۲۴۰+</div><div class="num-l"><span class="fa">تعمیرگاه ثبت‌شده</span><span class="en" style="display:none">Registered Shops</span><span class="ar" style="display:none">ورش مسجلة</span></div></div>
+        <div class="num-card"><div class="num-n" style="color:#10b981">۸۴۳۰+</div><div class="num-l"><span class="fa">تعمیر انجام شده</span><span class="en" style="display:none">Repairs Done</span><span class="ar" style="display:none">إصلاحات منجزة</span></div></div>
+        <div class="num-card"><div class="num-n" style="color:#f59e0b">۴.۸/۵</div><div class="num-l"><span class="fa">میانگین امتیاز</span><span class="en" style="display:none">Avg Rating</span><span class="ar" style="display:none">متوسط التقييم</span></div></div>
+        <div class="num-card"><div class="num-n" style="color:#b347ff">۳۰</div><div class="num-l"><span class="fa">دسته خدماتی</span><span class="en" style="display:none">Service Categories</span><span class="ar" style="display:none">فئات الخدمة</span></div></div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section style="margin-bottom:40px">
+      <h2 class="sec-title gt" style="text-align:center">
+        <span class="fa">چرا تعمیریار؟</span>
+        <span class="en" style="display:none">Why Taamiryar?</span>
+        <span class="ar" style="display:none">لماذا تعمیریار؟</span>
+      </h2>
+      <p class="sec-sub" style="text-align:center">
+        <span class="fa">سریع‌ترین راه برای حل مشکل دستگاهت</span>
+        <span class="en" style="display:none">The fastest way to fix your device</span>
+        <span class="ar" style="display:none">أسرع طريقة لإصلاح جهازك</span>
+      </p>
+      <div class="features-grid">
+        <div class="feat-card" style="background:rgba(0,229,255,.04);border-color:rgba(0,229,255,.15)" onclick="showPage('diag')">
+          <div style="font-size:36px;margin-bottom:12px">🤖</div>
+          <div style="font-size:14px;font-weight:800;color:#00e5ff;margin-bottom:6px"><span class="fa">تشخیص AI</span><span class="en" style="display:none">AI Diagnosis</span><span class="ar" style="display:none">تشخيص ذكي</span></div>
+          <div style="font-size:11px;color:var(--t3);line-height:1.6"><span class="fa">مشکل رو بگو، راه‌حل بگیر</span><span class="en" style="display:none">Describe, get solution</span><span class="ar" style="display:none">صف المشكلة واحصل على حل</span></div>
+        </div>
+        <div class="feat-card" style="background:rgba(179,71,255,.04);border-color:rgba(179,71,255,.15)" onclick="showPage('find')">
+          <div style="font-size:36px;margin-bottom:12px">📍</div>
+          <div style="font-size:14px;font-weight:800;color:#c97eff;margin-bottom:6px"><span class="fa">تعمیرگاه نزدیک</span><span class="en" style="display:none">Near Shops</span><span class="ar" style="display:none">ورش قريبة</span></div>
+          <div style="font-size:11px;color:var(--t3);line-height:1.6"><span class="fa">بر اساس موقعیت پیدا کن</span><span class="en" style="display:none">Find by location</span><span class="ar" style="display:none">ابحث بالموقع</span></div>
+        </div>
+        <div class="feat-card" style="background:rgba(16,185,129,.04);border-color:rgba(16,185,129,.15)" onclick="showPage('reg')">
+          <div style="font-size:36px;margin-bottom:12px">✏️</div>
+          <div style="font-size:14px;font-weight:800;color:#34d399;margin-bottom:6px"><span class="fa">ثبت تعمیرگاه</span><span class="en" style="display:none">Register Shop</span><span class="ar" style="display:none">سجل ورشتك</span></div>
+          <div style="font-size:11px;color:var(--t3);line-height:1.6"><span class="fa">رایگان — مشتری بگیر</span><span class="en" style="display:none">Free — get customers</span><span class="ar" style="display:none">مجاني — احصل على عملاء</span></div>
+        </div>
+        <div class="feat-card" style="background:rgba(255,215,0,.04);border-color:rgba(255,215,0,.15)" onclick="openTip()">
+          <div style="font-size:36px;margin-bottom:12px">💛</div>
+          <div style="font-size:14px;font-weight:800;color:#ffd700;margin-bottom:6px"><span class="fa">حمایت مالی</span><span class="en" style="display:none">Support Us</span><span class="ar" style="display:none">ادعمنا</span></div>
+          <div style="font-size:11px;color:var(--t3);line-height:1.6"><span class="fa">کمک کن بهترمون کنیم</span><span class="en" style="display:none">Help us grow better</span><span class="ar" style="display:none">ساعدنا لنتحسن</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section style="margin-bottom:40px">
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <h3 style="font-size:15px;font-weight:800;color:var(--t1)">
+            📋 <span class="fa">دسته‌بندی خدمات</span><span class="en" style="display:none">Service Categories</span><span class="ar" style="display:none">فئات الخدمة</span>
+          </h3>
+          <span class="bdg bdg-c">۳۰</span>
+        </div>
+        <div class="cat-grid" id="home-cats"></div>
+      </div>
+    </section>
+
+    <!-- SUPPORT CTA -->
+    <section style="margin-bottom:40px">
+      <div class="support-wrap">
+        <div style="font-size:48px;margin-bottom:14px;animation:float 3s ease-in-out infinite">💛</div>
+        <h2 style="font-size:clamp(20px,4vw,30px);font-weight:900;margin-bottom:10px" class="gold-text">
+          <span class="fa">از تعمیریار حمایت کن</span>
+          <span class="en" style="display:none">Support Taamiryar</span>
+          <span class="ar" style="display:none">ادعم تعمیریار</span>
+        </h2>
+        <p style="color:var(--t2);font-size:14px;max-width:500px;margin:0 auto 28px;line-height:1.9">
+          <span class="fa">تعمیریار رایگانه و هر روز بهتر میشه. با یه حمایت کوچیک کمک کن تا سرورهای قوی‌تر، امکانات بیشتر و پشتیبانی بهتر داشته باشیم.</span>
+          <span class="en" style="display:none">Taamiryar is free and gets better every day. With a small contribution, help us have stronger servers, more features, and better support.</span>
+          <span class="ar" style="display:none">تعمیریار مجاني ويتحسن كل يوم. بمساهمة صغيرة، ساعدنا في امتلاك خوادم أقوى وميزات أكثر.</span>
+        </p>
+        <div class="tip-grid" id="home-tips"></div>
+        <button class="btn btn-gold" style="font-size:15px;padding:15px 36px" onclick="openTip()">
+          💛 <span class="fa">همین الان حمایت کن</span><span class="en" style="display:none">Support Now</span><span class="ar" style="display:none">ادعم الآن</span>
+        </button>
+        <p style="font-size:11px;color:var(--t3);margin-top:14px;line-height:1.7">
+          <span class="fa">🔒 پرداخت امن از طریق درگاه‌های معتبر</span>
+          <span class="en" style="display:none">🔒 Secure payment through trusted gateways</span>
+          <span class="ar" style="display:none">🔒 دفع آمن عبر بوابات موثوقة</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h3 style="font-size:15px;font-weight:800;color:var(--t1)">
+          💬 <span class="fa">نظرات کاربران</span><span class="en" style="display:none">User Reviews</span><span class="ar" style="display:none">آراء المستخدمين</span>
+        </h3>
+        <button class="btn btn-g btn-sm" onclick="openReview()">
+          <span class="fa">+ نظر بده</span><span class="en" style="display:none">+ Review</span><span class="ar" style="display:none">+ مراجعة</span>
+        </button>
+      </div>
+      <div class="testi-scroll" id="reviews-list"></div>
+    </section>
+
+    <!-- RECENT SHOPS -->
+    <div id="recent-shops-wrap" style="display:none;margin-bottom:40px">
+      <div class="card">
+        <h3 style="font-size:15px;font-weight:800;color:var(--t1);margin-bottom:16px">
+          🏪 <span class="fa">آخرین تعمیرگاه‌ها</span><span class="en" style="display:none">Recent Shops</span><span class="ar" style="display:none">آخر الورش</span>
+        </h3>
+        <div id="recent-shops"></div>
       </div>
     </div>
 
-    <!-- Quick actions -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px" id="quick-actions"></div>
-
-    <!-- Categories -->
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <div style="font-size:14px;font-weight:700;color:var(--t1)">📋 دسته‌بندی خدمات</div>
-        <span class="bdg bdg-b">۳۰ دسته</span>
+    <!-- FOOTER -->
+    <footer style="text-align:center;padding:30px 0 20px;border-top:1px solid rgba(0,229,255,.07)">
+      <div class="logo-text" style="font-size:22px;margin-bottom:6px">تعمیریار</div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:14px">taamiryar.com © 2025</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-g btn-sm" onclick="showPage('diag')">🤖 AI</button>
+        <button class="btn btn-g btn-sm" onclick="showPage('find')">📍 <span class="fa">تعمیرگاه</span><span class="en" style="display:none">Shop</span></button>
+        <button class="btn btn-g btn-sm" onclick="showPage('reg')">✏️ <span class="fa">ثبت‌نام</span><span class="en" style="display:none">Register</span></button>
+        <button class="btn btn-gold btn-sm" onclick="openTip()">💛 <span class="fa">حمایت</span><span class="en" style="display:none">Support</span></button>
       </div>
-      <div class="cat-grid" id="home-cats"></div>
-    </div>
-
-    <!-- Suggestions -->
-    <div class="card">
-      <div style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:12px">⚡ مشکلات رایج</div>
-      <div style="display:flex;flex-wrap:wrap;gap:7px" id="home-suggs"></div>
-    </div>
-
-    <!-- Reviews -->
-    <div style="margin-bottom:16px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div style="font-size:14px;font-weight:700;color:var(--t1)">💬 نظرات کاربران</div>
-        <button class="btn btn-g btn-sm" onclick="openReview()">+ نظر بده</button>
-      </div>
-      <div id="reviews-list"></div>
-    </div>
-
-    <!-- Recent shops -->
-    <div class="card" id="recent-shops-wrap" style="display:none">
-      <div style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:14px">🏪 آخرین تعمیرگاه‌ها</div>
-      <div id="recent-shops"></div>
-    </div>
+    </footer>
   </div>
+</div>
 
-  <!-- DIAGNOSE -->
-  <div id="page-diag" class="page">
-    <div style="margin-bottom:18px">
-      <h2 class="gt" style="font-size:20px;font-weight:900;margin-bottom:5px">🤖 تشخیص هوشمند</h2>
-      <p style="color:var(--t3);font-size:13px">دستگاه رو انتخاب کن یا مستقیم بنویس</p>
+<!-- ════════════════════════════════════════
+     DIAGNOSE PAGE
+════════════════════════════════════════ -->
+<div id="page-diag" class="page">
+  <div class="wrap" style="max-width:800px;margin:0 auto">
+    <div style="margin-bottom:20px">
+      <h2 class="sec-title gt">🤖 <span class="fa">تشخیص هوشمند</span><span class="en" style="display:none">AI Diagnosis</span><span class="ar" style="display:none">تشخيص ذكي</span></h2>
+      <p class="sec-sub"><span class="fa">دستگاه رو انتخاب کن یا مستقیم بنویس</span><span class="en" style="display:none">Select device or type directly</span><span class="ar" style="display:none">اختر الجهاز أو اكتب مباشرة</span></p>
     </div>
     <div id="diag-idle">
       <div class="cat-grid" id="diag-cats" style="margin-bottom:14px"></div>
-      <div id="sel-cat-bar" style="display:none;background:rgba(0,198,255,.08);border:1.5px solid rgba(0,198,255,.28);border-radius:13px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;animation:fadeIn .3s ease">
-        <span id="sel-cat-icon" style="font-size:20px"></span>
-        <span id="sel-cat-name" style="font-size:13px;color:#00c6ff;font-weight:600"></span>
-        <button onclick="clearCat()" style="margin-right:auto;background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px;padding:0 4px">✕</button>
+      <div id="sel-bar" style="display:none;border-radius:13px;padding:11px 15px;margin-bottom:12px;animation:fadeIn .3s ease;display:none;align-items:center;gap:8px">
+        <span id="sel-icon" style="font-size:20px"></span>
+        <span id="sel-name" style="font-size:13px;font-weight:700"></span>
+        <button onclick="clearCat()" style="margin-right:auto;background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px">✕</button>
       </div>
-      <div class="card" style="padding:8px;margin-bottom:12px">
-        <textarea id="dq" placeholder="مشکل دستگاهت رو کامل توضیح بده..." rows="3" style="width:100%;background:transparent;border:none;outline:none;color:var(--t1);font-size:15px;font-family:Tahoma,Arial,sans-serif;padding:13px 14px 6px;resize:none;line-height:1.8" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();doDiag()}"></textarea>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 12px 11px">
-          <span style="font-size:10px;color:var(--t3)">Enter برای ارسال</span>
-          <button class="btn btn-p btn-sm" onclick="doDiag()">تشخیص بده ←</button>
+      <div class="card" style="padding:8px;margin-bottom:12px;animation:borderGlow 4s ease-in-out infinite">
+        <textarea id="dq" rows="3" style="width:100%;background:transparent;border:none;outline:none;color:var(--t1);font-size:15px;padding:13px 14px 6px;resize:none;line-height:1.8"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();doDiag()}"></textarea>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 12px 12px">
+          <span style="font-size:10px;color:var(--t3)"><span class="fa">Enter برای ارسال</span><span class="en" style="display:none">Enter to send</span></span>
+          <button class="btn btn-p btn-sm" onclick="doDiag()"><span class="fa">تشخیص بده ←</span><span class="en" style="display:none">Diagnose →</span><span class="ar" style="display:none">تشخيص ←</span></button>
         </div>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:7px" id="diag-suggs"></div>
     </div>
     <!-- Loading -->
     <div id="diag-loading" style="display:none;text-align:center;padding:80px 0">
-      <div style="position:relative;width:120px;height:120px;margin:0 auto 28px;display:flex;align-items:center;justify-content:center">
-        <canvas id="lg1" width="100" height="100" style="position:absolute;top:2px;left:10px"></canvas>
-        <canvas id="lg2" width="72" height="72" style="position:absolute;bottom:2px;right:10px"></canvas>
-        <div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#00c6ff,#7b2ff7);box-shadow:0 0 28px rgba(0,198,255,.9);animation:glow 1.5s ease-in-out infinite"></div>
+      <div style="position:relative;width:130px;height:130px;margin:0 auto 30px;display:flex;align-items:center;justify-content:center">
+        <canvas id="lg1" width="110" height="110" style="position:absolute;top:2px;left:8px"></canvas>
+        <canvas id="lg2" width="78" height="78" style="position:absolute;bottom:2px;right:8px"></canvas>
+        <canvas id="lg3" width="46" height="46" style="position:absolute;top:10px;right:5px"></canvas>
+        <div style="width:24px;height:24px;border-radius:50%;background:var(--g);box-shadow:0 0 30px rgba(0,229,255,.9);animation:pulse 1.5s ease-in-out infinite"></div>
       </div>
-      <div class="gt" style="font-size:18px;font-weight:800;margin-bottom:8px" id="loading-txt">در حال تشخیص...</div>
-      <div style="color:var(--t3);font-size:13px">هوش مصنوعی مشکل رو بررسی می‌کنه</div>
+      <div class="gt" style="font-size:20px;font-weight:900;margin-bottom:10px" id="load-txt">
+        <span class="fa">در حال تشخیص</span><span class="en" style="display:none">Diagnosing</span><span id="dots">...</span>
+      </div>
+      <div style="color:var(--t3);font-size:13px"><span class="fa">هوش مصنوعی مشکل رو بررسی می‌کنه</span><span class="en" style="display:none">AI is analyzing the problem</span></div>
     </div>
     <!-- Result -->
     <div id="diag-result" style="display:none">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <button class="btn btn-g btn-sm" onclick="resetDiag()">← سوال جدید</button>
-        <div class="divider" style="flex:1;margin:0"></div>
-        <span class="bdg bdg-g">پاسخ AI</span>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <button class="btn btn-g btn-sm" onclick="resetDiag()">← <span class="fa">سوال جدید</span><span class="en" style="display:none">New Question</span></button>
+        <div class="div" style="flex:1;margin:0"></div>
+        <span class="bdg bdg-g"><span class="fa">پاسخ AI</span><span class="en" style="display:none">AI Answer</span></span>
       </div>
-      <div class="card" id="result-box" style="font-size:13px;line-height:2.1;color:var(--t2);white-space:pre-wrap;min-height:180px;padding:20px;background:rgba(0,198,255,.02);border-color:rgba(0,198,255,.15)"></div>
-      <div class="card" style="text-align:center;padding:18px;background:linear-gradient(135deg,rgba(0,198,255,.03),rgba(123,47,247,.03));border-color:rgba(0,198,255,.12);margin-top:0">
-        <div style="font-size:13px;color:var(--t3);margin-bottom:12px">نزدیک‌ترین تعمیرگاه رو هم پیدا کن؟</div>
+      <div class="card" id="result-box" style="font-size:14px;line-height:2.1;color:var(--t2);white-space:pre-wrap;min-height:200px;padding:22px;background:rgba(0,229,255,.02);border-color:rgba(0,229,255,.15)"></div>
+      <div class="card" style="text-align:center;padding:20px;background:linear-gradient(135deg,rgba(0,229,255,.03),rgba(179,71,255,.03));border-color:rgba(0,229,255,.12);margin-top:0">
+        <div style="font-size:13px;color:var(--t3);margin-bottom:14px"><span class="fa">نزدیک‌ترین تعمیرگاه رو هم پیدا کن؟</span><span class="en" style="display:none">Find the nearest repair shop?</span></div>
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-          <button class="btn btn-p btn-sm" onclick="showTab('find')">📍 یافتن تعمیرگاه</button>
-          <button class="btn btn-g btn-sm" onclick="openReview()">💬 نظر بده</button>
-          <button class="btn btn-g btn-sm" onclick="openTip()">💛 حمایت</button>
+          <button class="btn btn-p btn-sm" onclick="showPage('find')">📍 <span class="fa">یافتن تعمیرگاه</span><span class="en" style="display:none">Find Shop</span></button>
+          <button class="btn btn-gold btn-sm" onclick="openTip()">💛 <span class="fa">حمایت کن</span><span class="en" style="display:none">Support</span></button>
+          <button class="btn btn-g btn-sm" onclick="openReview()">💬 <span class="fa">نظر بده</span><span class="en" style="display:none">Review</span></button>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- FIND -->
-  <div id="page-find" class="page">
-    <div style="margin-bottom:18px">
-      <h2 class="gt" style="font-size:20px;font-weight:900;margin-bottom:5px">📍 یافتن تعمیرگاه</h2>
-      <p style="color:var(--t3);font-size:13px">نزدیک‌ترین تعمیرگاه رو پیدا کن</p>
+<!-- ════════════════════════════════════════
+     FIND PAGE
+════════════════════════════════════════ -->
+<div id="page-find" class="page">
+  <div class="wrap" style="max-width:800px;margin:0 auto">
+    <div style="margin-bottom:20px">
+      <h2 class="sec-title gt">📍 <span class="fa">یافتن تعمیرگاه</span><span class="en" style="display:none">Find Repair Shop</span><span class="ar" style="display:none">ابحث عن ورشة</span></h2>
+      <p class="sec-sub"><span class="fa">نزدیک‌ترین تعمیرگاه رو پیدا کن</span><span class="en" style="display:none">Find the nearest repair shop</span></p>
     </div>
-    <div class="card" style="padding:16px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-        <div class="fld">
-          <label class="lbl">🏙️ شهر</label>
-          <select class="inp" id="fcity" style="cursor:pointer;appearance:none"></select>
-        </div>
-        <div class="fld">
-          <label class="lbl">🔧 خدمات</label>
-          <select class="inp" id="fcat" style="cursor:pointer;appearance:none"></select>
-        </div>
+    <div class="card" style="padding:18px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="fld"><label class="lbl"><span class="fa">🏙️ شهر</span><span class="en" style="display:none">🏙️ City</span></label><select class="inp" id="fcity" style="cursor:pointer;appearance:none"></select></div>
+        <div class="fld"><label class="lbl"><span class="fa">🔧 خدمات</span><span class="en" style="display:none">🔧 Service</span></label><select class="inp" id="fcat" style="cursor:pointer;appearance:none"></select></div>
       </div>
-      <div style="display:flex;gap:9px">
-        <button class="btn btn-p" style="flex:1" onclick="doFind()">🔍 جستجو</button>
-        <button class="btn btn-g btn-sm" style="white-space:nowrap;padding:10px 15px" onclick="getLoc()" id="loc-btn">📡 موقعیت</button>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-p" style="flex:1" onclick="doFind()">🔍 <span class="fa">جستجو</span><span class="en" style="display:none">Search</span></button>
+        <button class="btn btn-g btn-sm" style="white-space:nowrap;padding:12px 16px" onclick="getLoc()" id="loc-btn">📡 <span class="fa">موقعیت</span><span class="en" style="display:none">Location</span></button>
       </div>
-      <div id="loc-ok" style="display:none;font-size:11px;color:#34d399;margin-top:9px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:9px;padding:7px">✅ موقعیت دریافت شد — نتایج بر اساس فاصله</div>
+      <div id="loc-ok" style="display:none;font-size:11px;color:#34d399;margin-top:10px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:9px;padding:7px">✅ <span class="fa">موقعیت دریافت شد</span><span class="en" style="display:none">Location received</span></div>
     </div>
     <div id="find-empty" style="text-align:center;padding:60px 0">
-      <div style="font-size:52px;margin-bottom:14px;animation:float 3s ease-in-out infinite">🏪</div>
-      <div style="font-size:14px;color:var(--t2);margin-bottom:20px">هنوز تعمیرگاهی ثبت نشده</div>
-      <button class="btn btn-p btn-sm" onclick="showTab('reg')">✏️ اولین ثبت‌نام</button>
+      <div style="font-size:56px;margin-bottom:14px;animation:float 3s ease-in-out infinite">🏪</div>
+      <div style="font-size:15px;color:var(--t2);margin-bottom:20px"><span class="fa">هنوز تعمیرگاهی ثبت نشده</span><span class="en" style="display:none">No shops registered yet</span></div>
+      <button class="btn btn-p btn-sm" onclick="showPage('reg')">✏️ <span class="fa">اولین ثبت‌نام</span><span class="en" style="display:none">First Registration</span></button>
     </div>
     <div id="find-none" style="display:none;text-align:center;padding:60px 0">
-      <div style="font-size:52px;margin-bottom:14px">😕</div>
-      <div style="color:var(--t2);font-size:14px">تعمیرگاهی پیدا نشد</div>
+      <div style="font-size:56px;margin-bottom:14px">😕</div>
+      <div style="color:var(--t2);font-size:14px"><span class="fa">نتیجه‌ای پیدا نشد</span><span class="en" style="display:none">No results found</span></div>
     </div>
     <div id="find-results" style="display:none">
-      <div style="height:230px;border-radius:16px;overflow:hidden;margin-bottom:14px;border:1.5px solid rgba(0,198,255,.14)" id="map-wrap">
-        <div id="map" style="width:100%;height:100%;border-radius:14px"></div>
+      <div style="height:250px;border-radius:18px;overflow:hidden;margin-bottom:16px;border:1.5px solid rgba(0,229,255,.15)">
+        <div id="map" style="width:100%;height:100%;border-radius:16px"></div>
       </div>
-      <div id="find-count" style="font-size:12px;color:#00c6ff;margin-bottom:10px;font-weight:600"></div>
+      <div id="find-count" style="font-size:12px;color:var(--cyan);margin-bottom:12px;font-weight:700"></div>
       <div id="shop-list"></div>
     </div>
   </div>
+</div>
 
-  <!-- REGISTER -->
-  <div id="page-reg" class="page">
-    <div style="margin-bottom:18px">
-      <h2 class="gt" style="font-size:20px;font-weight:900;margin-bottom:5px">✏️ ثبت تعمیرگاه</h2>
-      <p style="color:var(--t3);font-size:13px">رایگان — در taamiryar.com دیده بشو</p>
+<!-- ════════════════════════════════════════
+     REGISTER PAGE
+════════════════════════════════════════ -->
+<div id="page-reg" class="page">
+  <div class="wrap" style="max-width:700px;margin:0 auto">
+    <div style="margin-bottom:20px">
+      <h2 class="sec-title gt">✏️ <span class="fa">ثبت تعمیرگاه</span><span class="en" style="display:none">Register Shop</span><span class="ar" style="display:none">تسجيل الورشة</span></h2>
+      <p class="sec-sub"><span class="fa">رایگان — در taamiryar.com دیده بشو</span><span class="en" style="display:none">Free — be seen on taamiryar.com</span></p>
     </div>
-    <!-- Steps -->
-    <div style="display:flex;gap:6px;margin-bottom:20px" id="reg-steps">
-      <div style="flex:1"><div class="step-bar" id="sb0" style="background:linear-gradient(90deg,#00c6ff,#7b2ff7)"></div><div style="font-size:10px;color:#00c6ff;margin-top:5px;text-align:center;font-weight:700">اطلاعات</div></div>
-      <div style="flex:1"><div class="step-bar" id="sb1" style="background:rgba(0,198,255,.08)"></div><div style="font-size:10px;color:var(--t3);margin-top:5px;text-align:center" id="sl1">خدمات</div></div>
-      <div style="flex:1"><div class="step-bar" id="sb2" style="background:rgba(0,198,255,.08)"></div><div style="font-size:10px;color:var(--t3);margin-top:5px;text-align:center" id="sl2">موقعیت</div></div>
-    </div>
-    <!-- Step 0 -->
-    <div id="rs0" class="card">
-      <div class="fld"><label class="lbl">🏪 نام تعمیرگاه *</label><input class="inp" id="rname" placeholder="تعمیرگاه رضایی"></div>
-      <div class="fld"><label class="lbl">👤 نام صاحب</label><input class="inp" id="rowner" placeholder="علی رضایی"></div>
-      <div class="fld"><label class="lbl">📞 شماره تماس *</label><input class="inp" id="rphone" placeholder="09121234567" type="tel"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div class="fld"><label class="lbl">✈️ تلگرام</label><input class="inp" id="rtel" placeholder="username"></div>
-        <div class="fld"><label class="lbl">📸 اینستاگرام</label><input class="inp" id="rinsta" placeholder="username"></div>
-      </div>
-      <div class="fld"><label class="lbl">🏙️ شهر *</label><select class="inp" id="rcity" style="cursor:pointer;appearance:none"></select></div>
-      <div class="fld"><label class="lbl">📍 آدرس کامل</label><textarea class="inp" id="raddr" placeholder="خیابان، کوچه، پلاک..." rows="2" style="resize:vertical"></textarea></div>
-      <button class="btn btn-p" style="width:100%" onclick="regNext(0)">مرحله بعد ←</button>
-    </div>
-    <!-- Step 1 -->
-    <div id="rs1" style="display:none" class="card">
-      <div style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:13px">🔧 خدمات ارائه شده *</div>
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px" id="svc-grid"></div>
-      <div class="fld"><label class="lbl">📝 توضیحات</label><textarea class="inp" id="rdesc" placeholder="سابقه، گارانتی، خدمات ویژه..." rows="2" style="resize:vertical"></textarea></div>
-      <div style="display:flex;gap:10px">
-        <button class="btn btn-g btn-sm" onclick="regBack(1)">→ قبلی</button>
-        <button class="btn btn-p" style="flex:1" onclick="regNext(1)">مرحله بعد ←</button>
+    <div id="rs3" style="display:none;text-align:center;padding:60px 20px">
+      <div style="font-size:72px;margin-bottom:20px;animation:float 3s ease-in-out infinite">🎉</div>
+      <div class="sec-title gt"><span class="fa">ثبت شد!</span><span class="en" style="display:none">Registered!</span></div>
+      <div style="color:var(--t2);font-size:14px;margin-bottom:28px;line-height:2"><span class="fa">تعمیرگاهت در taamiryar.com ثبت شد</span></div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-g btn-sm" onclick="regReset()"><span class="fa">ثبت دیگری</span><span class="en" style="display:none">Register Another</span></button>
+        <button class="btn btn-p btn-sm" onclick="showPage('find')"><span class="fa">مشاهده در نقشه</span><span class="en" style="display:none">View on Map</span></button>
       </div>
     </div>
-    <!-- Step 2 -->
-    <div id="rs2" style="display:none" class="card">
-      <div style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:7px">🗺️ موقعیت روی نقشه</div>
-      <div style="font-size:12px;color:var(--t3);margin-bottom:12px;line-height:1.7">روی نقشه کلیک کن تا موقعیت دقیق مشخص بشه (اختیاری)</div>
-      <div style="height:260px;border-radius:14px;overflow:hidden;margin-bottom:12px;border:1.5px solid rgba(0,198,255,.14)">
-        <div id="reg-map" style="width:100%;height:100%;border-radius:12px"></div>
+    <div id="reg-form">
+      <div class="steps" id="reg-steps-bar"></div>
+      <div id="rs0" class="card">
+        <div class="fld"><label class="lbl">🏪 <span class="fa">نام تعمیرگاه *</span><span class="en" style="display:none">Shop Name *</span></label><input class="inp" id="rname" placeholder="تعمیرگاه رضایی"></div>
+        <div class="fld"><label class="lbl">👤 <span class="fa">نام صاحب</span><span class="en" style="display:none">Owner Name</span></label><input class="inp" id="rowner" placeholder="علی رضایی"></div>
+        <div class="fld"><label class="lbl">📞 <span class="fa">شماره تماس *</span><span class="en" style="display:none">Phone *</span></label><input class="inp" id="rphone" placeholder="09121234567" type="tel"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="fld"><label class="lbl">✈️ Telegram</label><input class="inp" id="rtel" placeholder="username"></div>
+          <div class="fld"><label class="lbl">📸 Instagram</label><input class="inp" id="rinsta" placeholder="username"></div>
+        </div>
+        <div class="fld"><label class="lbl">🏙️ <span class="fa">شهر *</span><span class="en" style="display:none">City *</span></label><select class="inp" id="rcity" style="cursor:pointer;appearance:none"></select></div>
+        <div class="fld"><label class="lbl">📍 <span class="fa">آدرس</span><span class="en" style="display:none">Address</span></label><textarea class="inp" id="raddr" rows="2" style="resize:vertical" placeholder="خیابان، کوچه، پلاک..."></textarea></div>
+        <button class="btn btn-p btn-full" onclick="regNext(0)"><span class="fa">مرحله بعد ←</span><span class="en" style="display:none">Next Step →</span></button>
       </div>
-      <div id="pos-ok" style="display:none;font-size:11px;color:#34d399;margin-bottom:12px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);border-radius:9px;padding:8px">✅ موقعیت انتخاب شد</div>
-      <div style="background:rgba(249,115,22,.05);border:1px solid rgba(249,115,22,.13);border-radius:11px;padding:11px;margin-bottom:12px;font-size:11px;color:#9a4a00;line-height:1.8">
-        💳 <strong style="color:#c2621c">درگاه پرداخت ریالی:</strong> به زودی از طریق زرین‌پال فعال می‌شه.
+      <div id="rs1" style="display:none" class="card">
+        <div style="font-size:14px;font-weight:800;color:var(--t1);margin-bottom:14px">🔧 <span class="fa">خدمات ارائه شده *</span><span class="en" style="display:none">Services *</span></div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px" id="svc-grid"></div>
+        <div class="fld"><label class="lbl">📝 <span class="fa">توضیحات</span><span class="en" style="display:none">Description</span></label><textarea class="inp" id="rdesc" rows="2" style="resize:vertical" placeholder="سابقه، گارانتی، خدمات ویژه..."></textarea></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-g btn-sm" onclick="regBack(1)">→ <span class="fa">قبلی</span></button>
+          <button class="btn btn-p" style="flex:1" onclick="regNext(1)"><span class="fa">مرحله بعد ←</span></button>
+        </div>
       </div>
-      <div style="display:flex;gap:10px">
-        <button class="btn btn-g btn-sm" onclick="regBack(2)">→ قبلی</button>
-        <button class="btn btn-p" style="flex:1" onclick="submitShop()" id="reg-submit-btn">✅ ثبت رایگان تعمیرگاه</button>
-      </div>
-    </div>
-    <!-- Success -->
-    <div id="rs3" style="display:none;text-align:center;padding:50px 20px">
-      <div style="font-size:68px;margin-bottom:18px;animation:float 3s ease-in-out infinite">🎉</div>
-      <div class="gt" style="font-size:22px;font-weight:900;margin-bottom:8px">ثبت شد!</div>
-      <div style="color:var(--t2);font-size:14px;margin-bottom:26px;line-height:2">تعمیرگاهت در taamiryar.com ثبت شد</div>
-      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-g btn-sm" onclick="regReset()">ثبت دیگری</button>
-        <button class="btn btn-p btn-sm" onclick="showTab('find')">مشاهده در نقشه</button>
+      <div id="rs2" style="display:none" class="card">
+        <div style="font-size:14px;font-weight:800;color:var(--t1);margin-bottom:8px">🗺️ <span class="fa">موقعیت روی نقشه (اختیاری)</span><span class="en" style="display:none">Location on Map (optional)</span></div>
+        <div style="font-size:12px;color:var(--t3);margin-bottom:12px;line-height:1.7"><span class="fa">روی نقشه کلیک کن تا موقعیت مشخص بشه</span><span class="en" style="display:none">Click on map to set location</span></div>
+        <div style="height:270px;border-radius:16px;overflow:hidden;margin-bottom:12px;border:1.5px solid rgba(0,229,255,.15)">
+          <div id="reg-map" style="width:100%;height:100%;border-radius:14px"></div>
+        </div>
+        <div id="pos-ok" style="display:none;font-size:11px;color:#34d399;margin-bottom:12px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);border-radius:9px;padding:8px">✅ <span class="fa">موقعیت انتخاب شد</span></div>
+        <div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.12);border-radius:12px;padding:12px;margin-bottom:12px;font-size:12px;color:#9a7a00;line-height:1.8">
+          💳 <strong style="color:#b89000"><span class="fa">درگاه پرداخت ریالی (زرین‌پال) — به زودی</span><span class="en" style="display:none">Rial payment gateway (ZarinPal) — coming soon</span></strong>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-g btn-sm" onclick="regBack(2)">→ <span class="fa">قبلی</span></button>
+          <button class="btn btn-p" style="flex:1" onclick="submitShop()" id="reg-submit-btn">✅ <span class="fa">ثبت رایگان</span><span class="en" style="display:none">Free Registration</span></button>
+        </div>
       </div>
     </div>
   </div>
+</div>
 
-</main>
-
-<!-- TIP MODAL -->
+<!-- MODALS -->
 <div id="tip-modal" class="overlay" style="display:none" onclick="closeTip()">
-  <div class="modal" onclick="event.stopPropagation()" style="position:relative;overflow:hidden">
-    <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:240px;height:120px;background:radial-gradient(ellipse,rgba(0,198,255,.1) 0%,transparent 70%);pointer-events:none"></div>
-    <div style="font-size:36px;text-align:center;margin-bottom:12px">💛</div>
-    <div class="gt" style="font-size:18px;font-weight:900;text-align:center;margin-bottom:8px">حمایت مالی</div>
-    <div style="color:var(--t3);font-size:12px;text-align:center;margin-bottom:20px;line-height:1.9">تعمیریار رایگانه.<br/>با حمایتت بهترش کن 🙏</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px" id="tip-grid"></div>
-    <div style="background:rgba(249,115,22,.05);border:1px solid rgba(249,115,22,.13);border-radius:11px;padding:10px;margin-bottom:14px;font-size:11px;color:#9a4a00;line-height:1.7;text-align:center">
-      💳 درگاه پرداخت ریالی — زرین‌پال<br/><span style="color:#c2621c">به زودی فعال می‌شه</span>
+  <div class="modal" onclick="event.stopPropagation()">
+    <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:260px;height:130px;background:radial-gradient(ellipse,rgba(255,215,0,.1),transparent 70%);pointer-events:none"></div>
+    <div style="font-size:42px;text-align:center;margin-bottom:12px">💛</div>
+    <h3 style="font-size:20px;font-weight:900;text-align:center;margin-bottom:8px" class="gold-text">
+      <span class="fa">حمایت مالی</span><span class="en" style="display:none">Financial Support</span><span class="ar" style="display:none">الدعم المالي</span>
+    </h3>
+    <p style="color:var(--t2);font-size:12px;text-align:center;margin-bottom:22px;line-height:1.9">
+      <span class="fa">تعمیریار رایگانه. با حمایتت کمک کن سرور قوی‌تر، AI بهتر و امکانات بیشتر داشته باشیم 🙏</span>
+      <span class="en" style="display:none">Taamiryar is free. With your support, help us have stronger servers, better AI, and more features 🙏</span>
+      <span class="ar" style="display:none">تعمیریار مجاني. بدعمك ساعدنا على امتلاك خوادم أقوى وذكاء اصطناعي أفضل 🙏</span>
+    </p>
+    <div class="tip-grid" id="tip-opts"></div>
+    <div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.12);border-radius:12px;padding:11px;margin-bottom:16px;font-size:11px;color:#9a7a00;text-align:center;line-height:1.7">
+      💳 <strong style="color:#b89000"><span class="fa">درگاه پرداخت ریالی — زرین‌پال — به زودی</span><span class="en" style="display:none">Rial Gateway — ZarinPal — Coming Soon</span></strong>
     </div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-p" style="flex:1" id="tip-confirm-btn" onclick="confirmTip()">مبلغ رو انتخاب کن</button>
+      <button class="btn btn-gold" style="flex:1" id="tip-confirm-btn" onclick="confirmTip()"><span class="fa">مبلغ رو انتخاب کن</span><span class="en" style="display:none">Select Amount</span></button>
       <button class="btn btn-g" style="padding:12px 14px" onclick="closeTip()">✕</button>
     </div>
   </div>
 </div>
 
-<!-- REVIEW MODAL -->
 <div id="rev-modal" class="overlay" style="display:none" onclick="closeReview()">
   <div class="modal" onclick="event.stopPropagation()">
-    <div style="font-size:26px;text-align:center;margin-bottom:12px">💬</div>
-    <div class="gt" style="font-size:17px;font-weight:900;text-align:center;margin-bottom:18px">نظرت رو بنویس</div>
-    <div class="fld"><label class="lbl">نام شما *</label><input class="inp" id="rev-name" placeholder="علی محمدی"></div>
+    <div style="font-size:30px;text-align:center;margin-bottom:12px">💬</div>
+    <h3 class="gt" style="font-size:18px;font-weight:900;text-align:center;margin-bottom:20px">
+      <span class="fa">نظرت رو بنویس</span><span class="en" style="display:none">Write Your Review</span><span class="ar" style="display:none">اكتب مراجعتك</span>
+    </h3>
+    <div class="fld"><label class="lbl"><span class="fa">نام *</span><span class="en" style="display:none">Name *</span></label><input class="inp" id="rev-name" placeholder="علی محمدی"></div>
+    <div class="fld"><label class="lbl"><span class="fa">شهر</span><span class="en" style="display:none">City</span></label><select class="inp" id="rev-city" style="cursor:pointer;appearance:none"></select></div>
     <div class="fld">
-      <label class="lbl">شهر</label>
-      <select class="inp" id="rev-city" style="cursor:pointer;appearance:none"></select>
+      <label class="lbl"><span class="fa">امتیاز</span><span class="en" style="display:none">Rating</span></label>
+      <div id="rev-stars" style="display:flex;gap:5px"></div>
     </div>
-    <div class="fld">
-      <label class="lbl">امتیاز</label>
-      <div id="rev-stars" style="display:flex;gap:4px"></div>
-    </div>
-    <div class="fld"><label class="lbl">نظر *</label><textarea class="inp" id="rev-text" placeholder="تجربه‌ات رو بنویس..." rows="3" style="resize:vertical"></textarea></div>
+    <div class="fld"><label class="lbl"><span class="fa">نظر *</span><span class="en" style="display:none">Review *</span></label><textarea class="inp" id="rev-text" rows="3" style="resize:vertical" placeholder="تجربه‌ات رو بنویس..."></textarea></div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-p" style="flex:1" onclick="submitReview()">ثبت نظر</button>
+      <button class="btn btn-p" style="flex:1" onclick="submitReview()"><span class="fa">ثبت نظر</span><span class="en" style="display:none">Submit</span></button>
       <button class="btn btn-g" style="padding:12px 14px" onclick="closeReview()">✕</button>
     </div>
   </div>
@@ -380,28 +797,43 @@ a{text-decoration:none;color:inherit}
 <script>
 /* ═══ DATA ═══ */
 const CATS=[
-  {i:"📱",l:"موبایل و تبلت",c:"#00c6ff"},{i:"💻",l:"لپ‌تاپ",c:"#7b2ff7"},
-  {i:"🖥️",l:"کامپیوتر",c:"#3b82f6"},{i:"❄️",l:"یخچال و فریزر",c:"#06b6d4"},
-  {i:"🌬️",l:"کولر گازی",c:"#10b981"},{i:"💨",l:"کولر آبی",c:"#06b6d4"},
-  {i:"🌡️",l:"پکیج و شوفاژ",c:"#f97316"},{i:"🫧",l:"ماشین لباسشویی",c:"#8b5cf6"},
-  {i:"🍽️",l:"ماشین ظرفشویی",c:"#3b82f6"},{i:"🍳",l:"اجاق گاز",c:"#ef4444"},
-  {i:"🔥",l:"فر و مایکروویو",c:"#f97316"},{i:"📺",l:"تلویزیون",c:"#8b5cf6"},
-  {i:"🎮",l:"کنسول بازی",c:"#10b981"},{i:"🖨️",l:"پرینتر",c:"#3b82f6"},
-  {i:"📷",l:"دوربین",c:"#f59e0b"},{i:"🎵",l:"سیستم صوتی",c:"#ec4899"},
-  {i:"🌀",l:"جاروبرقی",c:"#6366f1"},{i:"👕",l:"اتو و بخارشوی",c:"#06b6d4"},
-  {i:"☕",l:"قهوه‌ساز",c:"#92400e"},{i:"🥤",l:"مخلوط‌کن",c:"#10b981"},
-  {i:"🔌",l:"برق و سیم‌کشی",c:"#f59e0b"},{i:"🚿",l:"لوله‌کشی",c:"#3b82f6"},
-  {i:"🚗",l:"لوازم خودرو",c:"#ef4444"},{i:"🔋",l:"باتری و UPS",c:"#10b981"},
-  {i:"⌚",l:"ساعت و جواهر",c:"#8b5cf6"},{i:"🪟",l:"درب و پنجره",c:"#6366f1"},
-  {i:"🛁",l:"وان و جکوزی",c:"#06b6d4"},{i:"💡",l:"روشنایی و LED",c:"#f59e0b"},
-  {i:"📡",l:"آنتن و ماهواره",c:"#3b82f6"},{i:"🔧",l:"سایر تجهیزات",c:"#94a3b8"},
+  {i:"📱",l:{fa:"موبایل و تبلت",en:"Mobile & Tablet",ar:"موبايل وتابلت"},c:"#00e5ff"},
+  {i:"💻",l:{fa:"لپ‌تاپ",en:"Laptop",ar:"لابتوب"},c:"#7b2ff7"},
+  {i:"🖥️",l:{fa:"کامپیوتر",en:"Computer",ar:"كمبيوتر"},c:"#3b82f6"},
+  {i:"❄️",l:{fa:"یخچال و فریزر",en:"Fridge & Freezer",ar:"ثلاجة"},c:"#06b6d4"},
+  {i:"🌬️",l:{fa:"کولر گازی",en:"AC Unit",ar:"مكيف هواء"},c:"#10b981"},
+  {i:"💨",l:{fa:"کولر آبی",en:"Cooler",ar:"مبرد"},c:"#06b6d4"},
+  {i:"🌡️",l:{fa:"پکیج و شوفاژ",en:"Boiler & Heating",ar:"التدفئة"},c:"#f97316"},
+  {i:"🫧",l:{fa:"ماشین لباسشویی",en:"Washing Machine",ar:"غسالة"},c:"#8b5cf6"},
+  {i:"🍽️",l:{fa:"ماشین ظرفشویی",en:"Dishwasher",ar:"غسالة أطباق"},c:"#3b82f6"},
+  {i:"🍳",l:{fa:"اجاق گاز",en:"Gas Stove",ar:"موقد غاز"},c:"#ef4444"},
+  {i:"🔥",l:{fa:"فر و مایکروویو",en:"Oven & Microwave",ar:"فرن وميكروويف"},c:"#f97316"},
+  {i:"📺",l:{fa:"تلویزیون",en:"Television",ar:"تلفزيون"},c:"#8b5cf6"},
+  {i:"🎮",l:{fa:"کنسول بازی",en:"Game Console",ar:"وحدة ألعاب"},c:"#10b981"},
+  {i:"🖨️",l:{fa:"پرینتر",en:"Printer",ar:"طابعة"},c:"#3b82f6"},
+  {i:"📷",l:{fa:"دوربین",en:"Camera",ar:"كاميرا"},c:"#f59e0b"},
+  {i:"🎵",l:{fa:"سیستم صوتی",en:"Audio System",ar:"نظام صوتي"},c:"#ec4899"},
+  {i:"🌀",l:{fa:"جاروبرقی",en:"Vacuum",ar:"مكنسة كهربائية"},c:"#6366f1"},
+  {i:"👕",l:{fa:"اتو و بخارشوی",en:"Iron & Steamer",ar:"مكواة"},c:"#06b6d4"},
+  {i:"☕",l:{fa:"قهوه‌ساز",en:"Coffee Maker",ar:"ماكينة قهوة"},c:"#92400e"},
+  {i:"🥤",l:{fa:"مخلوط‌کن",en:"Blender",ar:"خلاط"},c:"#10b981"},
+  {i:"🔌",l:{fa:"برق و سیم‌کشی",en:"Electrical",ar:"كهرباء"},c:"#f59e0b"},
+  {i:"🚿",l:{fa:"لوله‌کشی",en:"Plumbing",ar:"سباكة"},c:"#3b82f6"},
+  {i:"🚗",l:{fa:"لوازم خودرو",en:"Car Parts",ar:"قطع سيارة"},c:"#ef4444"},
+  {i:"🔋",l:{fa:"باتری و UPS",en:"Battery & UPS",ar:"بطارية وUPS"},c:"#10b981"},
+  {i:"⌚",l:{fa:"ساعت",en:"Watch",ar:"ساعة"},c:"#8b5cf6"},
+  {i:"🪟",l:{fa:"درب و پنجره",en:"Door & Window",ar:"باب ونافذة"},c:"#6366f1"},
+  {i:"🛁",l:{fa:"وان و جکوزی",en:"Bath & Jacuzzi",ar:"حوض استحمام"},c:"#06b6d4"},
+  {i:"💡",l:{fa:"روشنایی و LED",en:"Lighting & LED",ar:"إضاءة وLED"},c:"#f59e0b"},
+  {i:"📡",l:{fa:"آنتن و ماهواره",en:"Antenna & Satellite",ar:"هوائي وقمر"},c:"#3b82f6"},
+  {i:"🔧",l:{fa:"سایر تجهیزات",en:"Other Equipment",ar:"معدات أخرى"},c:"#94a3b8"},
 ];
 const CITIES=["تهران","اصفهان","شیراز","مشهد","تبریز","کرج","اهواز","قم","رشت","کرمانشاه","همدان","ارومیه","زاهدان","بندرعباس","یزد","بوشهر","گرگان","اراک","سمنان","سایر"];
-const SUGGS=["یخچالم برفک می‌زنه","گوشیم شارژ نمیگیره","ماشین لباسشویی آب نمیکشه","کولر سرد نمی‌کنه","لپ‌تاپم روشن نمیشه","تلویزیون تصویر نداره","پکیج آب گرم نمیده","اجاق گاز روشن نمیشه"];
-const TIPS=[{a:50000,l:"۵۰ هزار",i:"☕",d:"یه قهوه"},{a:100000,l:"۱۰۰ هزار",i:"🌮",d:"ساندویچ"},{a:200000,l:"۲۰۰ هزار",i:"🚀",d:"حامی ویژه"},{a:500000,l:"۵۰۰ هزار",i:"💎",d:"قهرمان"}];
+const SUGGS={fa:["یخچالم برفک می‌زنه","گوشیم شارژ نمیگیره","ماشین لباسشویی آب نمیکشه","کولر سرد نمی‌کنه","لپ‌تاپم روشن نمیشه","تلویزیون تصویر نداره"],en:["Fridge making frost","Phone not charging","Washing machine not draining","AC not cooling","Laptop won't turn on","TV has no picture"],ar:["الثلاجة تتجمد","الهاتف لا يشحن","الغسالة لا تصرف","المكيف لا يبرد","اللابتوب لا يعمل","التلفزيون بلا صورة"]};
+const TIPS=[{a:50000,l:"۵۰ هزار",i:"☕",d:{fa:"یه قهوه",en:"A coffee",ar:"قهوة"}},{a:100000,l:"۱۰۰ هزار",i:"🌮",d:{fa:"ساندویچ",en:"Sandwich",ar:"ساندويتش"}},{a:200000,l:"۲۰۰ هزار",i:"🚀",d:{fa:"حامی ویژه",en:"Special Sponsor",ar:"راعٍ خاص"}},{a:500000,l:"۵۰۰ هزار",i:"💎",d:{fa:"قهرمان",en:"Champion",ar:"بطل"}}];
 const INIT_REVIEWS=[
   {name:"علی محمدی",city:"تهران",text:"عالی بود! مشکل یخچالمو دقیقاً تشخیص داد",rating:5,date:"۲ روز پیش",av:"👨"},
-  {name:"سارا کریمی",city:"اصفهان",text:"تعمیرکار خوبی معرفی کرد، ممنون",rating:5,date:"۵ روز پیش",av:"👩"},
+  {name:"Sara K.",city:"Isfahan",text:"Found a great repair shop nearby. Really helpful!",rating:5,date:"5 days ago",av:"👩"},
   {name:"رضا تهرانی",city:"شیراز",text:"هزینه تعمیر رو درست تخمین زد",rating:4,date:"۱ هفته پیش",av:"👨"},
   {name:"مریم حسینی",city:"مشهد",text:"مشکل کولرم رو خودم با راهنمایی AI درست کردم!",rating:5,date:"۱۰ روز پیش",av:"👩"},
 ];
@@ -409,252 +841,259 @@ const INIT_REVIEWS=[
 /* ═══ STATE ═══ */
 let shops=JSON.parse(localStorage.getItem("tr_shops")||"[]");
 let reviews=JSON.parse(localStorage.getItem("tr_reviews")||JSON.stringify(INIT_REVIEWS));
-let selCat=null,uLat=null,uLng=null,tipSel=null,revRating=5;
+let lang="fa",selCat=null,uLat=null,uLng=null,tipSel=null,revRating=5;
 let regData={name:"",owner:"",phone:"",tel:"",insta:"",city:"",addr:"",svcs:[],lat:null,lng:null,desc:""};
 let regMap=null,findMap=null;
 
+/* ═══ LANG ═══ */
+function setLang(l){
+  lang=l;
+  document.body.className=`lang-${l}`;
+  document.documentElement.dir=l==="en"?"ltr":"rtl";
+  document.querySelectorAll(".lang-opt").forEach(b=>b.classList.toggle("active",b.textContent===l.toUpperCase()));
+  renderAll();
+}
+
 /* ═══ PARTICLES ═══ */
 (function(){
-  const c=document.getElementById("canvas");
-  const ctx=c.getContext("2d");
+  const c=document.getElementById("canvas");const ctx=c.getContext("2d");
   let W=c.width=innerWidth,H=c.height=innerHeight;
   window.addEventListener("resize",()=>{W=c.width=innerWidth;H=c.height=innerHeight;});
-  const pts=Array.from({length:50},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.27,vy:(Math.random()-.5)*.27,r:Math.random()*1.5+.3,col:Math.random()>.5?"rgba(0,198,255,":"rgba(123,47,247,"}));
+  const pts=Array.from({length:55},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.6+.3,col:Math.random()>.5?"rgba(0,229,255,":"rgba(179,71,255,"}));
   function draw(){
     ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.col+".2)";ctx.fill();});
-    pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<125){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,198,255,${.04*(1-d/125)})`;ctx.lineWidth=.6;ctx.stroke();}}));
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.col+".18)";ctx.fill();});
+    pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<125){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,229,255,${.04*(1-d/125)})`;ctx.lineWidth=.6;ctx.stroke();}}));
     requestAnimationFrame(draw);
   }
   draw();
 })();
 
 /* ═══ GEARS ═══ */
-function drawGear(canvasId,size,speed,opacity,reverse,color){
-  const c=document.getElementById(canvasId);if(!c)return;
-  const ctx=c.getContext("2d"),cx=size,cy=size,n=12,r=size*.85,ri=r*.65,rt=r*.86;
-  let ang=0;
-  function frame(){
-    ctx.clearRect(0,0,size*2,size*2);
-    ctx.save();ctx.translate(cx,cy);ctx.rotate(reverse?-ang:ang);
-    ctx.globalAlpha=opacity;
+function drawGear(id,sz,spd,op,rev,col){
+  const c=document.getElementById(id);if(!c)return;
+  const ctx=c.getContext("2d"),n=12,r=sz*.85,ri=r*.65,rt=r*.86;let ang=0;
+  (function frame(){
+    ctx.clearRect(0,0,sz*2,sz*2);ctx.save();ctx.translate(sz,sz);ctx.rotate(rev?-ang:ang);ctx.globalAlpha=op;
     ctx.beginPath();
     for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2,aw=Math.PI/n*.5;
-      const pts=[[rt*Math.cos(a-aw),rt*Math.sin(a-aw)],[r*Math.cos(a-aw*.3),r*Math.sin(a-aw*.3)],[r*Math.cos(a+aw*.3),r*Math.sin(a+aw*.3)],[rt*Math.cos(a+aw),rt*Math.sin(a+aw)]];
-      if(i===0)ctx.moveTo(pts[0][0],pts[0][1]);pts.forEach(p=>ctx.lineTo(p[0],p[1]));
-    }
-    ctx.closePath();ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.stroke();
+      [[rt*Math.cos(a-aw),rt*Math.sin(a-aw)],[r*Math.cos(a-aw*.3),r*Math.sin(a-aw*.3)],[r*Math.cos(a+aw*.3),r*Math.sin(a+aw*.3)],[rt*Math.cos(a+aw),rt*Math.sin(a+aw)]].forEach((p,j)=>{j===0&&i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});}
+    ctx.closePath();ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.stroke();
     ctx.beginPath();ctx.arc(0,0,ri,0,Math.PI*2);ctx.stroke();
-    ctx.beginPath();ctx.arc(0,0,size*.15,0,Math.PI*2);ctx.fillStyle=color;ctx.globalAlpha=opacity*.6;ctx.fill();
-    ctx.restore();
-    ang+=.003*speed;
-    requestAnimationFrame(frame);
-  }
-  frame();
+    ctx.beginPath();ctx.arc(0,0,sz*.15,0,Math.PI*2);ctx.fillStyle=col;ctx.globalAlpha=op*.6;ctx.fill();
+    ctx.restore();ang+=.003*spd;requestAnimationFrame(frame);
+  })();
 }
-drawGear("g1",75,1,0.07,false,"#00c6ff");
-drawGear("g2",90,1.3,0.06,true,"#7b2ff7");
-drawGear("g3",35,1.8,0.05,false,"#00c6ff");
-drawGear("lg1",50,4,0.65,false,"#00c6ff");
-drawGear("lg2",36,2.8,0.55,true,"#7b2ff7");
+drawGear("g1",80,1,.07,false,"#00e5ff");
+drawGear("g2",95,1.3,.06,true,"#b347ff");
+drawGear("g3",37,1.8,.05,false,"#00e5ff");
+drawGear("lg1",55,4,.65,false,"#00e5ff");
+drawGear("lg2",39,2.8,.55,true,"#b347ff");
+drawGear("lg3",23,5,.45,false,"#10b981");
 
-/* ═══ NAV ═══ */
-function showTab(id){
-  ["home","diag","find","reg"].forEach(t=>{
-    document.getElementById("page-"+t).classList.toggle("active",t===id);
-    const nb=document.getElementById("nb-"+t);
-    nb.classList.toggle("active",t===id);
-    const ind=nb.querySelector(".nav-ind");
-    if(ind){if(t!==id)ind.remove();}
-    else if(t===id){const d=document.createElement("div");d.className="nav-ind";nb.prepend(d);}
+/* ═══ PAGE NAV ═══ */
+function showPage(id){
+  ["home","diag","find","reg"].forEach(p=>{
+    document.getElementById("page-"+p).classList.toggle("on",p===id);
+    const nb=document.getElementById("nb-"+p);
+    nb.classList.toggle("on",p===id);
+    const ind=nb.querySelector(".nb-ind");
+    if(ind&&p!==id)ind.remove();
+    else if(!ind&&p===id){const d=document.createElement("div");d.className="nb-ind";nb.prepend(d);}
   });
   if(id==="find")initFindMap();
-  if(id==="reg")initRegMap();
+  if(id==="reg"){buildRegCity();initRegMap();}
+  window.scrollTo(0,0);
 }
 
-/* ═══ HOME RENDER ═══ */
-function renderHome(){
-  // Quick actions
-  const qa=[
-    {i:"🤖",t:"تشخیص هوشمند",d:"مشکل دستگاهت رو بگو",tab:"diag",c:"#00c6ff"},
-    {i:"📍",t:"تعمیرگاه نزدیک",d:"بر اساس موقعیت پیدا کن",tab:"find",c:"#7b2ff7"},
-    {i:"✏️",t:"ثبت تعمیرگاه",d:"رایگان ثبت‌نام کن",tab:"reg",c:"#f97316"},
-    {i:"💬",t:"نظرات کاربران",d:"تجربه دیگران رو بخون",tab:"home",c:"#10b981"},
-  ];
-  document.getElementById("quick-actions").innerHTML=qa.map(a=>`
-    <button onclick="showTab('${a.tab}')" style="background:${a.c}0d;border:1px solid ${a.c}22;border-radius:16px;padding:15px 12px;cursor:pointer;text-align:right;transition:all .25s;width:100%"
-      onmouseover="this.style.background='${a.c}18';this.style.transform='translateY(-3px)'" onmouseout="this.style.background='${a.c}0d';this.style.transform='none'">
-      <div style="font-size:26px;margin-bottom:8px">${a.i}</div>
-      <div style="font-size:13px;font-weight:700;color:#e8f0ff;margin-bottom:4px">${a.t}</div>
-      <div style="font-size:11px;color:#4a6a90;line-height:1.5">${a.d}</div>
-    </button>`).join("");
+/* ═══ RENDER ═══ */
+function t(obj){return typeof obj==="object"?obj[lang]||obj.fa:obj;}
+function renderAll(){
+  renderHomeCats();renderDiagCats();renderSuggs();renderReviews();renderRecentShops();renderTipOpts();renderStepsBar();
+}
 
-  // Home cats
-  document.getElementById("home-cats").innerHTML=CATS.map(c=>`
-    <button class="cat-btn" onclick="selCatAndGo('${c.i}','${c.l}','${c.c}')"
-      style="border-color:${c.c}20;background:${c.c}08"
-      onmouseover="this.style.background='${c.c}16';this.style.borderColor='${c.c}45';this.style.transform='translateY(-3px)'"
-      onmouseout="this.style.background='${c.c}08';this.style.borderColor='${c.c}20';this.style.transform='none'">
-      <div class="cat-ic">${c.i}</div><div class="cat-lb">${c.l}</div>
-    </button>`).join("");
+function renderHomeCats(){
+  const el=document.getElementById("home-cats");if(!el)return;
+  el.innerHTML=CATS.map(c=>`<button class="cat-btn" onclick="selCatGo('${c.i}','${t(c.l)}','${c.c}')"
+    style="border-color:${c.c}20;background:${c.c}08"
+    onmouseover="this.style.background='${c.c}15';this.style.borderColor='${c.c}45';this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 20px ${c.c}18'"
+    onmouseout="this.style.background='${c.c}08';this.style.borderColor='${c.c}20';this.style.transform='none';this.style.boxShadow='none'">
+    <div class="cat-ic">${c.i}</div><div class="cat-lb">${t(c.l)}</div>
+  </button>`).join("");
+}
 
-  // Suggs
-  document.getElementById("home-suggs").innerHTML=SUGGS.map(s=>`
-    <button class="sug-btn" onclick="doDiagWith('${s}')">${s}</button>`).join("");
+function renderDiagCats(){
+  const el=document.getElementById("diag-cats");if(!el)return;
+  el.innerHTML=CATS.map(c=>`<button class="cat-btn${selCat&&selCat.l===t(c.l)?" sel":""}" onclick="toggleCat('${c.i}','${t(c.l)}','${c.c}')"
+    style="border-color:${selCat&&selCat.l===t(c.l)?c.c+"55":c.c+"18"};background:${selCat&&selCat.l===t(c.l)?c.c+"13":c.c+"07"}"
+    onmouseover="if(!this.classList.contains('sel')){this.style.background='${c.c}12';this.style.transform='translateY(-3px)'}"
+    onmouseout="if(!this.classList.contains('sel')){this.style.background='${selCat&&selCat.l===t(c.l)?c.c+"13":c.c+"07"}';this.style.transform='none'}">
+    <div class="cat-ic">${c.i}</div><div class="cat-lb" style="${selCat&&selCat.l===t(c.l)?"color:"+c.c:""}">${t(c.l)}</div>
+  </button>`).join("");
+}
 
-  // Reviews
-  document.getElementById("reviews-list").innerHTML=reviews.slice(0,4).map(r=>`
-    <div class="rev-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+function renderSuggs(){
+  const el=document.getElementById("diag-suggs");if(!el)return;
+  const list=SUGGS[lang]||SUGGS.fa;
+  el.innerHTML=list.map(s=>`<button class="sug" onclick="doDiagWith('${s}')">${s}</button>`).join("");
+}
+
+function renderReviews(){
+  const el=document.getElementById("reviews-list");if(!el)return;
+  el.innerHTML=reviews.slice(0,6).map(r=>`
+    <div class="testi-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
         <div style="display:flex;align-items:center;gap:9px">
-          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(0,198,255,.15),rgba(123,47,247,.15));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${r.av||"👤"}</div>
-          <div><div style="font-size:13px;font-weight:700;color:#e8f0ff">${r.name}</div><div style="font-size:10px;color:#4a6a90">${r.city}·${r.date}</div></div>
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,rgba(0,229,255,.15),rgba(179,71,255,.15));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${r.av||"👤"}</div>
+          <div><div style="font-size:13px;font-weight:700;color:var(--t1)">${r.name}</div><div style="font-size:10px;color:var(--t3)">${r.city}·${r.date}</div></div>
         </div>
-        <div>${"★".repeat(r.rating)}<span style="color:rgba(245,158,11,.2)">${"★".repeat(5-r.rating)}</span></div>
+        <div style="font-size:13px">${"★".repeat(r.rating)}<span style="color:rgba(245,158,11,.2)">${"★".repeat(5-r.rating)}</span></div>
       </div>
-      <div style="font-size:12px;color:#8fafd4;line-height:1.8">${r.text}</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.8">${r.text}</div>
     </div>`).join("");
+}
 
-  // Recent shops
-  if(shops.length>0){
-    document.getElementById("recent-shops-wrap").style.display="block";
-    document.getElementById("recent-shops").innerHTML=shops.slice(-3).reverse().map(s=>`
-      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,198,255,.06)">
-        <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,rgba(0,198,255,.1),rgba(123,47,247,.1));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔧</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:700;color:#e8f0ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.name}</div>
-          <div style="font-size:10px;color:#4a6a90;margin-top:2px">📍${s.city}</div>
-        </div>
-        <a href="tel:${s.phone}" style="font-size:11px;color:#00c6ff;background:rgba(0,198,255,.08);border:1px solid rgba(0,198,255,.18);border-radius:9px;padding:6px 12px;font-weight:600">📞 تماس</a>
-      </div>`).join("");
-  }
-  // Stats
+function renderRecentShops(){
+  const wrap=document.getElementById("recent-shops-wrap");
+  const el=document.getElementById("recent-shops");
+  if(!wrap||!el)return;
+  if(shops.length===0){wrap.style.display="none";return;}
+  wrap.style.display="block";
+  el.innerHTML=shops.slice(-3).reverse().map(s=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,229,255,.06)">
+      <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,rgba(0,229,255,.1),rgba(179,71,255,.1));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔧</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.name}</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px">📍${s.city}</div>
+      </div>
+      <a href="tel:${s.phone}" style="font-size:11px;color:#00e5ff;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.18);border-radius:9px;padding:6px 12px;font-weight:700">📞</a>
+    </div>`).join("");
   document.getElementById("sc").textContent=`${shops.length+1240}+`;
-  document.getElementById("rc").textContent=reviews.length;
+  document.getElementById("hn1").textContent=`${shops.length+1240}+`;
+}
+
+function renderTipOpts(){
+  const els=[document.getElementById("home-tips"),document.getElementById("tip-opts")];
+  els.forEach(el=>{
+    if(!el)return;
+    el.innerHTML=TIPS.map(tp=>`
+      <button class="tip-btn${tipSel&&tipSel.a===tp.a?" sel":""}" onclick="selTip(${tp.a},'${tp.l}','${tp.i}')" id="tb-${tp.a}">
+        <div style="font-size:24px;margin-bottom:6px">${tp.i}</div>
+        <div style="font-size:14px;font-weight:900;color:${tipSel&&tipSel.a===tp.a?"#00e5ff":"var(--t1)"}">${tp.l} <span style="font-size:10px">تومان</span></div>
+        <div style="font-size:10px;color:var(--t3);margin-top:3px">${t(tp.d)}</div>
+      </button>`).join("");
+  });
+}
+
+function renderStepsBar(){
+  const el=document.getElementById("reg-steps-bar");if(!el)return;
+  const labels=[{fa:"اطلاعات",en:"Info",ar:"معلومات"},{fa:"خدمات",en:"Services",ar:"خدمات"},{fa:"موقعیت",en:"Location",ar:"الموقع"}];
+  el.innerHTML=labels.map((l,i)=>`
+    <div style="flex:1">
+      <div class="step-bar" id="sb${i}" style="background:${i===0?"linear-gradient(90deg,#00e5ff,#b347ff)":"rgba(0,229,255,.08)"}"></div>
+      <div class="step-lbl" id="sl${i}" style="color:${i===0?"#00e5ff":"var(--t3)"}">${t(l)}</div>
+    </div>`).join("");
 }
 
 /* ═══ DIAGNOSE ═══ */
-function selCatAndGo(icon,label,color){
-  selCat={i:icon,l:label,c:color};
-  showTab("diag");
-  renderDiagCats();
-  const bar=document.getElementById("sel-cat-bar");
-  bar.style.display="flex";
-  bar.style.borderColor=`${color}35`;
-  bar.style.background=`${color}09`;
-  document.getElementById("sel-cat-icon").textContent=icon;
-  document.getElementById("sel-cat-name").textContent=label+" انتخاب شد";
-  document.getElementById("sel-cat-name").style.color=color;
+function selCatGo(icon,label,color){selCat={i:icon,l:label,c:color};showPage("diag");renderDiagCats();showSelBar();}
+function toggleCat(icon,label,color){if(selCat&&selCat.l===label)clearCat();else{selCat={i:icon,l:label,c:color};showSelBar();}renderDiagCats();}
+function showSelBar(){
+  const bar=document.getElementById("sel-bar");
+  bar.style.display="flex";bar.style.borderColor=`${selCat.c}35`;bar.style.background=`${selCat.c}09`;
+  document.getElementById("sel-icon").textContent=selCat.i;
+  document.getElementById("sel-name").textContent=selCat.l;
+  document.getElementById("sel-name").style.color=selCat.c;
 }
-function clearCat(){selCat=null;document.getElementById("sel-cat-bar").style.display="none";renderDiagCats();}
-function renderDiagCats(){
-  document.getElementById("diag-cats").innerHTML=CATS.map(c=>`
-    <button class="cat-btn${selCat&&selCat.l===c.l?" sel":""}" onclick="toggleCat('${c.i}','${c.l}','${c.c}')"
-      style="border-color:${selCat&&selCat.l===c.l?c.c+"55":c.c+"18"};background:${selCat&&selCat.l===c.l?c.c+"13":c.c+"07"};${selCat&&selCat.l===c.l?"box-shadow:0 0 13px "+c.c+"20":""}"
-      onmouseover="if(!this.classList.contains('sel')){this.style.background='${c.c}12';this.style.transform='translateY(-2px)'}"
-      onmouseout="if(!this.classList.contains('sel')){this.style.background='${c.c}07';this.style.transform='none'}">
-      <div class="cat-ic">${c.i}</div><div class="cat-lb" style="${selCat&&selCat.l===c.l?"color:"+c.c:""}">${c.l}</div>
-    </button>`).join("");
-  document.getElementById("diag-suggs").innerHTML=SUGGS.map(s=>`<button class="sug-btn" onclick="doDiagWith('${s}')">${s}</button>`).join("");
-}
-function toggleCat(i,l,c){
-  if(selCat&&selCat.l===l)clearCat();
-  else selCatAndGo(i,l,c);
-}
+function clearCat(){selCat=null;const bar=document.getElementById("sel-bar");bar.style.display="none";renderDiagCats();}
 function doSearch(){const q=document.getElementById("hq").value.trim();if(q)doDiagWith(q);}
-function doDiagWith(q){document.getElementById("dq").value=q;doDiag();}
+function doDiagWith(q){document.getElementById("dq").value=q;showPage("diag");doDiag();}
+
 async function doDiag(){
-  const q=document.getElementById("dq").value.trim();
-  if(!q)return;
+  const q=document.getElementById("dq").value.trim();if(!q)return;
   const fq=(selCat?`[${selCat.i} ${selCat.l}] `:"")+q;
-  showTab("diag");
   document.getElementById("diag-idle").style.display="none";
   document.getElementById("diag-loading").style.display="block";
   document.getElementById("diag-result").style.display="none";
-  let dots=0;
-  const iv=setInterval(()=>{dots=(dots+1)%4;document.getElementById("loading-txt").textContent="در حال تشخیص"+".".repeat(dots);},380);
+  let d=0;
+  const iv=setInterval(()=>{d=(d+1)%4;document.getElementById("dots").textContent=".".repeat(d+1);},380);
+  const prompts={
+    fa:`تو متخصص تعمیرات حرفه‌ای ایرانی با ۲۰ سال تجربه هستی.\nمشکل کاربر: ${fq}\n\nپاسخ کامل فارسی روان:\n\n🔍 تشخیص احتمالی:\n(یک جمله)\n\n⚠️ دلایل رایج:\n• ...\n• ...\n\n🛠️ راه‌حل گام به گام:\n۱. ...\n۲. ...\n\n💰 تخمین هزینه:\n(تومان)\n\n✅ توصیه نهایی:`,
+    en:`You are a professional repair technician with 20 years of experience.\nUser problem: ${fq}\n\nAnswer in English:\n\n🔍 Probable diagnosis:\n(one sentence)\n\n⚠️ Common causes:\n• ...\n• ...\n\n🛠️ Step-by-step solution:\n1. ...\n2. ...\n\n💰 Repair cost estimate:\n\n✅ Final recommendation:`,
+    ar:`أنت متخصص إصلاح محترف لديك ٢٠ عاماً من الخبرة.\nمشكلة المستخدم: ${fq}\n\nأجب باللغة العربية:\n\n🔍 التشخيص المحتمل:\n(جملة واحدة)\n\n⚠️ الأسباب الشائعة:\n• ...\n• ...\n\n🛠️ الحل خطوة بخطوة:\n١. ...\n٢. ...\n\n💰 تقدير تكلفة الإصلاح:\n\n✅ التوصية النهائية:`
+  };
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1100,
-        messages:[{role:"user",content:`تو متخصص تعمیرات حرفه‌ای ایرانی با ۲۰ سال تجربه هستی.\nمشکل کاربر: ${fq}\n\nپاسخ کامل فارسی روان:\n\n🔍 تشخیص احتمالی:\n(یک جمله واضح)\n\n⚠️ دلایل رایج:\n• ...\n• ...\n\n🛠️ راه‌حل گام به گام:\n۱. ...\n۲. ...\n\n💰 تخمین هزینه:\n(محدوده قیمت تومانی)\n\n✅ توصیه نهایی:`}]})
-    });
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1100,messages:[{role:"user",content:prompts[lang]||prompts.fa}]})});
     const data=await res.json();
     clearInterval(iv);
-    const txt=data.content?.[0]?.text||"خطایی رخ داد.";
+    const txt=data.content?.[0]?.text||"Error";
     document.getElementById("diag-loading").style.display="none";
     document.getElementById("diag-result").style.display="block";
-    const box=document.getElementById("result-box");
-    box.textContent="";
-    let i=0;
+    const box=document.getElementById("result-box");box.textContent="";
     const cur=document.createElement("span");cur.className="cursor";cur.textContent="▌";box.appendChild(cur);
-    const iv2=setInterval(()=>{
+    let i=0;const iv2=setInterval(()=>{
       if(i<txt.length){box.insertBefore(document.createTextNode(txt[i]),cur);i++;}
       else{clearInterval(iv2);cur.remove();}
-    },13);
+    },12);
   }catch(e){
     clearInterval(iv);
     document.getElementById("diag-loading").style.display="none";
     document.getElementById("diag-result").style.display="block";
-    document.getElementById("result-box").textContent="❌ خطا در اتصال. اینترنت رو چک کن.";
+    document.getElementById("result-box").textContent="❌ Connection error. Please try again.";
   }
 }
 function resetDiag(){
   document.getElementById("diag-idle").style.display="block";
   document.getElementById("diag-result").style.display="none";
-  document.getElementById("dq").value="";
-  clearCat();
+  document.getElementById("dq").value="";clearCat();
 }
 
 /* ═══ FIND ═══ */
 function buildFindSelects(){
-  const citySel=document.getElementById("fcity");
-  const catSel=document.getElementById("fcat");
-  citySel.innerHTML='<option value="">همه شهرها</option>'+CITIES.map(c=>`<option value="${c}">${c}</option>`).join("");
-  catSel.innerHTML='<option value="">همه خدمات</option>'+CATS.map(c=>`<option value="${c.i} ${c.l}">${c.i} ${c.l}</option>`).join("");
+  const cs=document.getElementById("fcity"),ct=document.getElementById("fcat");
+  if(!cs||!ct)return;
+  cs.innerHTML=`<option value="">${{fa:"همه شهرها",en:"All Cities",ar:"جميع المدن"}[lang]||"همه شهرها"}</option>`+CITIES.map(c=>`<option value="${c}">${c}</option>`).join("");
+  ct.innerHTML=`<option value="">${{fa:"همه خدمات",en:"All Services",ar:"جميع الخدمات"}[lang]||"همه خدمات"}</option>`+CATS.map(c=>`<option value="${c.i} ${t(c.l)}">${c.i} ${t(c.l)}</option>`).join("");
 }
 function getLoc(){
   const btn=document.getElementById("loc-btn");btn.textContent="...";
-  navigator.geolocation.getCurrentPosition(p=>{
-    uLat=p.coords.latitude;uLng=p.coords.longitude;
-    btn.textContent="📡 موقعیت";
-    document.getElementById("loc-ok").style.display="block";
-    showToast("✅ موقعیت دریافت شد");
-    if(findMap)findMap.setView([uLat,uLng],14);
-  },()=>{btn.textContent="📡 موقعیت";showToast("❌ دسترسی رد شد");});
+  navigator.geolocation.getCurrentPosition(
+    p=>{uLat=p.coords.latitude;uLng=p.coords.longitude;btn.innerHTML=`📡 <span class="${lang}">${{fa:"موقعیت",en:"Location",ar:"الموقع"}[lang]}</span>`;
+      document.getElementById("loc-ok").style.display="block";showToast("✅");if(findMap)findMap.setView([uLat,uLng],14);},
+    ()=>{btn.innerHTML=`📡 <span>${{fa:"موقعیت",en:"Location"}[lang]}</span>`;showToast("❌");}
+  );
 }
 function dist(a,b,c,d){const R=6371,dL=(c-a)*Math.PI/180,dl=(d-b)*Math.PI/180,x=Math.sin(dL/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
 function doFind(){
-  const fc=document.getElementById("fcity").value;
-  const fct=document.getElementById("fcat").value;
+  buildFindSelects();
+  const fc=document.getElementById("fcity").value,fct=document.getElementById("fcat").value;
   let r=[...shops];
   if(fc)r=r.filter(s=>s.city===fc);
   if(fct)r=r.filter(s=>s.svcs.includes(fct));
   if(uLat&&uLng)r=r.map(s=>({...s,km:s.lat&&s.lng?dist(uLat,uLng,s.lat,s.lng):null})).sort((a,b)=>(a.km||999)-(b.km||999));
-  const empty=document.getElementById("find-empty");
-  const none=document.getElementById("find-none");
-  const results=document.getElementById("find-results");
+  const empty=document.getElementById("find-empty"),none=document.getElementById("find-none"),results=document.getElementById("find-results");
   if(shops.length===0){empty.style.display="block";none.style.display="none";results.style.display="none";return;}
   if(r.length===0){empty.style.display="none";none.style.display="block";results.style.display="none";return;}
   empty.style.display="none";none.style.display="none";results.style.display="block";
-  document.getElementById("find-count").textContent=`${r.length} تعمیرگاه یافت شد`;
+  document.getElementById("find-count").textContent=`${r.length} ${lang==="en"?"shops found":lang==="ar"?"ورشة موجودة":"تعمیرگاه یافت شد"}`;
   document.getElementById("shop-list").innerHTML=r.map(s=>`
     <div class="shop-card">
       <div style="display:flex;align-items:flex-start;gap:12px">
-        <div style="width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,rgba(0,198,255,.12),rgba(123,47,247,.12));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🔧</div>
+        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,rgba(0,229,255,.12),rgba(179,71,255,.12));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🔧</div>
         <div style="flex:1">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-            <span style="font-size:14px;font-weight:700;color:#e8f0ff">${s.name}</span>
-            ${s.km!=null?`<span class="bdg bdg-b">${s.km<1?Math.round(s.km*1000)+"m":s.km.toFixed(1)+"km"}</span>`:""}
+            <span style="font-size:14px;font-weight:800;color:var(--t1)">${s.name}</span>
+            ${s.km!=null?`<span class="bdg bdg-c">${s.km<1?Math.round(s.km*1000)+"m":s.km.toFixed(1)+"km"}</span>`:""}
           </div>
-          ${s.owner?`<div style="font-size:11px;color:#4a6a90;margin-bottom:3px">👤${s.owner}</div>`:""}
-          <div style="font-size:11px;color:#4a6a90;margin-bottom:8px">📍${s.city}${s.addr?` — ${s.addr}`:""}</div>
-          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:9px">${s.svcs.slice(0,5).map(sv=>`<span style="font-size:9px;color:#4a6a90;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:7px;padding:2px 7px">${sv}</span>`).join("")}${s.svcs.length>5?`<span style="font-size:10px;color:#00c6ff">+${s.svcs.length-5}</span>`:""}</div>
-          ${s.desc?`<div style="font-size:11px;color:#4a6a90;margin-bottom:9px;line-height:1.7;background:rgba(255,255,255,.02);border-radius:9px;padding:7px 11px">${s.desc}</div>`:""}
+          ${s.owner?`<div style="font-size:11px;color:var(--t3);margin-bottom:4px">👤 ${s.owner}</div>`:""}
+          <div style="font-size:11px;color:var(--t3);margin-bottom:8px">📍 ${s.city}${s.addr?` — ${s.addr}`:""}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px">${s.svcs.slice(0,5).map(sv=>`<span style="font-size:9px;color:var(--t3);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:7px;padding:2px 7px">${sv}</span>`).join("")}${s.svcs.length>5?`<span style="font-size:10px;color:#00e5ff">+${s.svcs.length-5}</span>`:""}</div>
+          ${s.desc?`<div style="font-size:11px;color:var(--t3);margin-bottom:9px;line-height:1.7;background:rgba(255,255,255,.02);border-radius:9px;padding:7px 11px">${s.desc}</div>`:""}
           <div style="display:flex;gap:7px;flex-wrap:wrap">
-            ${s.phone?`<a href="tel:${s.phone}" style="font-size:11px;color:#00c6ff;background:rgba(0,198,255,.07);border:1px solid rgba(0,198,255,.18);border-radius:9px;padding:6px 12px;font-weight:700">📞${s.phone}</a>`:""}
-            ${s.tel?`<a href="https://t.me/${s.tel}" target="_blank" style="font-size:11px;color:#a78bfa;background:rgba(123,47,247,.07);border:1px solid rgba(123,47,247,.18);border-radius:9px;padding:6px 10px;font-weight:600">✈️تلگرام</a>`:""}
-            ${s.insta?`<a href="https://instagram.com/${s.insta}" target="_blank" style="font-size:11px;color:#f472b6;background:rgba(236,72,153,.07);border:1px solid rgba(236,72,153,.18);border-radius:9px;padding:6px 10px;font-weight:600">📸اینستا</a>`:""}
+            ${s.phone?`<a href="tel:${s.phone}" style="font-size:11px;color:#00e5ff;background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.18);border-radius:9px;padding:6px 13px;font-weight:700">📞 ${s.phone}</a>`:""}
+            ${s.tel?`<a href="https://t.me/${s.tel}" target="_blank" style="font-size:11px;color:#c97eff;background:rgba(179,71,255,.07);border:1px solid rgba(179,71,255,.18);border-radius:9px;padding:6px 11px;font-weight:600">✈️</a>`:""}
+            ${s.insta?`<a href="https://instagram.com/${s.insta}" target="_blank" style="font-size:11px;color:#f472b6;background:rgba(236,72,153,.07);border:1px solid rgba(236,72,153,.18);border-radius:9px;padding:6px 11px;font-weight:600">📸</a>`:""}
           </div>
         </div>
       </div>
@@ -662,12 +1101,12 @@ function doFind(){
   if(findMap){
     findMap.eachLayer(l=>{if(l instanceof L.Marker)findMap.removeLayer(l);});
     r.filter(s=>s.lat&&s.lng).forEach(s=>{
-      const ico=L.divIcon({className:"",html:`<div style="width:26px;height:26px;background:linear-gradient(135deg,#f97316,#ef4444);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid #fff;box-shadow:0 3px 10px rgba(249,115,22,.5)"></div>`,iconSize:[26,26],iconAnchor:[13,26]});
-      L.marker([s.lat,s.lng],{icon:ico}).addTo(findMap).bindPopup(`<b style="font-family:Tahoma">${s.name}</b><br><small style="font-family:Tahoma">${s.city}</small>`);
+      L.marker([s.lat,s.lng],{icon:L.divIcon({className:"",html:`<div style="width:24px;height:24px;background:linear-gradient(135deg,#f97316,#ef4444);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid #fff"></div>`,iconSize:[24,24],iconAnchor:[12,24]})})
+        .addTo(findMap).bindPopup(`<b style="font-family:Tahoma">${s.name}</b><br><small>${s.city}</small>`);
     });
     if(uLat&&uLng){
-      const ico=L.divIcon({className:"",html:`<div style="width:22px;height:22px;background:linear-gradient(135deg,#00c6ff,#7b2ff7);border-radius:50%;border:3px solid #fff;box-shadow:0 3px 10px rgba(0,198,255,.7)"></div>`,iconSize:[22,22],iconAnchor:[11,11]});
-      L.marker([uLat,uLng],{icon:ico}).addTo(findMap).bindPopup('<b style="font-family:Tahoma">موقعیت شما</b>');
+      L.marker([uLat,uLng],{icon:L.divIcon({className:"",html:`<div style="width:20px;height:20px;background:linear-gradient(135deg,#00e5ff,#b347ff);border-radius:50%;border:3px solid #fff;box-shadow:0 0 10px rgba(0,229,255,.7)"></div>`,iconSize:[20,20],iconAnchor:[10,10]})})
+        .addTo(findMap);
       findMap.setView([uLat,uLng],12);
     }
   }
@@ -680,23 +1119,24 @@ function initFindMap(){
 
 /* ═══ REGISTER ═══ */
 function buildRegCity(){
-  const el=document.getElementById("rcity");
-  el.innerHTML='<option value="">انتخاب کنید...</option>'+CITIES.map(c=>`<option value="${c}">${c}</option>`).join("");
+  const el=document.getElementById("rcity");if(!el)return;
+  el.innerHTML=`<option value="">${lang==="en"?"Select city":"انتخاب کنید"}</option>`+CITIES.map(c=>`<option value="${c}">${c}</option>`).join("");
 }
 function buildSvcGrid(){
-  document.getElementById("svc-grid").innerHTML=CATS.map(c=>{
-    const k=`${c.i} ${c.l}`;
-    const sel=regData.svcs.includes(k);
-    return `<button onclick="toggleSvc('${k}','${c.c}')" id="svc-${k.replace(/[^a-zA-Z0-9]/g,'_')}"
-      style="background:${sel?c.c+"12":"rgba(255,255,255,.02)"};border:1.5px solid ${sel?c.c+"44":"rgba(255,255,255,.07)"};color:${sel?c.c:"#4a6a90"};border-radius:11px;padding:10px 9px;font-family:Tahoma,Arial,sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;font-size:12px;box-shadow:${sel?"0 0 11px "+c.c+"1e":"none"};width:100%">
-      <span style="font-size:18px">${c.i}</span><span>${c.l}</span>
-    </button>`;
-  }).join("");
+  const el=document.getElementById("svc-grid");if(!el)return;
+  el.innerHTML=CATS.map(c=>{const k=`${c.i} ${t(c.l)}`;const sel=regData.svcs.includes(k);
+    return `<button onclick="toggleSvc('${k}','${c.c}')" style="background:${sel?c.c+"12":"rgba(255,255,255,.02)"};border:1.5px solid ${sel?c.c+"44":"rgba(255,255,255,.07)"};color:${sel?c.c:"var(--t3)"};border-radius:11px;padding:10px 9px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;font-size:12px;font-family:Tahoma;width:100%;box-shadow:${sel?"0 0 11px "+c.c+"1e":"none"}">
+      <span style="font-size:18px">${c.i}</span><span>${t(c.l)}</span>
+    </button>`;}).join("");
 }
-function toggleSvc(k,c){
-  const idx=regData.svcs.indexOf(k);
-  if(idx>-1)regData.svcs.splice(idx,1);else regData.svcs.push(k);
-  buildSvcGrid();
+function toggleSvc(k,c){const i=regData.svcs.indexOf(k);if(i>-1)regData.svcs.splice(i,1);else regData.svcs.push(k);buildSvcGrid();}
+function updateStep(cur){
+  [0,1,2].forEach(i=>{
+    const sb=document.getElementById("sb"+i),sl=document.getElementById("sl"+i);
+    if(!sb||!sl)return;
+    sb.style.background=i<=cur?"linear-gradient(90deg,#00e5ff,#b347ff)":"rgba(0,229,255,.08)";
+    sl.style.color=i===cur?"#00e5ff":i<cur?"var(--t2)":"var(--t3)";
+  });
 }
 function regNext(step){
   if(step===0){
@@ -707,133 +1147,85 @@ function regNext(step){
     regData.insta=document.getElementById("rinsta").value.trim();
     regData.city=document.getElementById("rcity").value;
     regData.addr=document.getElementById("raddr").value.trim();
-    if(!regData.name||!regData.phone||!regData.city){showToast("❌ فیلدهای ستاره‌دار را پر کن");return;}
-    document.getElementById("rs0").style.display="none";
-    document.getElementById("rs1").style.display="block";
-    document.getElementById("sb1").style.background="linear-gradient(90deg,#00c6ff,#7b2ff7)";
-    document.getElementById("sl1").style.color="#00c6ff";
-    buildSvcGrid();
+    if(!regData.name||!regData.phone||!regData.city){showToast("❌ "+{fa:"فیلدهای ستاره‌دار را پر کن",en:"Fill required fields",ar:"أكمل الحقول المطلوبة"}[lang]);return;}
+    document.getElementById("rs0").style.display="none";document.getElementById("rs1").style.display="block";updateStep(1);buildSvcGrid();
   } else if(step===1){
     regData.desc=document.getElementById("rdesc").value.trim();
-    if(!regData.svcs.length){showToast("❌ حداقل یک خدمت انتخاب کن");return;}
-    document.getElementById("rs1").style.display="none";
-    document.getElementById("rs2").style.display="block";
-    document.getElementById("sb2").style.background="linear-gradient(90deg,#00c6ff,#7b2ff7)";
-    document.getElementById("sl2").style.color="#00c6ff";
-    initRegMap();
+    if(!regData.svcs.length){showToast("❌ "+{fa:"حداقل یک خدمت انتخاب کن",en:"Select at least one service",ar:"اختر خدمة واحدة على الأقل"}[lang]);return;}
+    document.getElementById("rs1").style.display="none";document.getElementById("rs2").style.display="block";updateStep(2);initRegMap();
   }
 }
 function regBack(step){
-  if(step===1){document.getElementById("rs1").style.display="none";document.getElementById("rs0").style.display="block";document.getElementById("sb1").style.background="rgba(0,198,255,.08)";document.getElementById("sl1").style.color="#4a6a90";}
-  else if(step===2){document.getElementById("rs2").style.display="none";document.getElementById("rs1").style.display="block";document.getElementById("sb2").style.background="rgba(0,198,255,.08)";document.getElementById("sl2").style.color="#4a6a90";}
+  if(step===1){document.getElementById("rs1").style.display="none";document.getElementById("rs0").style.display="block";updateStep(0);}
+  else if(step===2){document.getElementById("rs2").style.display="none";document.getElementById("rs1").style.display="block";updateStep(1);}
 }
 function initRegMap(){
   if(regMap||!window.L)return;
   regMap=L.map("reg-map").setView([35.6892,51.389],10);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OSM"}).addTo(regMap);
   let mk=null;
-  const ico=L.divIcon({className:"",html:`<div style="width:26px;height:26px;background:linear-gradient(135deg,#00c6ff,#7b2ff7);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid #fff;box-shadow:0 3px 10px rgba(0,198,255,.6)"></div>`,iconSize:[26,26],iconAnchor:[13,26]});
-  regMap.on("click",e=>{
-    if(mk)regMap.removeLayer(mk);
-    mk=L.marker([e.latlng.lat,e.latlng.lng],{icon:ico}).addTo(regMap);
-    regData.lat=e.latlng.lat;regData.lng=e.latlng.lng;
-    document.getElementById("pos-ok").style.display="block";
-  });
+  const ico=L.divIcon({className:"",html:`<div style="width:26px;height:26px;background:linear-gradient(135deg,#00e5ff,#b347ff);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid #fff;box-shadow:0 3px 10px rgba(0,229,255,.6)"></div>`,iconSize:[26,26],iconAnchor:[13,26]});
+  regMap.on("click",e=>{if(mk)regMap.removeLayer(mk);mk=L.marker([e.latlng.lat,e.latlng.lng],{icon:ico}).addTo(regMap);regData.lat=e.latlng.lat;regData.lng=e.latlng.lng;document.getElementById("pos-ok").style.display="block";});
 }
 function submitShop(){
-  const btn=document.getElementById("reg-submit-btn");
-  btn.textContent="در حال ثبت...";btn.disabled=true;
+  const btn=document.getElementById("reg-submit-btn");btn.textContent="...";btn.disabled=true;
   setTimeout(()=>{
-    shops.push({...regData,id:Date.now()});
-    localStorage.setItem("tr_shops",JSON.stringify(shops));
-    document.getElementById("rs2").style.display="none";
-    document.getElementById("rs3").style.display="block";
-    showToast("🎉 تعمیرگاه ثبت شد!");
-    renderHome();
-    btn.textContent="✅ ثبت رایگان تعمیرگاه";btn.disabled=false;
+    shops.push({...regData,id:Date.now()});localStorage.setItem("tr_shops",JSON.stringify(shops));
+    document.getElementById("reg-form").style.display="none";document.getElementById("rs3").style.display="block";
+    showToast("🎉");renderRecentShops();btn.textContent="✅";btn.disabled=false;
   },700);
 }
 function regReset(){
-  regData={name:"",owner:"",phone:"",tel:"",insta:"",city:"",addr:"",svcs:[],lat:null,lng:null,desc:""};
-  regMap=null;
-  document.getElementById("rs3").style.display="none";
-  document.getElementById("rs0").style.display="block";
-  document.getElementById("rname").value="";document.getElementById("rowner").value="";
-  document.getElementById("rphone").value="";document.getElementById("rtel").value="";
-  document.getElementById("rinsta").value="";document.getElementById("rcity").value="";
-  document.getElementById("raddr").value="";
-  ["sb1","sb2"].forEach(id=>document.getElementById(id).style.background="rgba(0,198,255,.08)");
-  ["sl1","sl2"].forEach(id=>document.getElementById(id).style.color="#4a6a90");
+  regData={name:"",owner:"",phone:"",tel:"",insta:"",city:"",addr:"",svcs:[],lat:null,lng:null,desc:""};regMap=null;
+  document.getElementById("rs3").style.display="none";document.getElementById("reg-form").style.display="block";
+  document.getElementById("rs0").style.display="block";["rs1","rs2"].forEach(id=>document.getElementById(id).style.display="none");
+  ["rname","rowner","rphone","rtel","rinsta","raddr","rdesc"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+  updateStep(0);
 }
 
 /* ═══ TIP ═══ */
-function openTip(){
-  tipSel=null;
-  document.getElementById("tip-grid").innerHTML=TIPS.map(t=>`
-    <button onclick="selTip(${t.a},'${t.l}','${t.i}')" id="tip-${t.a}"
-      style="background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.07);color:#4a6a90;border-radius:15px;padding:14px 8px;font-family:Tahoma,Arial,sans-serif;cursor:pointer;transition:all .2s;text-align:center">
-      <div style="font-size:22px;margin-bottom:5px">${t.i}</div>
-      <div style="font-size:14px;font-weight:800">${t.l} تومان</div>
-      <div style="font-size:9px;opacity:.6;margin-top:3px">${t.d}</div>
-    </button>`).join("");
-  document.getElementById("tip-confirm-btn").textContent="مبلغ رو انتخاب کن";
-  document.getElementById("tip-modal").style.display="flex";
-}
+function openTip(){tipSel=null;renderTipOpts();document.getElementById("tip-modal").style.display="flex";}
 function selTip(a,l,i){
   tipSel={a,l,i};
-  TIPS.forEach(t=>{
-    const btn=document.getElementById(`tip-${t.a}`);
-    const sel=t.a===a;
-    btn.style.background=sel?"linear-gradient(135deg,rgba(0,198,255,.15),rgba(123,47,247,.15))":"rgba(255,255,255,.03)";
-    btn.style.borderColor=sel?"rgba(0,198,255,.45)":"rgba(255,255,255,.07)";
-    btn.style.color=sel?"#00c6ff":"#4a6a90";
-    btn.style.boxShadow=sel?"0 0 18px rgba(0,198,255,.2)":"none";
-  });
-  document.getElementById("tip-confirm-btn").textContent=`💛 ${l} تومان حمایت`;
+  document.querySelectorAll(".tip-btn").forEach(b=>{b.classList.remove("sel");b.querySelectorAll("[style*='#00e5ff']").forEach(el=>el.style.color="var(--t1)");});
+  const btn=document.getElementById("tb-"+a);if(btn){btn.classList.add("sel");}
+  const cb=document.getElementById("tip-confirm-btn");
+  if(cb)cb.textContent=`💛 ${l} ${{fa:"تومان",en:"Toman",ar:"تومان"}[lang]}`;
 }
-function confirmTip(){
-  if(!tipSel)return;
-  showToast(`💛 ممنون! ${tipSel.l} تومان ثبت شد`);
-  closeTip();
-}
+function confirmTip(){if(!tipSel)return;showToast(`💛 ممنون! ${tipSel.l}`);closeTip();}
 function closeTip(){document.getElementById("tip-modal").style.display="none";}
 
 /* ═══ REVIEW ═══ */
 function openReview(){
-  revRating=5;renderRevStars();
-  document.getElementById("rev-name").value="";
-  document.getElementById("rev-text").value="";
+  revRating=5;document.getElementById("rev-name").value="";document.getElementById("rev-text").value="";
   const sel=document.getElementById("rev-city");
-  sel.innerHTML='<option value="">شهر</option>'+CITIES.map(c=>`<option value="${c}">${c}</option>`).join("");
-  document.getElementById("rev-modal").style.display="flex";
+  sel.innerHTML=`<option value="">${lang==="en"?"City":"شهر"}</option>`+CITIES.map(c=>`<option value="${c}">${c}</option>`).join("");
+  renderRevStars();document.getElementById("rev-modal").style.display="flex";
 }
 function renderRevStars(){
-  document.getElementById("rev-stars").innerHTML=[1,2,3,4,5].map(i=>`
-    <span class="star${i>revRating?" off":""}" onclick="setRevStar(${i})">★</span>`).join("");
+  document.getElementById("rev-stars").innerHTML=[1,2,3,4,5].map(i=>`<span style="font-size:26px;cursor:pointer;color:${i<=revRating?"#f59e0b":"rgba(245,158,11,.2)"};transition:all .15s" onclick="setRS(${i})">★</span>`).join("");
 }
-function setRevStar(n){revRating=n;renderRevStars();}
+function setRS(n){revRating=n;renderRevStars();}
 function submitReview(){
   const name=document.getElementById("rev-name").value.trim();
   const text=document.getElementById("rev-text").value.trim();
   const city=document.getElementById("rev-city").value;
-  if(!name||!text){showToast("❌ نام و نظر رو پر کن");return;}
-  reviews.unshift({name,city,text,rating:revRating,date:"همین الان",av:"👤"});
+  if(!name||!text){showToast("❌");return;}
+  reviews.unshift({name,city,text,rating:revRating,date:{fa:"همین الان",en:"Just now",ar:"الآن"}[lang]||"الآن",av:"👤"});
   localStorage.setItem("tr_reviews",JSON.stringify(reviews));
-  closeReview();showToast("💛 نظر ثبت شد!");renderHome();
+  closeReview();showToast("💛");renderReviews();document.getElementById("rc").textContent=reviews.length;
 }
 function closeReview(){document.getElementById("rev-modal").style.display="none";}
 
 /* ═══ TOAST ═══ */
 function showToast(msg){
-  const old=document.querySelector(".toast");if(old)old.remove();
+  document.querySelectorAll(".toast").forEach(t=>t.remove());
   const t=document.createElement("div");t.className="toast";t.textContent=msg;
   document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
 }
 
 /* ═══ INIT ═══ */
-buildFindSelects();
-buildRegCity();
-renderHome();
+buildFindSelects();buildRegCity();renderAll();
 </script>
 </body>
 </html>

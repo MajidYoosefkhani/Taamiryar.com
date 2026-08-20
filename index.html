@@ -851,6 +851,10 @@ function setLang(l){
   document.body.className=`lang-${l}`;
   document.documentElement.dir=l==="en"?"ltr":"rtl";
   document.querySelectorAll(".lang-opt").forEach(b=>b.classList.toggle("active",b.textContent===l.toUpperCase()));
+  // Fix inline display:none overrides that block CSS lang rules
+  document.querySelectorAll("span.fa, span.en, span.ar").forEach(el=>{
+    el.style.display = el.classList.contains(l) ? (l==="en"?"inline":"inline") : "none";
+  });
   renderAll();
 }
 

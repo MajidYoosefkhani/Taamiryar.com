@@ -1099,11 +1099,17 @@ async function doDiag(){
     ar:`أنت متخصص إصلاح محترف لديك ٢٠ عاماً من الخبرة.\nمشكلة المستخدم: ${fq}\n\nأجب باللغة العربية:\n\n🔍 التشخيص المحتمل:\n(جملة واحدة)\n\n⚠️ الأسباب الشائعة:\n• ...\n• ...\n\n🛠️ الحل خطوة بخطوة:\n١. ...\n٢. ...\n\n💰 تقدير تكلفة الإصلاح:\n\n✅ التوصية النهائية:`
   };
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1100,messages:[{role:"user",content:prompts[lang]||prompts.fa}]})});
+    const res=await fetch("/api/diagnose",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({prompt:prompts[lang]||prompts.fa})});
     const data=await res.json();
     clearInterval(iv);
-    const txt=data.content?.[0]?.text||"Error";
+    if(!res.ok){
+      document.getElementById("diag-loading").style.display="none";
+      document.getElementById("diag-result").style.display="block";
+      document.getElementById("result-box").textContent="❌ "+(data.error||"Server error");
+      return;
+    }
+    const txt=data.text||"Error";
     document.getElementById("diag-loading").style.display="none";
     document.getElementById("diag-result").style.display="block";
     const box=document.getElementById("result-box");box.textContent="";

@@ -3,7 +3,17 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { prompt } = req.body;
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return res.status(500).json({ error: "ANTHROPIC_API_KEY is missing on server" });
+  }
+
+  let prompt;
+  try {
+    prompt = req.body?.prompt;
+  } catch (e) {
+    return res.status(400).json({ error: "Invalid request body", details: String(e) });
+  }
+
   if (!prompt || typeof prompt !== "string") {
     return res.status(400).json({ error: "Missing prompt" });
   }
@@ -23,15 +33,25 @@ export default async function handler(req, res) {
       }),
     });
 
-    const data = await response.json();
+    const raw = await response.text();
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      return res.status(502).json({ error: "Anthropic returned non-JSON", details: raw.slice(0, 300) });
+    }
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: data.error?.message || "Anthropic API error" });
+      return res.status(response.status).json({
+        error: data.error?.message || "Anthropic API error",
+        type: data.error?.type || null,
+        anthropicStatus: response.status,
+      });
     }
 
     const text = data.content?.[0]?.text || "";
     return res.status(200).json({ text });
   } catch (err) {
-    return res.status(500).json({ error: "Server error", details: String(err) });
+    return res.status(500).json({ error: "Server error", details: String(err && err.message || err) });
   }
 }

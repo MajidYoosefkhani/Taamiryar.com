@@ -1,25 +1,30 @@
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return res.status(500).json({ error: "ANTHROPIC_API_KEY is missing on server" });
-  }
-
-  let prompt;
   try {
-    prompt = req.body?.prompt;
-  } catch (e) {
-    return res.status(400).json({ error: "Invalid request body", details: String(e) });
-  }
+    if (req.method !== "POST") {
+      res.status(405).json({ error: "Method not allowed" });
+      return;
+    }
 
-  if (!prompt || typeof prompt !== "string") {
-    return res.status(400).json({ error: "Missing prompt" });
-  }
+    if (!process.env.ANTHROPIC_API_KEY) {
+      res.status(500).json({ error: "ANTHROPIC_API_KEY missing on server" });
+      return;
+    }
 
-  try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    let body = req.body;
+    if (typeof body === "string") {
+      try { body = JSON.parse(body); } catch (e) {
+        res.status(400).json({ error: "Body is not valid JSON", details: String(e && e.message || e) });
+        return;
+      }
+    }
+
+    const prompt = body && body.prompt;
+    if (!prompt || typeof prompt !== "string") {
+      res.status(400).json({ error: "Missing prompt", gotBody: JSON.stringify(body).slice(0, 200) });
+      return;
+    }
+
+    const upstream = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,25 +38,31 @@ export default async function handler(req, res) {
       }),
     });
 
-    const raw = await response.text();
+    const raw = await upstream.text();
     let data;
     try {
       data = JSON.parse(raw);
     } catch (e) {
-      return res.status(502).json({ error: "Anthropic returned non-JSON", details: raw.slice(0, 300) });
+      res.status(502).json({ error: "Anthropic returned non-JSON", raw: raw.slice(0, 400) });
+      return;
     }
 
-    if (!response.ok) {
-      return res.status(response.status).json({
-        error: data.error?.message || "Anthropic API error",
-        type: data.error?.type || null,
-        anthropicStatus: response.status,
+    if (!upstream.ok) {
+      res.status(upstream.status).json({
+        error: (data && data.error && data.error.message) || "Anthropic API error",
+        type: (data && data.error && data.error.type) || null,
+        anthropicStatus: upstream.status,
       });
+      return;
     }
 
-    const text = data.content?.[0]?.text || "";
-    return res.status(200).json({ text });
+    const text = (data && data.content && data.content[0] && data.content[0].text) || "";
+    res.status(200).json({ text });
   } catch (err) {
-    return res.status(500).json({ error: "Server error", details: String(err && err.message || err) });
+    res.status(500).json({
+      error: "Unhandled server error",
+      message: String(err && err.message || err),
+      stack: err && err.stack ? String(err.stack).slice(0, 500) : null,
+    });
   }
 }

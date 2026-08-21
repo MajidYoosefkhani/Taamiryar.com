@@ -1106,7 +1106,7 @@ async function doDiag(){
     if(!res.ok){
       document.getElementById("diag-loading").style.display="none";
       document.getElementById("diag-result").style.display="block";
-      document.getElementById("result-box").textContent="❌ "+(data.error||"Server error");
+      document.getElementById("result-box").textContent="❌ "+(data.error||"Server error")+(data.message?("\n\n"+data.message):"")+(data.details?("\n\n"+data.details):"")+(data.type?("\n\ntype: "+data.type):"");
       return;
     }
     const txt=data.text||"Error";

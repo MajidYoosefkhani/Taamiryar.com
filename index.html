@@ -111,7 +111,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 /* ══════════════════════════════════════════
    STATS BAR
 ══════════════════════════════════════════ */
-.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);
+.stats-bar{display:grid;grid-template-columns:repeat(3,1fr);
   border-top:1px solid rgba(0,229,255,.06)}
 .stat-item{text-align:center;padding:7px 4px;border-right:1px solid rgba(0,229,255,.06)}
 .stat-item:last-child{border-right:none}
@@ -396,10 +396,9 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
     <button class="support-hdr" onclick="openTip()">💛 <span class="fa">حمایت</span><span class="en" style="display:none">Support</span><span class="ar" style="display:none">دعم</span></button>
   </div>
   <div class="stats-bar">
-    <div class="stat-item"><div class="stat-n gt" id="sc">۱۲۴۰+</div><div class="stat-l"><span class="fa">تعمیرگاه</span><span class="en" style="display:none">Shops</span><span class="ar" style="display:none">ورش</span></div></div>
-    <div class="stat-item"><div class="stat-n" style="color:#10b981">۸۴۳۰</div><div class="stat-l"><span class="fa">تعمیر انجام شده</span><span class="en" style="display:none">Repairs Done</span><span class="ar" style="display:none">تصليح منجز</span></div></div>
-    <div class="stat-item"><div class="stat-n" style="color:#f59e0b">۴.۸★</div><div class="stat-l"><span class="fa">امتیاز</span><span class="en" style="display:none">Rating</span><span class="ar" style="display:none">تقييم</span></div></div>
-    <div class="stat-item"><div class="stat-n" style="color:#b347ff" id="rc">۴</div><div class="stat-l"><span class="fa">نظر کاربران</span><span class="en" style="display:none">Reviews</span><span class="ar" style="display:none">مراجعات</span></div></div>
+    <div class="stat-item"><div class="stat-n gt" id="sc">۰</div><div class="stat-l"><span class="fa">تعمیرگاه</span><span class="en" style="display:none">Shops</span><span class="ar" style="display:none">ورش</span></div></div>
+    <div class="stat-item"><div class="stat-n" style="color:#f59e0b" id="rc-hdr">—</div><div class="stat-l"><span class="fa">امتیاز</span><span class="en" style="display:none">Rating</span><span class="ar" style="display:none">تقييم</span></div></div>
+    <div class="stat-item"><div class="stat-n" style="color:#b347ff" id="rc">۰</div><div class="stat-l"><span class="fa">نظر کاربران</span><span class="en" style="display:none">Reviews</span><span class="ar" style="display:none">مراجعات</span></div></div>
   </div>
 </header>
 
@@ -457,9 +456,6 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
         <button class="btn btn-p" onclick="showPage('diag')" style="font-size:15px;padding:15px 30px">
           🤖 <span class="fa">تشخیص هوشمند</span><span class="en" style="display:none">AI Diagnosis</span><span class="ar" style="display:none">تشخيص ذكي</span>
         </button>
-        <button class="btn btn-gold" onclick="openTip()" style="font-size:15px;padding:15px 30px">
-          💛 <span class="fa">از ما حمایت کن</span><span class="en" style="display:none">Support Us</span><span class="ar" style="display:none">ادعمنا</span>
-        </button>
         <button class="btn btn-g" onclick="showPage('find')" style="font-size:15px;padding:15px 28px">
           📍 <span class="fa">یافتن تعمیرگاه</span><span class="en" style="display:none">Find Shop</span><span class="ar" style="display:none">ابحث عن ورشة</span>
         </button>
@@ -473,10 +469,10 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
     <!-- NUMBERS -->
     <section style="margin-bottom:40px">
       <div class="nums-grid">
-        <div class="num-card"><div class="num-n gt" id="hn1">۱۲۴۰+</div><div class="num-l"><span class="fa">تعمیرگاه ثبت‌شده</span><span class="en" style="display:none">Registered Shops</span><span class="ar" style="display:none">ورش مسجلة</span></div></div>
-        <div class="num-card"><div class="num-n" style="color:#10b981">۸۴۳۰+</div><div class="num-l"><span class="fa">تعمیر انجام شده</span><span class="en" style="display:none">Repairs Done</span><span class="ar" style="display:none">إصلاحات منجزة</span></div></div>
-        <div class="num-card"><div class="num-n" style="color:#f59e0b">۴.۸/۵</div><div class="num-l"><span class="fa">میانگین امتیاز</span><span class="en" style="display:none">Avg Rating</span><span class="ar" style="display:none">متوسط التقييم</span></div></div>
-        <div class="num-card"><div class="num-n" style="color:#b347ff">۳۰</div><div class="num-l"><span class="fa">دسته خدماتی</span><span class="en" style="display:none">Service Categories</span><span class="ar" style="display:none">فئات الخدمة</span></div></div>
+        <div class="num-card"><div class="num-n gt" id="hn1">۰</div><div class="num-l"><span class="fa">تعمیرگاه ثبت‌شده</span><span class="en" style="display:none">Registered Shops</span><span class="ar" style="display:none">ورش مسجلة</span></div></div>
+        <div class="num-card"><div class="num-n" style="color:#10b981" id="hn2">۰</div><div class="num-l"><span class="fa">نظر ثبت‌شده</span><span class="en" style="display:none">Reviews Submitted</span><span class="ar" style="display:none">مراجعات مسجلة</span></div></div>
+        <div class="num-card"><div class="num-n" style="color:#f59e0b" id="hn3">—</div><div class="num-l"><span class="fa">میانگین امتیاز</span><span class="en" style="display:none">Avg Rating</span><span class="ar" style="display:none">متوسط التقييم</span></div></div>
+        <div class="num-card"><div class="num-n" style="color:#b347ff">۴۹</div><div class="num-l"><span class="fa">دسته خدماتی</span><span class="en" style="display:none">Service Categories</span><span class="ar" style="display:none">فئات الخدمة</span></div></div>
       </div>
     </section>
 
@@ -508,10 +504,10 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
           <div style="font-size:14px;font-weight:800;color:#34d399;margin-bottom:6px"><span class="fa">ثبت تعمیرگاه</span><span class="en" style="display:none">Register Shop</span><span class="ar" style="display:none">سجل ورشتك</span></div>
           <div style="font-size:11px;color:var(--t3);line-height:1.6"><span class="fa">رایگان — مشتری بگیر</span><span class="en" style="display:none">Free — get customers</span><span class="ar" style="display:none">مجاني — احصل على عملاء</span></div>
         </div>
-        <div class="feat-card" style="background:rgba(255,215,0,.04);border-color:rgba(255,215,0,.15)" onclick="openTip()">
-          <div style="font-size:36px;margin-bottom:12px">💛</div>
-          <div style="font-size:14px;font-weight:800;color:#ffd700;margin-bottom:6px"><span class="fa">حمایت مالی</span><span class="en" style="display:none">Support Us</span><span class="ar" style="display:none">ادعمنا</span></div>
-          <div style="font-size:11px;color:var(--t3);line-height:1.6"><span class="fa">کمک کن بهترمون کنیم</span><span class="en" style="display:none">Help us grow better</span><span class="ar" style="display:none">ساعدنا لنتحسن</span></div>
+        <div class="feat-card" style="background:rgba(16,185,129,.04);border-color:rgba(16,185,129,.15)" onclick="showPage('reg')">
+          <div style="font-size:36px;margin-bottom:12px">💬</div>
+          <div style="font-size:14px;font-weight:800;color:#34d399;margin-bottom:6px"><span class="fa">نظرات کاربران</span><span class="en" style="display:none">User Reviews</span><span class="ar" style="display:none">آراء المستخدمين</span></div>
+          <div style="font-size:11px;color:var(--t3);line-height:1.6"><span class="fa">تجربه دیگران رو بخون</span><span class="en" style="display:none">Read others' experience</span><span class="ar" style="display:none">اقرأ تجارب الآخرين</span></div>
         </div>
       </div>
     </section>
@@ -525,33 +521,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
           </h3>
           <span class="bdg bdg-c">۳۰</span>
         </div>
-        <div class="cat-grid" id="home-cats"></div>
-      </div>
-    </section>
-
-    <!-- SUPPORT CTA -->
-    <section style="margin-bottom:40px">
-      <div class="support-wrap">
-        <div style="font-size:48px;margin-bottom:14px;animation:float 3s ease-in-out infinite">💛</div>
-        <h2 style="font-size:clamp(20px,4vw,30px);font-weight:900;margin-bottom:10px" class="gold-text">
-          <span class="fa">از تعمیریار حمایت کن</span>
-          <span class="en" style="display:none">Support Taamiryar</span>
-          <span class="ar" style="display:none">ادعم تعمیریار</span>
-        </h2>
-        <p style="color:var(--t2);font-size:14px;max-width:500px;margin:0 auto 28px;line-height:1.9">
-          <span class="fa">تعمیریار رایگانه و هر روز بهتر میشه. با یه حمایت کوچیک کمک کن تا سرورهای قوی‌تر، امکانات بیشتر و پشتیبانی بهتر داشته باشیم.</span>
-          <span class="en" style="display:none">Taamiryar is free and gets better every day. With a small contribution, help us have stronger servers, more features, and better support.</span>
-          <span class="ar" style="display:none">تعمیریار مجاني ويتحسن كل يوم. بمساهمة صغيرة، ساعدنا في امتلاك خوادم أقوى وميزات أكثر.</span>
-        </p>
-        <div class="tip-grid" id="home-tips"></div>
-        <button class="btn btn-gold" style="font-size:15px;padding:15px 36px" onclick="openTip()">
-          💛 <span class="fa">همین الان حمایت کن</span><span class="en" style="display:none">Support Now</span><span class="ar" style="display:none">ادعم الآن</span>
-        </button>
-        <p style="font-size:11px;color:var(--t3);margin-top:14px;line-height:1.7">
-          <span class="fa">🔒 پرداخت امن از طریق درگاه‌های معتبر</span>
-          <span class="en" style="display:none">🔒 Secure payment through trusted gateways</span>
-          <span class="ar" style="display:none">🔒 دفع آمن عبر بوابات موثوقة</span>
-        </p>
+        <div id="home-cats"></div>
       </div>
     </section>
 
@@ -586,7 +556,6 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
         <button class="btn btn-g btn-sm" onclick="showPage('diag')">🤖 AI</button>
         <button class="btn btn-g btn-sm" onclick="showPage('find')">📍 <span class="fa">تعمیرگاه</span><span class="en" style="display:none">Shop</span></button>
         <button class="btn btn-g btn-sm" onclick="showPage('reg')">✏️ <span class="fa">ثبت‌نام</span><span class="en" style="display:none">Register</span></button>
-        <button class="btn btn-gold btn-sm" onclick="openTip()">💛 <span class="fa">حمایت</span><span class="en" style="display:none">Support</span></button>
       </div>
     </footer>
   </div>
@@ -602,7 +571,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
       <p class="sec-sub"><span class="fa">دستگاه رو انتخاب کن یا مستقیم بنویس</span><span class="en" style="display:none">Select device or type directly</span><span class="ar" style="display:none">اختر الجهاز أو اكتب مباشرة</span></p>
     </div>
     <div id="diag-idle">
-      <div class="cat-grid" id="diag-cats" style="margin-bottom:14px"></div>
+      <div id="diag-cats" style="margin-bottom:14px"></div>
       <div id="sel-bar" style="display:none;border-radius:13px;padding:11px 15px;margin-bottom:12px;animation:fadeIn .3s ease;display:none;align-items:center;gap:8px">
         <span id="sel-icon" style="font-size:20px"></span>
         <span id="sel-name" style="font-size:13px;font-weight:700"></span>
@@ -643,7 +612,6 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
         <div style="font-size:13px;color:var(--t3);margin-bottom:14px"><span class="fa">نزدیک‌ترین تعمیرگاه رو هم پیدا کن؟</span><span class="en" style="display:none">Find the nearest repair shop?</span></div>
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
           <button class="btn btn-p btn-sm" onclick="showPage('find')">📍 <span class="fa">یافتن تعمیرگاه</span><span class="en" style="display:none">Find Shop</span></button>
-          <button class="btn btn-gold btn-sm" onclick="openTip()">💛 <span class="fa">حمایت کن</span><span class="en" style="display:none">Support</span></button>
           <button class="btn btn-g btn-sm" onclick="openReview()">💬 <span class="fa">نظر بده</span><span class="en" style="display:none">Review</span></button>
         </div>
       </div>
@@ -758,19 +726,23 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
     <h3 style="font-size:20px;font-weight:900;text-align:center;margin-bottom:8px" class="gold-text">
       <span class="fa">حمایت مالی</span><span class="en" style="display:none">Financial Support</span><span class="ar" style="display:none">الدعم المالي</span>
     </h3>
-    <p style="color:var(--t2);font-size:12px;text-align:center;margin-bottom:22px;line-height:1.9">
+    <p style="color:var(--t2);font-size:12px;text-align:center;margin-bottom:24px;line-height:1.9">
       <span class="fa">تعمیریار رایگانه. با حمایتت کمک کن سرور قوی‌تر، AI بهتر و امکانات بیشتر داشته باشیم 🙏</span>
       <span class="en" style="display:none">Taamiryar is free. With your support, help us have stronger servers, better AI, and more features 🙏</span>
       <span class="ar" style="display:none">تعمیریار مجاني. بدعمك ساعدنا على امتلاك خوادم أقوى وذكاء اصطناعي أفضل 🙏</span>
     </p>
-    <div class="tip-grid" id="tip-opts"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <a href="https://buymeacoffee.com/taamiryar" target="_blank" class="btn btn-gold btn-full" style="text-decoration:none">
+        ☕ <span class="fa">Buy Me a Coffee</span><span class="en" style="display:none">Buy Me a Coffee</span><span class="ar" style="display:none">Buy Me a Coffee</span>
+      </a>
+      <a href="https://ko-fi.com/taamiryar" target="_blank" class="btn btn-g btn-full" style="text-decoration:none">
+        💛 <span class="fa">تیپ (Ko-fi)</span><span class="en" style="display:none">Tip via Ko-fi</span><span class="ar" style="display:none">Tip via Ko-fi</span>
+      </a>
+    </div>
     <div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.12);border-radius:12px;padding:11px;margin-bottom:16px;font-size:11px;color:#9a7a00;text-align:center;line-height:1.7">
       💳 <strong style="color:#b89000"><span class="fa">درگاه پرداخت ریالی — زرین‌پال — به زودی</span><span class="en" style="display:none">Rial Gateway — ZarinPal — Coming Soon</span></strong>
     </div>
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-gold" style="flex:1" id="tip-confirm-btn" onclick="confirmTip()"><span class="fa">مبلغ رو انتخاب کن</span><span class="en" style="display:none">Select Amount</span></button>
-      <button class="btn btn-g" style="padding:12px 14px" onclick="closeTip()">✕</button>
-    </div>
+    <button class="btn btn-g btn-full" onclick="closeTip()"><span class="fa">بستن</span><span class="en" style="display:none">Close</span><span class="ar" style="display:none">إغلاق</span></button>
   </div>
 </div>
 
@@ -796,52 +768,89 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 
 <script>
 /* ═══ DATA ═══ */
+/* Groups define order + label + accent color */
+const CAT_GROUPS=[
+  {k:"electronics",l:{fa:"الکترونیک و دیجیتال",en:"Electronics & Digital",ar:"إلكترونيات ورقمية"},c:"#00e5ff"},
+  {k:"appliance",l:{fa:"لوازم خانگی",en:"Home Appliances",ar:"أجهزة منزلية"},c:"#8b5cf6"},
+  {k:"building",l:{fa:"خدمات ساختمانی و تاسیسات",en:"Building & Installations",ar:"خدمات البناء والتمديدات"},c:"#f97316"},
+  {k:"vehicle",l:{fa:"خودرو و موتور",en:"Vehicle & Motor",ar:"سيارات ودراجات"},c:"#ef4444"},
+  {k:"traditional",l:{fa:"مشاغل سنتی و صنعتگری",en:"Traditional Trades & Crafts",ar:"حرف تقليدية وصناعية"},c:"#92400e"},
+  {k:"personal",l:{fa:"وسایل شخصی و پوشاک",en:"Personal Items & Apparel",ar:"أغراض شخصية وملابس"},c:"#ec4899"},
+  {k:"service",l:{fa:"نوع درخواست خدمت",en:"Service Type",ar:"نوع الخدمة"},c:"#10b981"},
+];
+
 const CATS=[
-  {i:"📱",l:{fa:"موبایل و تبلت",en:"Mobile & Tablet",ar:"موبايل وتابلت"},c:"#00e5ff"},
-  {i:"💻",l:{fa:"لپ‌تاپ",en:"Laptop",ar:"لابتوب"},c:"#7b2ff7"},
-  {i:"🖥️",l:{fa:"کامپیوتر",en:"Computer",ar:"كمبيوتر"},c:"#3b82f6"},
-  {i:"❄️",l:{fa:"یخچال و فریزر",en:"Fridge & Freezer",ar:"ثلاجة"},c:"#06b6d4"},
-  {i:"🌬️",l:{fa:"کولر گازی",en:"AC Unit",ar:"مكيف هواء"},c:"#10b981"},
-  {i:"💨",l:{fa:"کولر آبی",en:"Cooler",ar:"مبرد"},c:"#06b6d4"},
-  {i:"🌡️",l:{fa:"پکیج و شوفاژ",en:"Boiler & Heating",ar:"التدفئة"},c:"#f97316"},
-  {i:"🫧",l:{fa:"ماشین لباسشویی",en:"Washing Machine",ar:"غسالة"},c:"#8b5cf6"},
-  {i:"🍽️",l:{fa:"ماشین ظرفشویی",en:"Dishwasher",ar:"غسالة أطباق"},c:"#3b82f6"},
-  {i:"🍳",l:{fa:"اجاق گاز",en:"Gas Stove",ar:"موقد غاز"},c:"#ef4444"},
-  {i:"🔥",l:{fa:"فر و مایکروویو",en:"Oven & Microwave",ar:"فرن وميكروويف"},c:"#f97316"},
-  {i:"📺",l:{fa:"تلویزیون",en:"Television",ar:"تلفزيون"},c:"#8b5cf6"},
-  {i:"🎮",l:{fa:"کنسول بازی",en:"Game Console",ar:"وحدة ألعاب"},c:"#10b981"},
-  {i:"🖨️",l:{fa:"پرینتر",en:"Printer",ar:"طابعة"},c:"#3b82f6"},
-  {i:"📷",l:{fa:"دوربین",en:"Camera",ar:"كاميرا"},c:"#f59e0b"},
-  {i:"🎵",l:{fa:"سیستم صوتی",en:"Audio System",ar:"نظام صوتي"},c:"#ec4899"},
-  {i:"🌀",l:{fa:"جاروبرقی",en:"Vacuum",ar:"مكنسة كهربائية"},c:"#6366f1"},
-  {i:"👕",l:{fa:"اتو و بخارشوی",en:"Iron & Steamer",ar:"مكواة"},c:"#06b6d4"},
-  {i:"☕",l:{fa:"قهوه‌ساز",en:"Coffee Maker",ar:"ماكينة قهوة"},c:"#92400e"},
-  {i:"🥤",l:{fa:"مخلوط‌کن",en:"Blender",ar:"خلاط"},c:"#10b981"},
-  {i:"🔌",l:{fa:"برق و سیم‌کشی",en:"Electrical",ar:"كهرباء"},c:"#f59e0b"},
-  {i:"🚿",l:{fa:"لوله‌کشی",en:"Plumbing",ar:"سباكة"},c:"#3b82f6"},
-  {i:"🚗",l:{fa:"لوازم خودرو",en:"Car Parts",ar:"قطع سيارة"},c:"#ef4444"},
-  {i:"🔋",l:{fa:"باتری و UPS",en:"Battery & UPS",ar:"بطارية وUPS"},c:"#10b981"},
-  {i:"⌚",l:{fa:"ساعت",en:"Watch",ar:"ساعة"},c:"#8b5cf6"},
-  {i:"🪟",l:{fa:"درب و پنجره",en:"Door & Window",ar:"باب ونافذة"},c:"#6366f1"},
-  {i:"🛁",l:{fa:"وان و جکوزی",en:"Bath & Jacuzzi",ar:"حوض استحمام"},c:"#06b6d4"},
-  {i:"💡",l:{fa:"روشنایی و LED",en:"Lighting & LED",ar:"إضاءة وLED"},c:"#f59e0b"},
-  {i:"📡",l:{fa:"آنتن و ماهواره",en:"Antenna & Satellite",ar:"هوائي وقمر"},c:"#3b82f6"},
-  {i:"🔧",l:{fa:"سایر تجهیزات",en:"Other Equipment",ar:"معدات أخرى"},c:"#94a3b8"},
+  /* Electronics & Digital */
+  {g:"electronics",i:"📱",l:{fa:"موبایل و تبلت",en:"Mobile & Tablet",ar:"موبايل وتابلت"},c:"#00e5ff"},
+  {g:"electronics",i:"💻",l:{fa:"لپ‌تاپ",en:"Laptop",ar:"لابتوب"},c:"#00e5ff"},
+  {g:"electronics",i:"🖥️",l:{fa:"کامپیوتر",en:"Computer",ar:"كمبيوتر"},c:"#00e5ff"},
+  {g:"electronics",i:"📺",l:{fa:"تلویزیون",en:"Television",ar:"تلفزيون"},c:"#00e5ff"},
+  {g:"electronics",i:"🎮",l:{fa:"کنسول بازی",en:"Game Console",ar:"وحدة ألعاب"},c:"#00e5ff"},
+  {g:"electronics",i:"🖨️",l:{fa:"پرینتر",en:"Printer",ar:"طابعة"},c:"#00e5ff"},
+  {g:"electronics",i:"📷",l:{fa:"دوربین",en:"Camera",ar:"كاميرا"},c:"#00e5ff"},
+  {g:"electronics",i:"🎵",l:{fa:"سیستم صوتی",en:"Audio System",ar:"نظام صوتي"},c:"#00e5ff"},
+  {g:"electronics",i:"📡",l:{fa:"آنتن و ماهواره",en:"Antenna & Satellite",ar:"هوائي وقمر"},c:"#00e5ff"},
+  {g:"electronics",i:"🔋",l:{fa:"باتری و UPS",en:"Battery & UPS",ar:"بطارية وUPS"},c:"#00e5ff"},
+
+  /* Home Appliances */
+  {g:"appliance",i:"❄️",l:{fa:"یخچال و فریزر",en:"Fridge & Freezer",ar:"ثلاجة"},c:"#8b5cf6"},
+  {g:"appliance",i:"🌬️",l:{fa:"کولر گازی",en:"AC Unit",ar:"مكيف هواء"},c:"#8b5cf6"},
+  {g:"appliance",i:"💨",l:{fa:"کولر آبی",en:"Cooler",ar:"مبرد"},c:"#8b5cf6"},
+  {g:"appliance",i:"🫧",l:{fa:"ماشین لباسشویی",en:"Washing Machine",ar:"غسالة"},c:"#8b5cf6"},
+  {g:"appliance",i:"🍽️",l:{fa:"ماشین ظرفشویی",en:"Dishwasher",ar:"غسالة أطباق"},c:"#8b5cf6"},
+  {g:"appliance",i:"🍳",l:{fa:"اجاق گاز",en:"Gas Stove",ar:"موقد غاز"},c:"#8b5cf6"},
+  {g:"appliance",i:"🔥",l:{fa:"فر و مایکروویو",en:"Oven & Microwave",ar:"فرن وميكروويف"},c:"#8b5cf6"},
+  {g:"appliance",i:"🌀",l:{fa:"جاروبرقی",en:"Vacuum",ar:"مكنسة كهربائية"},c:"#8b5cf6"},
+  {g:"appliance",i:"👕",l:{fa:"اتو و بخارشوی",en:"Iron & Steamer",ar:"مكواة"},c:"#8b5cf6"},
+  {g:"appliance",i:"☕",l:{fa:"قهوه‌ساز و چای‌ساز",en:"Coffee & Tea Maker",ar:"ماكينة قهوة"},c:"#8b5cf6"},
+  {g:"appliance",i:"🥤",l:{fa:"مخلوط‌کن و آبمیوه‌گیر",en:"Blender & Juicer",ar:"خلاط"},c:"#8b5cf6"},
+
+  /* Building & Installations */
+  {g:"building",i:"🌡️",l:{fa:"پکیج و شوفاژ",en:"Boiler & Heating",ar:"التدفئة"},c:"#f97316"},
+  {g:"building",i:"🔌",l:{fa:"برق‌کاری و سیم‌پیچی",en:"Electrical & Winding",ar:"كهرباء ولف"},c:"#f97316"},
+  {g:"building",i:"🚿",l:{fa:"لوله‌کشی",en:"Plumbing",ar:"سباكة"},c:"#f97316"},
+  {g:"building",i:"🛠️",l:{fa:"کانال‌سازی",en:"Ducting",ar:"تمديد قنوات"},c:"#f97316"},
+  {g:"building",i:"🚪",l:{fa:"کابینت‌سازی",en:"Cabinet Making",ar:"صناعة الخزائن"},c:"#f97316"},
+  {g:"building",i:"🪟",l:{fa:"درب و پنجره",en:"Door & Window",ar:"باب ونافذة"},c:"#f97316"},
+  {g:"building",i:"🛁",l:{fa:"وان و جکوزی",en:"Bath & Jacuzzi",ar:"حوض استحمام"},c:"#f97316"},
+  {g:"building",i:"💡",l:{fa:"روشنایی و LED",en:"Lighting & LED",ar:"إضاءة وLED"},c:"#f97316"},
+  {g:"building",i:"🏗️",l:{fa:"خدمات ساختمانی",en:"Construction Services",ar:"خدمات البناء"},c:"#f97316"},
+
+  /* Vehicle */
+  {g:"vehicle",i:"🚗",l:{fa:"تعمیرگاه ماشین",en:"Car Repair Shop",ar:"ورشة سيارات"},c:"#ef4444"},
+  {g:"vehicle",i:"⛽",l:{fa:"تعمیرگاه پمپ",en:"Pump Repair",ar:"إصلاح المضخات"},c:"#ef4444"},
+  {g:"vehicle",i:"🏍️",l:{fa:"موتورسیکلت",en:"Motorcycle",ar:"دراجة نارية"},c:"#ef4444"},
+
+  /* Traditional Trades */
+  {g:"traditional",i:"🪢",l:{fa:"تسمه‌فروشی",en:"Belt Shop",ar:"محل الأحزمة"},c:"#92400e"},
+  {g:"traditional",i:"🔩",l:{fa:"پیچ و مهره‌فروشی",en:"Bolt & Nut Shop",ar:"محل البراغي"},c:"#92400e"},
+  {g:"traditional",i:"🪚",l:{fa:"نجاری",en:"Carpentry",ar:"نجارة"},c:"#92400e"},
+  {g:"traditional",i:"👞",l:{fa:"کفاشی",en:"Shoemaker",ar:"إسكافي"},c:"#92400e"},
+  {g:"traditional",i:"🔨",l:{fa:"آهنگری",en:"Blacksmith",ar:"حداد"},c:"#92400e"},
+  {g:"traditional",i:"⚙️",l:{fa:"ریخته‌گری",en:"Foundry",ar:"مسبك"},c:"#92400e"},
+  {g:"traditional",i:"🥩",l:{fa:"قصابی",en:"Butcher",ar:"جزار"},c:"#92400e"},
+
+  /* Personal Items */
+  {g:"personal",i:"👜",l:{fa:"تعمیرگاه کیف",en:"Bag Repair",ar:"إصلاح الحقائب"},c:"#ec4899"},
+  {g:"personal",i:"⌚",l:{fa:"ساعت و جواهرات",en:"Watch & Jewelry",ar:"ساعة ومجوهرات"},c:"#ec4899"},
+
+  /* Service Type (how the job is done) */
+  {g:"service",i:"🏠",l:{fa:"خدمات خانگی",en:"Home Service",ar:"خدمة منزلية"},c:"#10b981"},
+  {g:"service",i:"🧑‍🔧",l:{fa:"نیاز به بازدید کارشناس",en:"Needs Expert Visit",ar:"يحتاج زيارة خبير"},c:"#10b981"},
+  {g:"service",i:"🔍",l:{fa:"عیب‌یابی کارشناس",en:"Expert Diagnosis",ar:"تشخيص الخبير"},c:"#10b981"},
+  {g:"service",i:"⏱️",l:{fa:"تعمیر سریع (زمان کم)",en:"Quick Repair",ar:"إصلاح سريع"},c:"#10b981"},
+  {g:"service",i:"⏳",l:{fa:"تعمیر زمان‌بر",en:"Long Repair",ar:"إصلاح يستغرق وقتاً"},c:"#10b981"},
+  {g:"service",i:"🧩",l:{fa:"مشکلات مشابه",en:"Similar Issues",ar:"مشاكل مشابهة"},c:"#10b981"},
+  {g:"service",i:"🔧",l:{fa:"سایر خدمات",en:"Other Services",ar:"خدمات أخرى"},c:"#94a3b8"},
 ];
 const CITIES=["تهران","اصفهان","شیراز","مشهد","تبریز","کرج","اهواز","قم","رشت","کرمانشاه","همدان","ارومیه","زاهدان","بندرعباس","یزد","بوشهر","گرگان","اراک","سمنان","سایر"];
 const SUGGS={fa:["یخچالم برفک می‌زنه","گوشیم شارژ نمیگیره","ماشین لباسشویی آب نمیکشه","کولر سرد نمی‌کنه","لپ‌تاپم روشن نمیشه","تلویزیون تصویر نداره"],en:["Fridge making frost","Phone not charging","Washing machine not draining","AC not cooling","Laptop won't turn on","TV has no picture"],ar:["الثلاجة تتجمد","الهاتف لا يشحن","الغسالة لا تصرف","المكيف لا يبرد","اللابتوب لا يعمل","التلفزيون بلا صورة"]};
-const TIPS=[{a:50000,l:"۵۰ هزار",i:"☕",d:{fa:"یه قهوه",en:"A coffee",ar:"قهوة"}},{a:100000,l:"۱۰۰ هزار",i:"🌮",d:{fa:"ساندویچ",en:"Sandwich",ar:"ساندويتش"}},{a:200000,l:"۲۰۰ هزار",i:"🚀",d:{fa:"حامی ویژه",en:"Special Sponsor",ar:"راعٍ خاص"}},{a:500000,l:"۵۰۰ هزار",i:"💎",d:{fa:"قهرمان",en:"Champion",ar:"بطل"}}];
-const INIT_REVIEWS=[
-  {name:"علی محمدی",city:"تهران",text:"عالی بود! مشکل یخچالمو دقیقاً تشخیص داد",rating:5,date:"۲ روز پیش",av:"👨"},
-  {name:"Sara K.",city:"Isfahan",text:"Found a great repair shop nearby. Really helpful!",rating:5,date:"5 days ago",av:"👩"},
-  {name:"رضا تهرانی",city:"شیراز",text:"هزینه تعمیر رو درست تخمین زد",rating:4,date:"۱ هفته پیش",av:"👨"},
-  {name:"مریم حسینی",city:"مشهد",text:"مشکل کولرم رو خودم با راهنمایی AI درست کردم!",rating:5,date:"۱۰ روز پیش",av:"👩"},
-];
+const INIT_REVIEWS=[];
 
 /* ═══ STATE ═══ */
 let shops=JSON.parse(localStorage.getItem("tr_shops")||"[]");
 let reviews=JSON.parse(localStorage.getItem("tr_reviews")||JSON.stringify(INIT_REVIEWS));
-let lang="fa",selCat=null,uLat=null,uLng=null,tipSel=null,revRating=5;
+let lang="fa",selCat=null,uLat=null,uLng=null,revRating=5;
 let regData={name:"",owner:"",phone:"",tel:"",insta:"",city:"",addr:"",svcs:[],lat:null,lng:null,desc:""};
 let regMap=null,findMap=null;
 
@@ -858,16 +867,58 @@ function setLang(l){
   renderAll();
 }
 
-/* ═══ PARTICLES ═══ */
+/* ═══ FLOATING CONSTELLATION (Path-to-Hope style) ═══ */
 (function(){
   const c=document.getElementById("canvas");const ctx=c.getContext("2d");
   let W=c.width=innerWidth,H=c.height=innerHeight;
   window.addEventListener("resize",()=>{W=c.width=innerWidth;H=c.height=innerHeight;});
-  const pts=Array.from({length:55},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.6+.3,col:Math.random()>.5?"rgba(0,229,255,":"rgba(179,71,255,"}));
+  // Fewer, larger, slower-drifting nodes that feel suspended in space
+  const density=Math.max(18,Math.min(34,Math.floor((innerWidth*innerHeight)/45000)));
+  const pts=Array.from({length:density},()=>({
+    x:Math.random()*W,y:Math.random()*H,
+    // very slow independent drift, like they're floating not moving purposefully
+    vx:(Math.random()-.5)*.06,vy:(Math.random()-.5)*.06,
+    // gentle bobbing offset so each node breathes independently
+    phase:Math.random()*Math.PI*2,
+    bob:Math.random()*8+4,
+    r:Math.random()*2+1.4,
+    col:Math.random()>.5?"0,229,255":"179,71,255",
+  }));
+  let t=0;
+  const maxLinkDist=170;
   function draw(){
+    t+=0.006;
     ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.col+".18)";ctx.fill();});
-    pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<125){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,229,255,${.04*(1-d/125)})`;ctx.lineWidth=.6;ctx.stroke();}}));
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      // soft wrap instead of bounce, feels more like floating in space
+      if(p.x<-20)p.x=W+20;if(p.x>W+20)p.x=-20;
+      if(p.y<-20)p.y=H+20;if(p.y>H+20)p.y=-20;
+    });
+    // dashed connector lines between nearby nodes
+    ctx.setLineDash([3,6]);
+    pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<maxLinkDist){
+        const op=.09*(1-d/maxLinkDist);
+        ctx.beginPath();
+        ctx.moveTo(a.x,a.y+Math.sin(t+a.phase)*a.bob*.3);
+        ctx.lineTo(b.x,b.y+Math.sin(t+b.phase)*b.bob*.3);
+        ctx.strokeStyle=`rgba(0,229,255,${op})`;
+        ctx.lineWidth=.7;
+        ctx.stroke();
+      }
+    }));
+    ctx.setLineDash([]);
+    // nodes with gentle vertical bob + soft glow
+    pts.forEach(p=>{
+      const by=p.y+Math.sin(t+p.phase)*p.bob*.3;
+      const glow=ctx.createRadialGradient(p.x,by,0,p.x,by,p.r*5);
+      glow.addColorStop(0,`rgba(${p.col},.35)`);
+      glow.addColorStop(1,`rgba(${p.col},0)`);
+      ctx.beginPath();ctx.arc(p.x,by,p.r*5,0,Math.PI*2);ctx.fillStyle=glow;ctx.fill();
+      ctx.beginPath();ctx.arc(p.x,by,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${p.col},.55)`;ctx.fill();
+    });
     requestAnimationFrame(draw);
   }
   draw();
@@ -916,24 +967,36 @@ function renderAll(){
   renderHomeCats();renderDiagCats();renderSuggs();renderReviews();renderRecentShops();renderTipOpts();renderStepsBar();
 }
 
+function catBtnHtml(c,isSel,onclickFn){
+  return `<button class="cat-btn${isSel?" sel":""}" onclick="${onclickFn}('${c.i}','${t(c.l).replace(/'/g,"\\'")}','${c.c}')"
+    style="border-color:${isSel?c.c+"55":c.c+"18"};background:${isSel?c.c+"13":c.c+"07"}"
+    onmouseover="if(!this.classList.contains('sel')){this.style.background='${c.c}12';this.style.transform='translateY(-3px)'}"
+    onmouseout="if(!this.classList.contains('sel')){this.style.background='${isSel?c.c+"13":c.c+"07"}';this.style.transform='none'}">
+    <div class="cat-ic">${c.i}</div><div class="cat-lb" style="${isSel?"color:"+c.c:""}">${t(c.l)}</div>
+  </button>`;
+}
+function groupedCatsHtml(onclickFn,selectable){
+  return CAT_GROUPS.map(grp=>{
+    const items=CATS.filter(c=>c.g===grp.k);
+    if(!items.length)return"";
+    return `<div style="margin-bottom:18px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:${grp.c};flex-shrink:0"></div>
+        <div style="font-size:12px;font-weight:800;color:${grp.c};letter-spacing:.3px">${t(grp.l)}</div>
+        <div style="flex:1;height:1px;background:${grp.c}22"></div>
+      </div>
+      <div class="cat-grid">${items.map(c=>catBtnHtml(c,selectable&&selCat&&selCat.l===t(c.l),onclickFn)).join("")}</div>
+    </div>`;
+  }).join("");
+}
 function renderHomeCats(){
   const el=document.getElementById("home-cats");if(!el)return;
-  el.innerHTML=CATS.map(c=>`<button class="cat-btn" onclick="selCatGo('${c.i}','${t(c.l)}','${c.c}')"
-    style="border-color:${c.c}20;background:${c.c}08"
-    onmouseover="this.style.background='${c.c}15';this.style.borderColor='${c.c}45';this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 20px ${c.c}18'"
-    onmouseout="this.style.background='${c.c}08';this.style.borderColor='${c.c}20';this.style.transform='none';this.style.boxShadow='none'">
-    <div class="cat-ic">${c.i}</div><div class="cat-lb">${t(c.l)}</div>
-  </button>`).join("");
+  el.innerHTML=groupedCatsHtml("selCatGo",false);
 }
 
 function renderDiagCats(){
   const el=document.getElementById("diag-cats");if(!el)return;
-  el.innerHTML=CATS.map(c=>`<button class="cat-btn${selCat&&selCat.l===t(c.l)?" sel":""}" onclick="toggleCat('${c.i}','${t(c.l)}','${c.c}')"
-    style="border-color:${selCat&&selCat.l===t(c.l)?c.c+"55":c.c+"18"};background:${selCat&&selCat.l===t(c.l)?c.c+"13":c.c+"07"}"
-    onmouseover="if(!this.classList.contains('sel')){this.style.background='${c.c}12';this.style.transform='translateY(-3px)'}"
-    onmouseout="if(!this.classList.contains('sel')){this.style.background='${selCat&&selCat.l===t(c.l)?c.c+"13":c.c+"07"}';this.style.transform='none'}">
-    <div class="cat-ic">${c.i}</div><div class="cat-lb" style="${selCat&&selCat.l===t(c.l)?"color:"+c.c:""}">${t(c.l)}</div>
-  </button>`).join("");
+  el.innerHTML=groupedCatsHtml("toggleCat",true);
 }
 
 function renderSuggs(){
@@ -944,6 +1007,15 @@ function renderSuggs(){
 
 function renderReviews(){
   const el=document.getElementById("reviews-list");if(!el)return;
+  if(reviews.length===0){
+    el.innerHTML=`<div style="color:var(--t3);font-size:13px;padding:20px 4px">
+      <span class="fa">هنوز نظری ثبت نشده — اولین نفر باش!</span>
+      <span class="en" style="display:none">No reviews yet — be the first!</span>
+      <span class="ar" style="display:none">لا توجد مراجعات بعد — كن الأول!</span>
+    </div>`;
+    updateStats();
+    return;
+  }
   el.innerHTML=reviews.slice(0,6).map(r=>`
     <div class="testi-card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
@@ -955,12 +1027,24 @@ function renderReviews(){
       </div>
       <div style="font-size:12px;color:var(--t2);line-height:1.8">${r.text}</div>
     </div>`).join("");
+  updateStats();
+}
+
+function updateStats(){
+  const sc=document.getElementById("sc");if(sc)sc.textContent=`${shops.length}`;
+  const hn1=document.getElementById("hn1");if(hn1)hn1.textContent=`${shops.length}`;
+  const rc=document.getElementById("rc");if(rc)rc.textContent=`${reviews.length}`;
+  const hn2=document.getElementById("hn2");if(hn2)hn2.textContent=`${reviews.length}`;
+  const avg=reviews.length?(reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1):"—";
+  const rcHdr=document.getElementById("rc-hdr");if(rcHdr)rcHdr.textContent=reviews.length?`${avg}★`:"—";
+  const hn3=document.getElementById("hn3");if(hn3)hn3.textContent=reviews.length?`${avg}/۵`:"—";
 }
 
 function renderRecentShops(){
   const wrap=document.getElementById("recent-shops-wrap");
   const el=document.getElementById("recent-shops");
   if(!wrap||!el)return;
+  updateStats();
   if(shops.length===0){wrap.style.display="none";return;}
   wrap.style.display="block";
   el.innerHTML=shops.slice(-3).reverse().map(s=>`
@@ -972,21 +1056,9 @@ function renderRecentShops(){
       </div>
       <a href="tel:${s.phone}" style="font-size:11px;color:#00e5ff;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.18);border-radius:9px;padding:6px 12px;font-weight:700">📞</a>
     </div>`).join("");
-  document.getElementById("sc").textContent=`${shops.length+1240}+`;
-  document.getElementById("hn1").textContent=`${shops.length+1240}+`;
 }
 
 function renderTipOpts(){
-  const els=[document.getElementById("home-tips"),document.getElementById("tip-opts")];
-  els.forEach(el=>{
-    if(!el)return;
-    el.innerHTML=TIPS.map(tp=>`
-      <button class="tip-btn${tipSel&&tipSel.a===tp.a?" sel":""}" onclick="selTip(${tp.a},'${tp.l}','${tp.i}')" id="tb-${tp.a}">
-        <div style="font-size:24px;margin-bottom:6px">${tp.i}</div>
-        <div style="font-size:14px;font-weight:900;color:${tipSel&&tipSel.a===tp.a?"#00e5ff":"var(--t1)"}">${tp.l} <span style="font-size:10px">تومان</span></div>
-        <div style="font-size:10px;color:var(--t3);margin-top:3px">${t(tp.d)}</div>
-      </button>`).join("");
-  });
 }
 
 function renderStepsBar(){
@@ -1188,15 +1260,7 @@ function regReset(){
 }
 
 /* ═══ TIP ═══ */
-function openTip(){tipSel=null;renderTipOpts();document.getElementById("tip-modal").style.display="flex";}
-function selTip(a,l,i){
-  tipSel={a,l,i};
-  document.querySelectorAll(".tip-btn").forEach(b=>{b.classList.remove("sel");b.querySelectorAll("[style*='#00e5ff']").forEach(el=>el.style.color="var(--t1)");});
-  const btn=document.getElementById("tb-"+a);if(btn){btn.classList.add("sel");}
-  const cb=document.getElementById("tip-confirm-btn");
-  if(cb)cb.textContent=`💛 ${l} ${{fa:"تومان",en:"Toman",ar:"تومان"}[lang]}`;
-}
-function confirmTip(){if(!tipSel)return;showToast(`💛 ممنون! ${tipSel.l}`);closeTip();}
+function openTip(){document.getElementById("tip-modal").style.display="flex";}
 function closeTip(){document.getElementById("tip-modal").style.display="none";}
 
 /* ═══ REVIEW ═══ */
@@ -1217,7 +1281,7 @@ function submitReview(){
   if(!name||!text){showToast("❌");return;}
   reviews.unshift({name,city,text,rating:revRating,date:{fa:"همین الان",en:"Just now",ar:"الآن"}[lang]||"الآن",av:"👤"});
   localStorage.setItem("tr_reviews",JSON.stringify(reviews));
-  closeReview();showToast("💛");renderReviews();document.getElementById("rc").textContent=reviews.length;
+  closeReview();showToast("💛");renderReviews();
 }
 function closeReview(){document.getElementById("rev-modal").style.display="none";}
 

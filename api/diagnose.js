@@ -5,8 +5,8 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (!process.env.ANTHROPIC_API_KEY) {
-      res.status(500).json({ error: "ANTHROPIC_API_KEY missing on server" });
+    if (!process.env.GEMINI_API_KEY) {
+      res.status(500).json({ error: "GEMINI_API_KEY missing on server" });
       return;
     }
 
@@ -20,21 +20,17 @@ export default async function handler(req, res) {
 
     const prompt = body && body.prompt;
     if (!prompt || typeof prompt !== "string") {
-      res.status(400).json({ error: "Missing prompt", gotBody: JSON.stringify(body).slice(0, 200) });
+      res.status(400).json({ error: "Missing prompt" });
       return;
     }
 
-    const upstream = await fetch("https://api.anthropic.com/v1/messages", {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+
+    const upstream = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1100,
-        messages: [{ role: "user", content: prompt }],
+        contents: [{ parts: [{ text: prompt }] }],
       }),
     });
 
@@ -43,26 +39,33 @@ export default async function handler(req, res) {
     try {
       data = JSON.parse(raw);
     } catch (e) {
-      res.status(502).json({ error: "Anthropic returned non-JSON", raw: raw.slice(0, 400) });
+      res.status(502).json({ error: "Gemini returned non-JSON", raw: raw.slice(0, 400) });
       return;
     }
 
     if (!upstream.ok) {
       res.status(upstream.status).json({
-        error: (data && data.error && data.error.message) || "Anthropic API error",
-        type: (data && data.error && data.error.type) || null,
-        anthropicStatus: upstream.status,
+        error: (data && data.error && data.error.message) || "Gemini API error",
+        geminiStatus: upstream.status,
       });
       return;
     }
 
-    const text = (data && data.content && data.content[0] && data.content[0].text) || "";
+    const text =
+      (data &&
+        data.candidates &&
+        data.candidates[0] &&
+        data.candidates[0].content &&
+        data.candidates[0].content.parts &&
+        data.candidates[0].content.parts[0] &&
+        data.candidates[0].content.parts[0].text) ||
+      "";
+
     res.status(200).json({ text });
   } catch (err) {
     res.status(500).json({
       error: "Unhandled server error",
       message: String(err && err.message || err),
-      stack: err && err.stack ? String(err.stack).slice(0, 500) : null,
     });
   }
 }

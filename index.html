@@ -568,7 +568,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
     <!-- FOOTER -->
     <footer style="text-align:center;padding:30px 0 20px;border-top:1px solid rgba(0,229,255,.07)">
       <div class="logo-text" style="font-size:22px;margin-bottom:6px">تعمیریار</div>
-      <div style="font-size:11px;color:var(--t3);margin-bottom:14px">taamiryar.com © 2025</div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:14px">taamiryar.com © 2025 <span onclick="openAdminLogin()" style="cursor:pointer;opacity:.4;margin-right:6px" title="Admin">🔒</span></div>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
         <button class="btn btn-g btn-sm" onclick="showPage('diag')">🤖 AI</button>
         <button class="btn btn-g btn-sm" onclick="showPage('find')">📍 <span class="fa">تعمیرگاه</span><span class="en" style="display:none">Shop</span></button>
@@ -783,6 +783,42 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
   </div>
 </div>
 
+<!-- ADMIN LOGIN MODAL -->
+<div id="admin-login-modal" class="overlay" style="display:none" onclick="closeAdminLogin()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div style="font-size:30px;text-align:center;margin-bottom:12px">🔒</div>
+    <h3 class="gt" style="font-size:18px;font-weight:900;text-align:center;margin-bottom:20px">ورود ادمین</h3>
+    <div class="fld"><label class="lbl">ایمیل</label><input class="inp" id="admin-email" type="email" placeholder="you@example.com"></div>
+    <div class="fld"><label class="lbl">رمز عبور</label><input class="inp" id="admin-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+    <div id="admin-login-err" style="display:none;color:#f87171;font-size:12px;margin-bottom:12px;text-align:center"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-p" style="flex:1" onclick="adminLogin()" id="admin-login-btn">ورود</button>
+      <button class="btn btn-g" style="padding:12px 14px" onclick="closeAdminLogin()">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel" class="overlay" style="display:none;align-items:flex-start;overflow-y:auto;padding:20px 14px">
+  <div style="max-width:760px;width:100%;margin:20px auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <h2 class="gt" style="font-size:20px;font-weight:900">🔒 پنل مدیریت</h2>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-g btn-sm" onclick="adminLogout()">خروج</button>
+        <button class="btn btn-g btn-sm" onclick="closeAdminPanel()">بستن ✕</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-bottom:18px">
+      <button class="btn btn-sm" id="admin-tab-shops" onclick="adminSwitchTab('shops')">🏪 تعمیرگاه‌ها (<span id="admin-shops-count">0</span>)</button>
+      <button class="btn btn-g btn-sm" id="admin-tab-reviews" onclick="adminSwitchTab('reviews')">💬 نظرات (<span id="admin-reviews-count">0</span>)</button>
+    </div>
+
+    <div id="admin-shops-list"></div>
+    <div id="admin-reviews-list" style="display:none"></div>
+  </div>
+</div>
+
 <script>
 /* ═══ DATA ═══ */
 /* Groups define order + label + accent color */
@@ -905,7 +941,7 @@ async function loadReviews(){
     const {data,error}=await sb.from("reviews").select("*").order("created_at",{ascending:false});
     if(error){console.error("loadReviews error:",error);reviews=[];return;}
     reviews=(data||[]).map(r=>({
-      name:r.name,city:r.city,text:r.text,rating:r.rating,date:relTime(r.created_at),av:"👤",
+      id:r.id,name:r.name,city:r.city,text:r.text,rating:r.rating,date:relTime(r.created_at),av:"👤",
     }));
   }catch(e){console.error("loadReviews exception:",e);reviews=[];}
 }
@@ -1428,10 +1464,132 @@ function showToast(msg){
   document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
 }
 
+/* ═══ ADMIN ═══ */
+let adminSession=null;
+let adminTab="shops";
+
+function openAdminLogin(){
+  if(adminSession){openAdminPanel();return;}
+  document.getElementById("admin-login-err").style.display="none";
+  document.getElementById("admin-email").value="";
+  document.getElementById("admin-pass").value="";
+  document.getElementById("admin-login-modal").style.display="flex";
+}
+function closeAdminLogin(){document.getElementById("admin-login-modal").style.display="none";}
+
+async function adminLogin(){
+  const email=document.getElementById("admin-email").value.trim();
+  const pass=document.getElementById("admin-pass").value;
+  const errEl=document.getElementById("admin-login-err");
+  const btn=document.getElementById("admin-login-btn");
+  if(!email||!pass){errEl.textContent="ایمیل و رمز رو وارد کن";errEl.style.display="block";return;}
+  btn.textContent="...";btn.disabled=true;
+  try{
+    const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+    if(error){
+      errEl.textContent="ورود ناموفق: "+error.message;
+      errEl.style.display="block";
+      btn.textContent="ورود";btn.disabled=false;
+      return;
+    }
+    adminSession=data.session;
+    closeAdminLogin();
+    openAdminPanel();
+  }catch(e){
+    errEl.textContent="خطا: "+String(e&&e.message||e);
+    errEl.style.display="block";
+  }
+  btn.textContent="ورود";btn.disabled=false;
+}
+
+async function adminLogout(){
+  await sb.auth.signOut();
+  adminSession=null;
+  closeAdminPanel();
+  showToast("خارج شدی");
+}
+
+async function checkAdminSession(){
+  const {data}=await sb.auth.getSession();
+  adminSession=data.session||null;
+}
+
+function openAdminPanel(){
+  document.getElementById("admin-panel").style.display="flex";
+  adminSwitchTab("shops");
+}
+function closeAdminPanel(){document.getElementById("admin-panel").style.display="none";}
+
+function adminSwitchTab(tab){
+  adminTab=tab;
+  document.getElementById("admin-tab-shops").className=tab==="shops"?"btn btn-sm":"btn btn-g btn-sm";
+  document.getElementById("admin-tab-reviews").className=tab==="reviews"?"btn btn-sm":"btn btn-g btn-sm";
+  document.getElementById("admin-shops-list").style.display=tab==="shops"?"block":"none";
+  document.getElementById("admin-reviews-list").style.display=tab==="reviews"?"block":"none";
+  renderAdminLists();
+}
+
+function renderAdminLists(){
+  document.getElementById("admin-shops-count").textContent=shops.length;
+  document.getElementById("admin-reviews-count").textContent=reviews.length;
+
+  const shopsEl=document.getElementById("admin-shops-list");
+  if(shops.length===0){
+    shopsEl.innerHTML=`<div style="color:var(--t3);font-size:13px;padding:20px 4px;text-align:center">تعمیرگاهی ثبت نشده</div>`;
+  }else{
+    shopsEl.innerHTML=shops.map(s=>`
+      <div class="shop-card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px">${s.name}</div>
+            <div style="font-size:12px;color:var(--t3)">📍 ${s.city} · 📞 ${s.phone}</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:6px">${(s.svcs||[]).slice(0,3).join("، ")}</div>
+          </div>
+          <button class="btn btn-sm" style="background:linear-gradient(135deg,#ef4444,#b91c1c);flex-shrink:0" onclick="adminDeleteShop(${s.id})">🗑️ حذف</button>
+        </div>
+      </div>`).join("");
+  }
+
+  const revsEl=document.getElementById("admin-reviews-list");
+  if(reviews.length===0){
+    revsEl.innerHTML=`<div style="color:var(--t3);font-size:13px;padding:20px 4px;text-align:center">نظری ثبت نشده</div>`;
+  }else{
+    revsEl.innerHTML=reviews.map(r=>`
+      <div class="rev-card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--t1)">${r.name} <span style="font-size:11px;color:var(--t3)">· ${r.city||""}</span></div>
+            <div style="font-size:12px;color:var(--t2);margin-top:4px">${r.text}</div>
+            <div style="font-size:11px;margin-top:4px">${"★".repeat(r.rating)}<span style="color:rgba(245,158,11,.2)">${"★".repeat(5-r.rating)}</span></div>
+          </div>
+          <button class="btn btn-sm" style="background:linear-gradient(135deg,#ef4444,#b91c1c);flex-shrink:0" onclick="adminDeleteReview(${r.id})">🗑️ حذف</button>
+        </div>
+      </div>`).join("");
+  }
+}
+
+async function adminDeleteShop(id){
+  if(!confirm("این تعمیرگاه حذف بشه؟"))return;
+  const {error}=await sb.from("shops").delete().eq("id",id);
+  if(error){showToast("❌ "+error.message);return;}
+  await loadShops();
+  renderAdminLists();renderRecentShops();
+  showToast("🗑️ حذف شد");
+}
+
+async function adminDeleteReview(id){
+  if(!confirm("این نظر حذف بشه؟"))return;
+  const {error}=await sb.from("reviews").delete().eq("id",id);
+  if(error){showToast("❌ "+error.message);return;}
+  await loadReviews();
+  renderAdminLists();renderReviews();
+  showToast("🗑️ حذف شد");
+}
+
 /* ═══ INIT ═══ */
 buildFindSelects();buildRegCity();
 (async function init(){
-  await Promise.all([loadShops(),loadReviews()]);
+  await Promise.all([loadShops(),loadReviews(),checkAdminSession()]);
   renderAll();
 })();
 </script>

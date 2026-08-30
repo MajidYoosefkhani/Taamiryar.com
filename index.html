@@ -7,6 +7,7 @@
 <title>تعمیریار | AI Repair</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <style>
 /* ══════════════════════════════════════════
    RESET & TOKENS
@@ -851,14 +852,53 @@ const CATS=[
 ];
 const CITIES=["تهران","اصفهان","شیراز","مشهد","تبریز","کرج","اهواز","قم","رشت","کرمانشاه","همدان","ارومیه","زاهدان","بندرعباس","یزد","بوشهر","گرگان","اراک","سمنان","سایر"];
 const SUGGS={fa:["یخچالم برفک می‌زنه","گوشیم شارژ نمیگیره","ماشین لباسشویی آب نمیکشه","کولر سرد نمی‌کنه","لپ‌تاپم روشن نمیشه","تلویزیون تصویر نداره"],en:["Fridge making frost","Phone not charging","Washing machine not draining","AC not cooling","Laptop won't turn on","TV has no picture"],ar:["الثلاجة تتجمد","الهاتف لا يشحن","الغسالة لا تصرف","المكيف لا يبرد","اللابتوب لا يعمل","التلفزيون بلا صورة"]};
-const INIT_REVIEWS=[];
+
+/* ═══ SUPABASE ═══ */
+const SUPABASE_URL="https://zxeektrgkegyqtsroddm.supabase.co";
+const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp4ZWVrdHJna2VneXF0c3JvZGRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxMDY0NTEsImV4cCI6MjEwMzY4MjQ1MX0.R95kdM_7Jw9GMPMTPxNpyIFPx2HLAcik9LZs1kZLnSE";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 /* ═══ STATE ═══ */
-let shops=JSON.parse(localStorage.getItem("tr_shops")||"[]");
-let reviews=JSON.parse(localStorage.getItem("tr_reviews")||JSON.stringify(INIT_REVIEWS));
+let shops=[];
+let reviews=[];
 let lang="fa",selCat=null,uLat=null,uLng=null,revRating=5;
 let regData={name:"",owner:"",phone:"",tel:"",insta:"",city:"",addr:"",svcs:[],lat:null,lng:null,desc:""};
 let regMap=null,findMap=null;
+
+/* ═══ DB HELPERS ═══ */
+function relTime(dateStr){
+  const d=new Date(dateStr),diff=(Date.now()-d.getTime())/1000;
+  const map={
+    fa:{now:"همین الان",m:(n)=>`${n} دقیقه پیش`,h:(n)=>`${n} ساعت پیش`,d:(n)=>`${n} روز پیش`},
+    en:{now:"Just now",m:(n)=>`${n} min ago`,h:(n)=>`${n}h ago`,d:(n)=>`${n}d ago`},
+    ar:{now:"الآن",m:(n)=>`منذ ${n} دقيقة`,h:(n)=>`منذ ${n} ساعة`,d:(n)=>`منذ ${n} يوم`},
+  }[lang]||{now:"همین الان",m:(n)=>`${n} دقیقه پیش`,h:(n)=>`${n} ساعت پیش`,d:(n)=>`${n} روز پیش`};
+  if(diff<90)return map.now;
+  if(diff<3600)return map.m(Math.floor(diff/60));
+  if(diff<86400)return map.h(Math.floor(diff/3600));
+  return map.d(Math.floor(diff/86400));
+}
+
+async function loadShops(){
+  try{
+    const {data,error}=await sb.from("shops").select("*").order("created_at",{ascending:false});
+    if(error){console.error("loadShops error:",error);shops=[];return;}
+    shops=(data||[]).map(s=>({
+      id:s.id,name:s.name,owner:s.owner,phone:s.phone,tel:s.telegram,insta:s.instagram,
+      city:s.city,addr:s.address,svcs:s.services||[],lat:s.lat,lng:s.lng,desc:s.description,
+    }));
+  }catch(e){console.error("loadShops exception:",e);shops=[];}
+}
+
+async function loadReviews(){
+  try{
+    const {data,error}=await sb.from("reviews").select("*").order("created_at",{ascending:false});
+    if(error){console.error("loadReviews error:",error);reviews=[];return;}
+    reviews=(data||[]).map(r=>({
+      name:r.name,city:r.city,text:r.text,rating:r.rating,date:relTime(r.created_at),av:"👤",
+    }));
+  }catch(e){console.error("loadReviews exception:",e);reviews=[];}
+}
 
 /* ═══ LANG ═══ */
 function setLang(l){
@@ -1275,13 +1315,34 @@ function initRegMap(){
   const ico=L.divIcon({className:"",html:`<div style="width:26px;height:26px;background:linear-gradient(135deg,#00e5ff,#b347ff);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid #fff;box-shadow:0 3px 10px rgba(0,229,255,.6)"></div>`,iconSize:[26,26],iconAnchor:[13,26]});
   regMap.on("click",e=>{if(mk)regMap.removeLayer(mk);mk=L.marker([e.latlng.lat,e.latlng.lng],{icon:ico}).addTo(regMap);regData.lat=e.latlng.lat;regData.lng=e.latlng.lng;document.getElementById("pos-ok").style.display="block";});
 }
-function submitShop(){
+async function submitShop(){
   const btn=document.getElementById("reg-submit-btn");btn.textContent="...";btn.disabled=true;
-  setTimeout(()=>{
-    shops.push({...regData,id:Date.now()});localStorage.setItem("tr_shops",JSON.stringify(shops));
+  try{
+    const {error}=await sb.from("shops").insert({
+      name:regData.name,
+      owner:regData.owner||null,
+      phone:regData.phone,
+      telegram:regData.tel||null,
+      instagram:regData.insta||null,
+      city:regData.city,
+      address:regData.addr||null,
+      services:regData.svcs,
+      lat:regData.lat,
+      lng:regData.lng,
+      description:regData.desc||null,
+    });
+    if(error){
+      showToast("❌ "+error.message);
+      btn.textContent="✅";btn.disabled=false;
+      return;
+    }
+    await loadShops();
     document.getElementById("reg-form").style.display="none";document.getElementById("rs3").style.display="block";
     showToast("🎉");renderRecentShops();btn.textContent="✅";btn.disabled=false;
-  },700);
+  }catch(e){
+    showToast("❌ "+String(e&&e.message||e));
+    btn.textContent="✅";btn.disabled=false;
+  }
 }
 function regReset(){
   regData={name:"",owner:"",phone:"",tel:"",insta:"",city:"",addr:"",svcs:[],lat:null,lng:null,desc:""};regMap=null;
@@ -1306,14 +1367,19 @@ function renderRevStars(){
   document.getElementById("rev-stars").innerHTML=[1,2,3,4,5].map(i=>`<span style="font-size:26px;cursor:pointer;color:${i<=revRating?"#f59e0b":"rgba(245,158,11,.2)"};transition:all .15s" onclick="setRS(${i})">★</span>`).join("");
 }
 function setRS(n){revRating=n;renderRevStars();}
-function submitReview(){
+async function submitReview(){
   const name=document.getElementById("rev-name").value.trim();
   const text=document.getElementById("rev-text").value.trim();
   const city=document.getElementById("rev-city").value;
   if(!name||!text){showToast("❌");return;}
-  reviews.unshift({name,city,text,rating:revRating,date:{fa:"همین الان",en:"Just now",ar:"الآن"}[lang]||"الآن",av:"👤"});
-  localStorage.setItem("tr_reviews",JSON.stringify(reviews));
-  closeReview();showToast("💛");renderReviews();
+  try{
+    const {error}=await sb.from("reviews").insert({name,city:city||null,text,rating:revRating});
+    if(error){showToast("❌ "+error.message);return;}
+    await loadReviews();
+    closeReview();showToast("💛");renderReviews();
+  }catch(e){
+    showToast("❌ "+String(e&&e.message||e));
+  }
 }
 function closeReview(){document.getElementById("rev-modal").style.display="none";}
 
@@ -1325,7 +1391,11 @@ function showToast(msg){
 }
 
 /* ═══ INIT ═══ */
-buildFindSelects();buildRegCity();renderAll();
+buildFindSelects();buildRegCity();
+(async function init(){
+  await Promise.all([loadShops(),loadReviews()]);
+  renderAll();
+})();
 </script>
 </body>
 </html>

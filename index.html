@@ -732,6 +732,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
       <h2 class="sec-title gt">✏️ <span class="fa">ثبت تعمیرگاه</span><span class="en" style="display:none">Register Shop</span><span class="ar" style="display:none">تسجيل الورشة</span></h2>
       <p class="sec-sub"><span class="fa">رایگان — در taamiryar.com دیده بشو</span><span class="en" style="display:none">Free — be seen on taamiryar.com</span></p>
     </div>
+
     <div id="rs3" style="display:none;text-align:center;padding:60px 20px">
       <div style="font-size:72px;margin-bottom:20px;animation:float 3s ease-in-out infinite">🎉</div>
       <div class="sec-title gt"><span class="fa">ثبت شد!</span><span class="en" style="display:none">Registered!</span></div>
@@ -741,7 +742,65 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
         <button class="btn btn-p btn-sm" onclick="showPage('find')"><span class="fa">مشاهده در نقشه</span><span class="en" style="display:none">View on Map</span></button>
       </div>
     </div>
-    <div id="reg-form">
+
+    <!-- MODE TOGGLE -->
+    <div id="reg-mode-wrap" style="display:flex;gap:8px;margin-bottom:18px">
+      <button id="reg-mode-quick-btn" class="btn btn-p" style="flex:1" onclick="setRegMode('quick')">
+        📸 <span class="fa">ثبت سریع با عکس</span><span class="en" style="display:none">Quick Photo Register</span><span class="ar" style="display:none">تسجيل سريع بالصورة</span>
+      </button>
+      <button id="reg-mode-manual-btn" class="btn btn-g" style="flex:1" onclick="setRegMode('manual')">
+        📝 <span class="fa">ثبت دستی</span><span class="en" style="display:none">Manual Form</span><span class="ar" style="display:none">نموذج يدوي</span>
+      </button>
+    </div>
+
+    <!-- QUICK PHOTO REGISTER -->
+    <div id="reg-quick">
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-size:13px;color:var(--t2);line-height:1.9;margin-bottom:14px">
+          <span class="fa">📷 یه عکس واضح از سردر مغازه بگیر (که اسم و شماره تلفن روش پیدا باشه) — هوش مصنوعی بقیه اطلاعات رو خودش تشخیص می‌ده و موقعیت مکانی گوشیت رو هم ثبت می‌کنه.</span>
+          <span class="en" style="display:none">📷 Take a clear photo of the shop's sign (with the name and phone visible) — AI will detect the rest, and your phone's location will be recorded automatically.</span>
+          <span class="ar" style="display:none">📷 التقط صورة واضحة للافتة المحل — سيكتشف الذكاء الاصطناعي الباقي، وسيتم تسجيل موقعك تلقائياً.</span>
+        </div>
+
+        <input type="file" id="shop-photo-input" accept="image/*" capture="environment" style="display:none" onchange="onShopPhotoSelected(event)">
+
+        <div id="quick-photo-preview-wrap" style="display:none;margin-bottom:14px">
+          <img id="quick-photo-preview" style="width:100%;max-height:260px;object-fit:cover;border-radius:14px;border:1.5px solid rgba(0,229,255,.15)"/>
+        </div>
+
+        <button class="btn btn-p btn-full" id="quick-photo-btn" onclick="document.getElementById('shop-photo-input').click()">
+          📸 <span class="fa">گرفتن یا انتخاب عکس تابلوی مغازه</span><span class="en" style="display:none">Take or Choose Shop Sign Photo</span><span class="ar" style="display:none">التقط أو اختر صورة اللافتة</span>
+        </button>
+
+        <div id="quick-loc-status" style="font-size:11px;color:var(--t3);margin-top:10px;text-align:center"></div>
+      </div>
+
+      <!-- Quick loading state -->
+      <div id="quick-loading" style="display:none;text-align:center;padding:50px 0">
+        <div style="width:50px;height:50px;border:3px solid rgba(0,229,255,.15);border-top-color:#00e5ff;border-radius:50%;margin:0 auto 20px;animation:spin 1s linear infinite"></div>
+        <div class="gt" style="font-size:15px;font-weight:800" id="quick-loading-txt"><span class="fa">در حال خواندن اطلاعات از عکس...</span><span class="en" style="display:none">Reading info from photo...</span></div>
+      </div>
+
+      <!-- Quick review/edit form (AI-filled, editable) -->
+      <div id="quick-review" style="display:none" class="card">
+        <div style="font-size:13px;font-weight:800;color:#34d399;margin-bottom:14px">✅ <span class="fa">اطلاعات تشخیص داده شد — قبل از ثبت بررسی کن</span><span class="en" style="display:none">Info detected — review before submitting</span></div>
+        <div class="fld"><label class="lbl">🏪 <span class="fa">نام تعمیرگاه *</span></label><input class="inp" id="qname" placeholder="تعمیرگاه رضایی"></div>
+        <div class="fld"><label class="lbl">📞 <span class="fa">شماره تماس *</span></label><input class="inp" id="qphone" type="tel" placeholder="09121234567"></div>
+        <div class="fld"><label class="lbl">🏙️ <span class="fa">شهر *</span></label><select class="inp" id="qcity" style="cursor:pointer;appearance:none"></select></div>
+        <div class="fld"><label class="lbl">📍 <span class="fa">آدرس</span></label><textarea class="inp" id="qaddr" rows="2" style="resize:vertical"></textarea></div>
+        <div class="fld"><label class="lbl">🕐 <span class="fa">ساعت کاری</span></label><input class="inp" id="qhours" placeholder="۹ صبح تا ۸ شب"></div>
+        <div style="font-size:13px;font-weight:800;color:var(--t1);margin:16px 0 10px">🔧 <span class="fa">خدمات (تشخیص AI — قابل ویرایش)</span></div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px" id="qsvc-grid"></div>
+        <div id="quick-loc-ok" style="display:none;font-size:11px;color:#34d399;margin-bottom:14px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);border-radius:9px;padding:8px"></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-g btn-sm" onclick="resetQuickRegister()">↺ <span class="fa">عکس دیگه</span></button>
+          <button class="btn btn-p" style="flex:1" onclick="submitQuickShop()" id="quick-submit-btn">✅ <span class="fa">تأیید و ثبت رایگان</span><span class="en" style="display:none">Confirm & Register</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANUAL FORM -->
+    <div id="reg-form" style="display:none">
       <div class="steps" id="reg-steps-bar"></div>
       <div id="rs0" class="card">
         <div class="fld"><label class="lbl">🏪 <span class="fa">نام تعمیرگاه *</span><span class="en" style="display:none">Shop Name *</span></label><input class="inp" id="rname" placeholder="تعمیرگاه رضایی"></div>
@@ -1389,8 +1448,9 @@ function initFindMap(){
 
 /* ═══ REGISTER ═══ */
 function buildRegCity(){
-  const el=document.getElementById("rcity");if(!el)return;
-  el.innerHTML=`<option value="">${lang==="en"?"Select city":"انتخاب کنید"}</option>`+CITIES.map(c=>`<option value="${c}">${c}</option>`).join("");
+  const opts=`<option value="">${lang==="en"?"Select city":"انتخاب کنید"}</option>`+CITIES.map(c=>`<option value="${c}">${c}</option>`).join("");
+  const el=document.getElementById("rcity");if(el)el.innerHTML=opts;
+  const qel=document.getElementById("qcity");if(qel)qel.innerHTML=opts;
 }
 function buildSvcGrid(){
   const el=document.getElementById("svc-grid");if(!el)return;
@@ -1459,6 +1519,7 @@ async function submitShop(){
       return;
     }
     await loadShops();
+    document.getElementById("reg-mode-wrap").style.display="none";
     document.getElementById("reg-form").style.display="none";document.getElementById("rs3").style.display="block";
     showToast("🎉");renderRecentShops();btn.textContent="✅";btn.disabled=false;
   }catch(e){
@@ -1468,10 +1529,197 @@ async function submitShop(){
 }
 function regReset(){
   regData={name:"",owner:"",phone:"",tel:"",insta:"",city:"",addr:"",svcs:[],lat:null,lng:null,desc:""};regMap=null;
-  document.getElementById("rs3").style.display="none";document.getElementById("reg-form").style.display="block";
+  document.getElementById("rs3").style.display="none";
+  document.getElementById("reg-mode-wrap").style.display="flex";
   document.getElementById("rs0").style.display="block";["rs1","rs2"].forEach(id=>document.getElementById(id).style.display="none");
   ["rname","rowner","rphone","rtel","rinsta","raddr","rdesc"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
   updateStep(0);
+  resetQuickRegister();
+  setRegMode("quick");
+}
+
+/* ═══ QUICK PHOTO REGISTER ═══ */
+let quickData={name:"",phone:"",city:"",addr:"",hours:"",svcs:[],lat:null,lng:null};
+let quickImageBase64=null,quickImageMime=null;
+
+function setRegMode(mode){
+  const wrap=document.getElementById("rs3");
+  if(wrap.style.display==="block")return; // don't allow switching after success screen
+  document.getElementById("reg-quick").style.display=mode==="quick"?"block":"none";
+  document.getElementById("reg-form").style.display=mode==="manual"?"block":"none";
+  document.getElementById("reg-mode-quick-btn").className=mode==="quick"?"btn btn-p":"btn btn-g";
+  document.getElementById("reg-mode-quick-btn").style.flex="1";
+  document.getElementById("reg-mode-manual-btn").className=mode==="manual"?"btn btn-p":"btn btn-g";
+  document.getElementById("reg-mode-manual-btn").style.flex="1";
+}
+
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>{
+      const result=reader.result; // data:image/xxx;base64,AAAA...
+      const commaIdx=result.indexOf(",");
+      resolve(result.slice(commaIdx+1));
+    };
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function onShopPhotoSelected(event){
+  const file=event.target.files && event.target.files[0];
+  if(!file)return;
+
+  quickImageMime=file.type||"image/jpeg";
+  quickImageBase64=await fileToBase64(file);
+
+  const previewWrap=document.getElementById("quick-photo-preview-wrap");
+  const previewImg=document.getElementById("quick-photo-preview");
+  previewImg.src="data:"+quickImageMime+";base64,"+quickImageBase64;
+  previewWrap.style.display="block";
+
+  document.getElementById("quick-photo-btn").style.display="none";
+  document.getElementById("quick-loading").style.display="block";
+  document.getElementById("quick-loading-txt").innerHTML='<span class="fa">در حال گرفتن موقعیت مکانی...</span><span class="en" style="display:none">Getting your location...</span>';
+
+  // Get geolocation in parallel with AI analysis
+  const locPromise=new Promise(resolve=>{
+    if(!navigator.geolocation){resolve(null);return;}
+    navigator.geolocation.getCurrentPosition(
+      p=>resolve({lat:p.coords.latitude,lng:p.coords.longitude}),
+      ()=>resolve(null),
+      {timeout:8000}
+    );
+  });
+
+  document.getElementById("quick-loading-txt").innerHTML='<span class="fa">در حال خواندن اطلاعات از عکس...</span><span class="en" style="display:none">Reading info from photo...</span>';
+
+  const categoriesHint=CATS.map(c=>`${c.i} ${t(c.l)}`).join("، ");
+
+  let aiResult=null,aiError=null;
+  try{
+    const res=await fetch("/api/analyze-shop",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({image:quickImageBase64,mimeType:quickImageMime,categoriesHint}),
+    });
+    const data=await res.json();
+    if(!res.ok){aiError=data.error||"Server error";}
+    else{aiResult=data.result;}
+  }catch(e){
+    aiError=String(e&&e.message||e);
+  }
+
+  const loc=await locPromise;
+
+  document.getElementById("quick-loading").style.display="none";
+
+  if(aiError){
+    showToast("❌ "+aiError);
+    resetQuickRegister();
+    return;
+  }
+
+  quickData={
+    name:(aiResult&&aiResult.name)||"",
+    phone:(aiResult&&aiResult.phone)||"",
+    city:"",
+    addr:(aiResult&&aiResult.address)||"",
+    hours:(aiResult&&aiResult.workingHours)||"",
+    svcs:(aiResult&&aiResult.categories)||[],
+    lat:loc?loc.lat:null,
+    lng:loc?loc.lng:null,
+  };
+
+  document.getElementById("qname").value=quickData.name;
+  document.getElementById("qphone").value=quickData.phone;
+  document.getElementById("qaddr").value=quickData.addr;
+  document.getElementById("qhours").value=quickData.hours;
+  buildQuickSvcGrid();
+
+  const locStatus=document.getElementById("quick-loc-ok");
+  if(loc){
+    locStatus.style.display="block";
+    locStatus.innerHTML='📍 <span class="fa">موقعیت مکانی ثبت شد</span><span class="en" style="display:none">Location captured</span>';
+  }else{
+    locStatus.style.display="block";
+    locStatus.style.color="#f59e0b";
+    locStatus.innerHTML='⚠️ <span class="fa">موقعیت مکانی گرفته نشد — می‌تونی بعداً از فرم دستی اضافه کنی</span><span class="en" style="display:none">Location not captured — you can add it via manual form later</span>';
+  }
+
+  document.getElementById("quick-review").style.display="block";
+}
+
+function buildQuickSvcGrid(){
+  const el=document.getElementById("qsvc-grid");if(!el)return;
+  el.innerHTML=CATS.map(c=>{
+    const k=`${c.i} ${t(c.l)}`;
+    const sel=quickData.svcs.some(s=>s===k||s.includes(c.i)||t(c.l).includes(s)||s===t(c.l));
+    return `<button onclick="toggleQuickSvc('${k}')" style="background:${sel?c.c+"12":"rgba(255,255,255,.02)"};border:1.5px solid ${sel?c.c+"44":"rgba(255,255,255,.07)"};color:${sel?c.c:"var(--t3)"};border-radius:11px;padding:10px 9px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;font-size:12px;font-family:inherit;width:100%">
+      <span style="font-size:18px">${c.i}</span><span>${t(c.l)}</span>
+    </button>`;
+  }).join("");
+}
+function toggleQuickSvc(k){
+  const i=quickData.svcs.indexOf(k);
+  if(i>-1)quickData.svcs.splice(i,1);
+  else quickData.svcs.push(k);
+  buildQuickSvcGrid();
+}
+
+function resetQuickRegister(){
+  quickImageBase64=null;quickImageMime=null;
+  quickData={name:"",phone:"",city:"",addr:"",hours:"",svcs:[],lat:null,lng:null};
+  document.getElementById("shop-photo-input").value="";
+  document.getElementById("quick-photo-preview-wrap").style.display="none";
+  document.getElementById("quick-photo-btn").style.display="block";
+  document.getElementById("quick-loading").style.display="none";
+  document.getElementById("quick-review").style.display="none";
+  const locStatus=document.getElementById("quick-loc-ok");
+  locStatus.style.display="none";locStatus.style.color="";
+}
+
+async function submitQuickShop(){
+  const name=document.getElementById("qname").value.trim();
+  const phone=document.getElementById("qphone").value.trim();
+  const city=document.getElementById("qcity").value;
+  const addr=document.getElementById("qaddr").value.trim();
+  const hours=document.getElementById("qhours").value.trim();
+
+  if(!name||!phone||!city){
+    showToast("❌ "+{fa:"نام، تلفن و شهر رو پر کن",en:"Fill name, phone and city",ar:"أكمل الاسم والهاتف والمدينة"}[lang]);
+    return;
+  }
+
+  const btn=document.getElementById("quick-submit-btn");
+  btn.textContent="...";btn.disabled=true;
+
+  const desc=hours?`ساعت کاری: ${hours}`:"";
+
+  try{
+    const {error}=await sb.from("shops").insert({
+      name,phone,city,
+      address:addr||null,
+      services:quickData.svcs,
+      lat:quickData.lat,
+      lng:quickData.lng,
+      description:desc||null,
+    });
+    if(error){
+      showToast("❌ "+error.message);
+      btn.textContent="✅";btn.disabled=false;
+      return;
+    }
+    await loadShops();
+    document.getElementById("reg-mode-wrap").style.display="none";
+    document.getElementById("reg-quick").style.display="none";
+    document.getElementById("reg-form").style.display="none";
+    document.getElementById("rs3").style.display="block";
+    showToast("🎉");renderRecentShops();
+    btn.textContent="✅";btn.disabled=false;
+  }catch(e){
+    showToast("❌ "+String(e&&e.message||e));
+    btn.textContent="✅";btn.disabled=false;
+  }
 }
 
 /* ═══ TIP ═══ */

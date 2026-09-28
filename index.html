@@ -15,72 +15,65 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --black:#000;--white:#fff;
+  --cyan:#0090c8;--purple:#8b3fd8;--gold:#e0a500;
+  --cyan2:#00b8cc;--purple2:#8b2fd4;
+  --g:linear-gradient(135deg,#0090c8,#8b3fd8);
+  --gr:linear-gradient(135deg,#8b3fd8,#0090c8);
+  --s1:#ffffff;--s2:#f4f8fc;--s3:#eaf2fa;
+  --b:rgba(0,144,200,.08);--bp:rgba(139,63,216,.08);
+  --t1:#0d1b2a;--t2:#3d5a75;--t3:#6b89a3;
+  --r:18px;--r2:12px;
+  --bg-gradient:linear-gradient(180deg,#f7fbff 0%,#eef6fc 50%,#f7fbff 100%);
+  --page-bg:#ffffff;
+  --border-base:rgba(0,144,200,.14);
+  --particle-col1:rgba(0,144,200,.35);
+  --particle-col2:rgba(139,63,216,.3);
+  --input-bg:#f4f8fc;
+  --input-bg-focus:#ffffff;
+  --header-bg:rgba(255,255,255,.88);
+  --nav-bg:rgba(255,255,255,.96);
+  --overlay-bg:rgba(13,27,42,.55);
+  --modal-bg:#ffffff;
+  --cat-bg:#f4f8fc;
+  --line-soft:rgba(13,27,42,.08);
+  --shadow-card:0 4px 20px rgba(20,80,140,.08);
+}
+
+/* Dark mode — toggled via body[data-theme="dark"] */
+body[data-theme="dark"]{
+  --btn-ink:#000;
   --cyan:#00e5ff;--purple:#b347ff;--gold:#ffd700;
   --cyan2:#00b8cc;--purple2:#8b2fd4;
   --g:linear-gradient(135deg,#00e5ff,#b347ff);
   --gr:linear-gradient(135deg,#b347ff,#00e5ff);
-  --s1:#080808;--s2:#0c0c0c;--s3:#101010;
-  --b:rgba(0,229,255,.1);--bp:rgba(179,71,255,.1);
-  --t1:#f0f4ff;--t2:#7a9cc0;--t3:#3a5a78;
-  --r:18px;--r2:12px;
-}
-
-/* Home tab: dark theme with brighter, high-contrast icons/text for easy scanning */
-#page-home.on{
   --s1:#0f1420;--s2:#131a2a;--s3:#171f32;
-  --t1:#ffffff;--t2:#b8cbe0;--t3:#7f96b0;
   --b:rgba(0,229,255,.12);--bp:rgba(179,71,255,.12);
-  background:linear-gradient(180deg,#05080f 0%,#080d18 50%,#05080f 100%);
-  position:relative;z-index:2;
+  --t1:#ffffff;--t2:#b8cbe0;--t3:#7f96b0;
+  --bg-gradient:linear-gradient(180deg,#05080f 0%,#080d18 50%,#05080f 100%);
+  --page-bg:#05080f;
+  --border-base:rgba(0,229,255,.16);
+  --particle-col1:rgba(0,229,255,.28);
+  --particle-col2:rgba(179,71,255,.24);
+  --input-bg:#080808;
+  --input-bg-focus:#0a0a0a;
+  --header-bg:rgba(0,0,0,.88);
+  --nav-bg:rgba(0,0,0,.96);
+  --overlay-bg:rgba(0,0,0,.9);
+  --modal-bg:#060606;
+  --cat-bg:#0a0a0a;
+  --line-soft:rgba(255,255,255,.06);
+  --shadow-card:0 4px 20px rgba(0,0,0,.3);
 }
-#page-home.on .card,
-#page-home.on .num-card,
-#page-home.on .feat-card,
-#page-home.on .shop-card,
-#page-home.on .rev-card,
-#page-home.on .testi-card{
-  background:#101725;
-  border-color:rgba(0,229,255,.16);
-  box-shadow:0 4px 20px rgba(0,0,0,.3);
-}
-#page-home.on .cat-btn{
-  background:rgba(255,255,255,.04)!important;
-  border-color:rgba(255,255,255,.1)!important;
-}
-#page-home.on .cat-ic{filter:brightness(1.6) saturate(1.3);text-shadow:0 0 12px rgba(255,255,255,.25)}
-#page-home.on .feat-icon{filter:brightness(1.55) saturate(1.3)}
-#page-home.on .hero-icon{
-  background:linear-gradient(135deg,#132038,#0d1830);
-  border-color:rgba(0,229,255,.35);
-  box-shadow:0 0 70px rgba(0,229,255,.2),inset 0 1px 0 rgba(255,255,255,.06);
-  filter:brightness(1.5) saturate(1.2);
-}
-#page-home.on .hero-sub{color:#c3d4e6}
-#page-home.on .hero-badge{
-  background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.35);color:#5eeaff;
-}
-#page-home.on .sug{
-  background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12);color:#d5e2ef;
-}
-#page-home.on .sug:hover{color:#5eeaff;background:rgba(0,229,255,.12);border-color:rgba(0,229,255,.4)}
-#page-home.on .btn-g{border-color:rgba(255,255,255,.22);color:#d5e2ef}
-#page-home.on .btn-g:hover{border-color:rgba(0,229,255,.5);color:#5eeaff;background:rgba(0,229,255,.08)}
-#page-home.on .support-wrap{
-  background:linear-gradient(135deg,rgba(0,229,255,.07),rgba(179,71,255,.06));
-  border-color:rgba(0,229,255,.22);
-}
-#page-home.on footer{border-color:rgba(0,229,255,.14)!important}
-#page-home.on .bdg-c{background:rgba(0,229,255,.16);color:#5eeaff;border-color:rgba(0,229,255,.4)}
 
 html{scroll-behavior:smooth;font-size:16px}
-body{background:#000;color:var(--t1);font-family:Tahoma,Arial,'Segoe UI',sans-serif;direction:rtl;min-height:100vh;overflow-x:hidden}
+body{background:var(--page-bg);color:var(--t1);font-family:Tahoma,Arial,'Segoe UI',sans-serif;direction:rtl;min-height:100vh;overflow-x:hidden;transition:background .4s ease,color .4s ease}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--g);border-radius:2px}
 a{text-decoration:none;color:inherit}
 img{max-width:100%}
 button,select,input,textarea{font-family:inherit}
 ::placeholder{color:var(--t3)!important}
-select option{background:#080808;color:#f0f4ff}
+select option{background:var(--s1);color:var(--t1)}
 
 /* ══════════════════════════════════════════
    ANIMATIONS
@@ -119,6 +112,9 @@ select option{background:#080808;color:#f0f4ff}
   background-image:linear-gradient(rgba(0,229,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.02) 1px,transparent 1px);
   background-size:50px 50px}
 .blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px)}
+body:not([data-theme="dark"]) .grid-overlay{
+  background-image:linear-gradient(rgba(0,144,200,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,144,200,.06) 1px,transparent 1px)}
+body:not([data-theme="dark"]) .scanline{background:linear-gradient(90deg,transparent,rgba(0,144,200,.12),transparent)}
 .scanline{position:fixed;width:100%;height:2px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.08),transparent);
   z-index:1;pointer-events:none;animation:scanline 6s linear infinite}
 .gear-fixed{position:fixed;pointer-events:none;z-index:1}
@@ -127,7 +123,7 @@ select option{background:#080808;color:#f0f4ff}
    HEADER
 ══════════════════════════════════════════ */
 header{position:fixed;top:0;left:0;right:0;z-index:100;
-  background:rgba(0,0,0,.88);backdrop-filter:blur(32px);
+  background:var(--header-bg);backdrop-filter:blur(32px);
   border-bottom:1px solid rgba(0,229,255,.08)}
 .header-inner{display:flex;align-items:center;gap:12px;padding:12px 14px;flex-wrap:wrap}
 @media(min-width:768px){.header-inner{padding:14px 40px;flex-wrap:nowrap}}
@@ -148,7 +144,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
   box-shadow:0 0 0 4px rgba(0,229,255,.06)}
 .header-search input{flex:1;background:transparent;border:none;outline:none;color:var(--t1);font-size:13px;min-width:0}
 .header-search .go{background:var(--g);border:none;border-radius:20px;padding:6px 14px;
-  color:#000;font-weight:800;font-size:11px;cursor:pointer;white-space:nowrap;
+  color:var(--btn-ink,#fff);font-weight:800;font-size:11px;cursor:pointer;white-space:nowrap;
   flex-shrink:0;transition:all .2s}
 .header-search .go:hover{transform:scale(1.05);filter:brightness(1.1)}
 .lang-btn{display:flex;gap:3px;flex-shrink:0}
@@ -156,9 +152,13 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
   border-radius:7px;padding:4px 8px;font-size:10px;cursor:pointer;transition:all .2s}
 .lang-opt.active{background:var(--b);color:var(--cyan);border-color:rgba(0,229,255,.35)}
 .support-hdr{background:var(--g);border:none;border-radius:18px;padding:7px 13px;
-  color:#000;font-weight:800;font-size:11px;cursor:pointer;white-space:nowrap;
+  color:var(--btn-ink,#fff);font-weight:800;font-size:11px;cursor:pointer;white-space:nowrap;
   flex-shrink:0;transition:all .2s}
 .support-hdr:hover{transform:translateY(-1px);filter:brightness(1.1)}
+.theme-toggle{background:var(--s2);border:1px solid var(--border-base);color:var(--t1);
+  width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s}
+.theme-toggle:hover{transform:rotate(20deg) scale(1.08);border-color:var(--cyan)}
 
 /* ══════════════════════════════════════════
    STATS BAR
@@ -174,7 +174,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
    NAV
 ══════════════════════════════════════════ */
 .nav{position:fixed;bottom:0;left:0;right:0;z-index:100;
-  background:rgba(0,0,0,.96);backdrop-filter:blur(32px);
+  background:var(--nav-bg);backdrop-filter:blur(32px);
   border-top:1px solid rgba(0,229,255,.08);
   display:flex;padding:10px 0 max(14px,env(safe-area-inset-bottom))}
 .nb{flex:1;background:none;border:none;cursor:pointer;
@@ -198,7 +198,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 /* ══════════════════════════════════════════
    CARDS
 ══════════════════════════════════════════ */
-.card{background:var(--s1);border:1px solid rgba(0,229,255,.1);
+.card{background:var(--s1);border:1px solid var(--border-base);box-shadow:var(--shadow-card);
   border-radius:var(--r);padding:22px;margin-bottom:16px;
   transition:all .3s;animation:borderGlow 4s ease-in-out infinite}
 .card:hover{border-color:rgba(0,229,255,.25);box-shadow:0 12px 40px rgba(0,229,255,.07)}
@@ -211,7 +211,8 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
   border:none;border-radius:var(--r2);padding:13px 24px;
   font-weight:800;font-size:14px;cursor:pointer;transition:all .25s;white-space:nowrap}
-.btn-p{background:var(--g);color:#000;box-shadow:0 6px 28px rgba(0,229,255,.3)}
+.btn-p{background:var(--g);color:#fff;box-shadow:0 6px 28px rgba(0,144,200,.28)}
+body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.3)}
 .btn-p:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,229,255,.5);filter:brightness(1.08)}
 .btn-p:active{transform:translateY(0)}
 .btn-g{background:transparent;border:1.5px solid rgba(0,229,255,.25);color:var(--t2)}
@@ -225,10 +226,10 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 /* ══════════════════════════════════════════
    FORM
 ══════════════════════════════════════════ */
-.inp{width:100%;background:#080808;border:1.5px solid rgba(0,229,255,.12);
+.inp{width:100%;background:var(--input-bg);border:1.5px solid var(--border-base);
   border-radius:var(--r2);color:var(--t1);padding:13px 15px;font-size:14px;
   outline:none;transition:all .25s;box-sizing:border-box}
-.inp:focus{border-color:rgba(0,229,255,.45);box-shadow:0 0 0 3px rgba(0,229,255,.07);background:#0a0a0a}
+.inp:focus{border-color:rgba(0,229,255,.45);box-shadow:0 0 0 3px rgba(0,229,255,.07);background:var(--input-bg-focus)}
 .lbl{display:block;color:var(--t3);font-size:11px;margin-bottom:6px;
   font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .fld{margin-bottom:15px}
@@ -256,7 +257,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
    CAT GRID
 ══════════════════════════════════════════ */
 .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:9px}
-.cat-btn{background:#0a0a0a;border:1px solid rgba(255,255,255,.06);
+.cat-btn{background:var(--cat-bg);border:1px solid var(--line-soft);
   border-radius:14px;padding:13px 6px;cursor:pointer;text-align:center;
   display:flex;flex-direction:column;align-items:center;gap:6px;
   transition:all .25s;width:100%}
@@ -268,23 +269,23 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 /* ══════════════════════════════════════════
    SHOP CARD
 ══════════════════════════════════════════ */
-.shop-card{background:var(--s1);border:1px solid rgba(0,229,255,.1);
+.shop-card{background:var(--s1);border:1px solid var(--border-base);box-shadow:var(--shadow-card);
   border-radius:var(--r);padding:16px;margin-bottom:10px;transition:all .3s}
 .shop-card:hover{border-color:rgba(0,229,255,.25);transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,229,255,.08)}
 
 /* ══════════════════════════════════════════
    REVIEW CARD
 ══════════════════════════════════════════ */
-.rev-card{background:var(--s1);border:1px solid rgba(0,229,255,.07);
+.rev-card{background:var(--s1);border:1px solid var(--border-base);box-shadow:var(--shadow-card);
   border-radius:var(--r);padding:16px;margin-bottom:10px}
 
 /* ══════════════════════════════════════════
    MODAL
 ══════════════════════════════════════════ */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);
+.overlay{position:fixed;inset:0;background:var(--overlay-bg);
   backdrop-filter:blur(20px);display:flex;align-items:center;
   justify-content:center;z-index:300;padding:20px;animation:fadeIn .2s ease}
-.modal{background:#060606;border:1px solid rgba(0,229,255,.2);
+.modal{background:var(--modal-bg);border:1px solid var(--border-base);
   border-radius:24px;padding:28px 24px;width:100%;max-width:420px;
   animation:slideUp .3s ease;box-shadow:0 50px 100px rgba(0,0,0,.8),0 0 80px rgba(0,229,255,.06)}
 
@@ -353,7 +354,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
   width:300px;height:150px;background:radial-gradient(ellipse,rgba(0,229,255,.08) 0%,transparent 70%);pointer-events:none}
 .tip-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
 @media(min-width:480px){.tip-grid{grid-template-columns:repeat(4,1fr)}}
-.tip-btn{background:#0a0a0a;border:1.5px solid rgba(255,255,255,.07);
+.tip-btn{background:var(--cat-bg);border:1.5px solid var(--line-soft);
   border-radius:16px;padding:16px 8px;cursor:pointer;transition:all .25s;text-align:center}
 .tip-btn:hover{transform:translateY(-3px)}
 .tip-btn.sel{background:linear-gradient(135deg,rgba(0,229,255,.12),rgba(179,71,255,.12));
@@ -372,7 +373,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 .testi-scroll{display:flex;gap:12px;overflow-x:auto;padding:2px 2px 10px;
   scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x proximity}
 .testi-scroll::-webkit-scrollbar{display:none}
-.testi-card{min-width:260px;max-width:260px;background:var(--s1);border:1px solid rgba(0,229,255,.08);
+.testi-card{min-width:260px;max-width:260px;background:var(--s1);border:1px solid var(--border-base);box-shadow:var(--shadow-card);
   border-radius:var(--r);padding:16px;flex-shrink:0;scroll-snap-align:start}
 
 /* ══════════════════════════════════════════
@@ -380,11 +381,13 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 ══════════════════════════════════════════ */
 .nums-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 @media(min-width:600px){.nums-grid{grid-template-columns:repeat(4,1fr)}}
-.num-card{background:var(--s1);border:1px solid rgba(0,229,255,.1);
+.num-card{background:var(--s1);border:1px solid var(--border-base);box-shadow:var(--shadow-card);
   border-radius:var(--r);padding:20px 16px;text-align:center;transition:all .3s}
 .num-card:hover{border-color:rgba(0,229,255,.25)}
 .num-n{font-size:28px;font-weight:900;line-height:1;margin-bottom:6px}
 .num-l{font-size:11.5px;color:var(--t3);line-height:1.5}
+
+.tag{font-size:10px;color:var(--t3);background:var(--s2);border:1px solid var(--line-soft);border-radius:8px;padding:3px 9px;display:inline-block}
 
 /* ══════════════════════════════════════════
    CURSOR
@@ -441,6 +444,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
       </div>
     </div>
     <div class="header-right">
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Dark / Light">🌙</button>
       <div class="lang-btn">
         <button class="lang-opt active" onclick="setLang('fa')">FA</button>
         <button class="lang-opt" onclick="setLang('en')">EN</button>
@@ -532,9 +536,9 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
     <!-- STATS -->
     <section class="section">
       <div class="nums-grid">
-        <div class="num-card"><div class="num-n gt" id="hn1">۰</div><div class="num-l"><span class="fa">تعمیرگاه ثبت‌شده</span><span class="en" style="display:none">Registered Shops</span><span class="ar" style="display:none">ورش مسجلة</span></div></div>
-        <div class="num-card"><div class="num-n" style="color:#10b981" id="hn2">۰</div><div class="num-l"><span class="fa">نظر ثبت‌شده</span><span class="en" style="display:none">Reviews Submitted</span><span class="ar" style="display:none">مراجعات مسجلة</span></div></div>
-        <div class="num-card"><div class="num-n" style="color:#f59e0b" id="hn3">—</div><div class="num-l"><span class="fa">میانگین امتیاز</span><span class="en" style="display:none">Avg Rating</span><span class="ar" style="display:none">متوسط التقييم</span></div></div>
+        <div class="num-card" style="cursor:pointer" onclick="showPage('all-shops')"><div class="num-n gt" id="hn1">۰</div><div class="num-l"><span class="fa">تعمیرگاه ثبت‌شده</span><span class="en" style="display:none">Registered Shops</span><span class="ar" style="display:none">ورش مسجلة</span></div></div>
+        <div class="num-card" style="cursor:pointer" onclick="scrollToReviews()"><div class="num-n" style="color:#10b981" id="hn2">۰</div><div class="num-l"><span class="fa">نظر ثبت‌شده</span><span class="en" style="display:none">Reviews Submitted</span><span class="ar" style="display:none">مراجعات مسجلة</span></div></div>
+        <div class="num-card" style="cursor:pointer" onclick="scrollToReviews()"><div class="num-n" style="color:#f59e0b" id="hn3">—</div><div class="num-l"><span class="fa">میانگین امتیاز</span><span class="en" style="display:none">Avg Rating</span><span class="ar" style="display:none">متوسط التقييم</span></div></div>
         <div class="num-card"><div class="num-n" style="color:#b347ff">۴۹</div><div class="num-l"><span class="fa">دسته خدماتی</span><span class="en" style="display:none">Service Categories</span><span class="ar" style="display:none">فئات الخدمة</span></div></div>
       </div>
     </section>
@@ -724,6 +728,26 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 </div>
 
 <!-- ════════════════════════════════════════
+     ALL SHOPS PAGE (sorted by registration order)
+════════════════════════════════════════ -->
+<div id="page-all-shops" class="page">
+  <div class="wrap" style="max-width:800px;margin:0 auto">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+      <button class="btn btn-g btn-sm" onclick="showPage('home')">→ <span class="fa">بازگشت</span><span class="en" style="display:none">Back</span></button>
+    </div>
+    <div style="margin-bottom:20px">
+      <h2 class="sec-title gt">🏪 <span class="fa">همه تعمیرگاه‌ها</span><span class="en" style="display:none">All Shops</span><span class="ar" style="display:none">جميع الورش</span></h2>
+      <p class="sec-sub"><span class="fa">به ترتیب ثبت‌نام — از اولین تعمیرگاه</span><span class="en" style="display:none">In registration order — from the first shop</span><span class="ar" style="display:none">بترتيب التسجيل</span></p>
+    </div>
+    <div id="all-shops-empty" style="display:none;text-align:center;padding:60px 0">
+      <div style="font-size:56px;margin-bottom:14px">🏪</div>
+      <div style="font-size:15px;color:var(--t2)"><span class="fa">هنوز تعمیرگاهی ثبت نشده</span><span class="en" style="display:none">No shops registered yet</span></div>
+    </div>
+    <div id="all-shops-list"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
      REGISTER PAGE
 ════════════════════════════════════════ -->
 <div id="page-reg" class="page">
@@ -768,7 +792,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
           <img id="quick-photo-preview" style="width:100%;max-height:260px;object-fit:cover;border-radius:14px;border:1.5px solid rgba(0,229,255,.15)"/>
         </div>
 
-        <button class="btn btn-p btn-full" id="quick-photo-btn" onclick="document.getElementById('shop-photo-input').click()">
+        <button class="btn btn-p btn-full" id="quick-photo-btn" onclick="preRequestLocationThenPickPhoto()">
           📸 <span class="fa">گرفتن یا انتخاب عکس تابلوی مغازه</span><span class="en" style="display:none">Take or Choose Shop Sign Photo</span><span class="ar" style="display:none">التقط أو اختر صورة اللافتة</span>
         </button>
 
@@ -926,6 +950,21 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
   </div>
 </div>
 
+<!-- QUICK REGISTER: MAP LOCATION FALLBACK MODAL -->
+<div id="quick-map-modal" class="overlay" style="display:none" onclick="closeQuickMapModal()">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:480px">
+    <h3 class="gt" style="font-size:16px;font-weight:900;margin-bottom:10px">🗺️ <span class="fa">موقعیت رو روی نقشه انتخاب کن</span><span class="en" style="display:none">Pick location on map</span></h3>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:12px"><span class="fa">روی نقشه کلیک کن</span><span class="en" style="display:none">Click on the map</span></div>
+    <div style="height:280px;border-radius:14px;overflow:hidden;margin-bottom:14px;border:1.5px solid rgba(0,229,255,.15)">
+      <div id="quick-map" style="width:100%;height:100%;border-radius:12px"></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-p" style="flex:1" onclick="confirmQuickMapLoc()">✅ <span class="fa">تأیید موقعیت</span><span class="en" style="display:none">Confirm Location</span></button>
+      <button class="btn btn-g" style="padding:12px 14px" onclick="closeQuickMapModal()">✕</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ═══ DATA ═══ */
 /* Groups define order + label + accent color */
@@ -1066,57 +1105,84 @@ function setLang(l){
   renderAll();
 }
 
-/* ═══ FLOATING CONSTELLATION (Path-to-Hope style) ═══ */
+/* ═══ THEME ═══ */
+function isDarkTheme(){return document.body.getAttribute("data-theme")==="dark";}
+function applyTheme(mode){
+  if(mode==="dark")document.body.setAttribute("data-theme","dark");
+  else document.body.removeAttribute("data-theme");
+  const btn=document.getElementById("theme-toggle");
+  if(btn)btn.textContent=mode==="dark"?"☀️":"🌙";
+  try{localStorage.setItem("tr_theme",mode);}catch(e){}
+}
+function toggleTheme(){applyTheme(isDarkTheme()?"light":"dark");}
+(function initTheme(){
+  let saved=null;
+  try{saved=localStorage.getItem("tr_theme");}catch(e){}
+  applyTheme(saved==="dark"?"dark":"light"); // default: light
+})();
+
+/* ═══ FLOATING CONSTELLATION (Path-to-Hope style, more travel) ═══ */
 (function(){
   const c=document.getElementById("canvas");const ctx=c.getContext("2d");
   let W=c.width=innerWidth,H=c.height=innerHeight;
   window.addEventListener("resize",()=>{W=c.width=innerWidth;H=c.height=innerHeight;});
-  // Fewer, larger, slower-drifting nodes that feel suspended in space
-  const density=Math.max(18,Math.min(34,Math.floor((innerWidth*innerHeight)/45000)));
+  const density=Math.max(20,Math.min(38,Math.floor((innerWidth*innerHeight)/42000)));
   const pts=Array.from({length:density},()=>({
     x:Math.random()*W,y:Math.random()*H,
-    // very slow independent drift, like they're floating not moving purposefully
-    vx:(Math.random()-.5)*.06,vy:(Math.random()-.5)*.06,
-    // gentle bobbing offset so each node breathes independently
-    phase:Math.random()*Math.PI*2,
-    bob:Math.random()*8+4,
-    r:Math.random()*2+1.4,
-    col:Math.random()>.5?"0,229,255":"179,71,255",
+    // steady drift — noticeably more travel across the screen than before
+    vx:(Math.random()-.5)*.55,vy:(Math.random()-.5)*.55,
+    // two independent slow oscillations per axis => organic, non-repeating float
+    phaseX:Math.random()*Math.PI*2,phaseY:Math.random()*Math.PI*2,
+    freqX:.4+Math.random()*.6,freqY:.4+Math.random()*.6,
+    ampX:14+Math.random()*26,ampY:14+Math.random()*26,
+    r:Math.random()*2.2+1.6,
+    tone:Math.random()>.5?1:2,
   }));
   let t=0;
-  const maxLinkDist=170;
+  const maxLinkDist=190;
+  function pos(p){
+    return {
+      x:p.x+Math.sin(t*p.freqX+p.phaseX)*p.ampX,
+      y:p.y+Math.cos(t*p.freqY+p.phaseY)*p.ampY,
+    };
+  }
   function draw(){
-    t+=0.006;
+    t+=0.012;
     ctx.clearRect(0,0,W,H);
+    const dark=isDarkTheme();
+    const c1=dark?"0,229,255":"0,144,200";
+    const c2=dark?"179,71,255":"139,63,216";
+    const lineA=dark?.16:.22;
+    const dotA=dark?.7:.65;
     pts.forEach(p=>{
       p.x+=p.vx;p.y+=p.vy;
-      // soft wrap instead of bounce, feels more like floating in space
-      if(p.x<-20)p.x=W+20;if(p.x>W+20)p.x=-20;
-      if(p.y<-20)p.y=H+20;if(p.y>H+20)p.y=-20;
+      if(p.x<-60)p.x=W+60;if(p.x>W+60)p.x=-60;
+      if(p.y<-60)p.y=H+60;if(p.y>H+60)p.y=-60;
     });
-    // dashed connector lines between nearby nodes
-    ctx.setLineDash([3,6]);
-    pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
-      const d=Math.hypot(a.x-b.x,a.y-b.y);
-      if(d<maxLinkDist){
-        const op=.09*(1-d/maxLinkDist);
-        ctx.beginPath();
-        ctx.moveTo(a.x,a.y+Math.sin(t+a.phase)*a.bob*.3);
-        ctx.lineTo(b.x,b.y+Math.sin(t+b.phase)*b.bob*.3);
-        ctx.strokeStyle=`rgba(0,229,255,${op})`;
-        ctx.lineWidth=.7;
-        ctx.stroke();
+    const pp=pts.map(pos);
+    ctx.setLineDash([4,7]);
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const d=Math.hypot(pp[i].x-pp[j].x,pp[i].y-pp[j].y);
+        if(d<maxLinkDist){
+          ctx.beginPath();
+          ctx.moveTo(pp[i].x,pp[i].y);
+          ctx.lineTo(pp[j].x,pp[j].y);
+          ctx.strokeStyle=`rgba(${c1},${lineA*(1-d/maxLinkDist)})`;
+          ctx.lineWidth=.9;
+          ctx.stroke();
+        }
       }
-    }));
+    }
     ctx.setLineDash([]);
-    // nodes with gentle vertical bob + soft glow
-    pts.forEach(p=>{
-      const by=p.y+Math.sin(t+p.phase)*p.bob*.3;
-      const glow=ctx.createRadialGradient(p.x,by,0,p.x,by,p.r*5);
-      glow.addColorStop(0,`rgba(${p.col},.35)`);
-      glow.addColorStop(1,`rgba(${p.col},0)`);
-      ctx.beginPath();ctx.arc(p.x,by,p.r*5,0,Math.PI*2);ctx.fillStyle=glow;ctx.fill();
-      ctx.beginPath();ctx.arc(p.x,by,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${p.col},.55)`;ctx.fill();
+    pts.forEach((p,i)=>{
+      const col=p.tone===1?c1:c2;
+      const {x,y}=pp[i];
+      const glow=ctx.createRadialGradient(x,y,0,x,y,p.r*6);
+      glow.addColorStop(0,`rgba(${col},${dark?.4:.3})`);
+      glow.addColorStop(1,`rgba(${col},0)`);
+      ctx.beginPath();ctx.arc(x,y,p.r*6,0,Math.PI*2);ctx.fillStyle=glow;ctx.fill();
+      ctx.beginPath();ctx.arc(x,y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${col},${dotA})`;ctx.fill();
     });
     requestAnimationFrame(draw);
   }
@@ -1128,13 +1194,17 @@ function drawGear(id,sz,spd,op,rev,col){
   const c=document.getElementById(id);if(!c)return;
   const ctx=c.getContext("2d"),n=12,r=sz*.85,ri=r*.65,rt=r*.86;let ang=0;
   (function frame(){
-    ctx.clearRect(0,0,sz*2,sz*2);ctx.save();ctx.translate(sz,sz);ctx.rotate(rev?-ang:ang);ctx.globalAlpha=op;
+    ctx.clearRect(0,0,sz*2,sz*2);ctx.save();ctx.translate(sz,sz);ctx.rotate(rev?-ang:ang);
+    const dark=isDarkTheme();
+    const useCol=dark?col:(col==="#b347ff"?"#7a2fd0":col==="#10b981"?"#059669":"#0077aa");
+    const useOp=dark?op:Math.min(op*2.6,.5);
+    ctx.globalAlpha=useOp;
     ctx.beginPath();
     for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2,aw=Math.PI/n*.5;
       [[rt*Math.cos(a-aw),rt*Math.sin(a-aw)],[r*Math.cos(a-aw*.3),r*Math.sin(a-aw*.3)],[r*Math.cos(a+aw*.3),r*Math.sin(a+aw*.3)],[rt*Math.cos(a+aw),rt*Math.sin(a+aw)]].forEach((p,j)=>{j===0&&i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});}
-    ctx.closePath();ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.stroke();
+    ctx.closePath();ctx.strokeStyle=useCol;ctx.lineWidth=1.5;ctx.stroke();
     ctx.beginPath();ctx.arc(0,0,ri,0,Math.PI*2);ctx.stroke();
-    ctx.beginPath();ctx.arc(0,0,sz*.15,0,Math.PI*2);ctx.fillStyle=col;ctx.globalAlpha=op*.6;ctx.fill();
+    ctx.beginPath();ctx.arc(0,0,sz*.15,0,Math.PI*2);ctx.fillStyle=useCol;ctx.globalAlpha=useOp*.6;ctx.fill();
     ctx.restore();ang+=.003*spd;requestAnimationFrame(frame);
   })();
 }
@@ -1147,9 +1217,11 @@ drawGear("lg3",23,5,.45,false,"#10b981");
 
 /* ═══ PAGE NAV ═══ */
 function showPage(id){
-  ["home","diag","find","reg"].forEach(p=>{
-    document.getElementById("page-"+p).classList.toggle("on",p===id);
+  ["home","diag","find","reg","all-shops"].forEach(p=>{
+    const pageEl=document.getElementById("page-"+p);
+    if(pageEl)pageEl.classList.toggle("on",p===id);
     const nb=document.getElementById("nb-"+p);
+    if(!nb)return;
     nb.classList.toggle("on",p===id);
     const ind=nb.querySelector(".nb-ind");
     if(ind&&p!==id)ind.remove();
@@ -1157,7 +1229,47 @@ function showPage(id){
   });
   if(id==="find")initFindMap();
   if(id==="reg"){buildRegCity();initRegMap();}
+  if(id==="all-shops")renderAllShops();
   window.scrollTo(0,0);
+}
+
+function scrollToReviews(){
+  showPage("home");
+  setTimeout(()=>{
+    const el=document.querySelector("#reviews-list");
+    if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
+  },50);
+}
+
+function renderAllShops(){
+  const emptyEl=document.getElementById("all-shops-empty");
+  const listEl=document.getElementById("all-shops-list");
+  if(shops.length===0){
+    emptyEl.style.display="block";
+    listEl.innerHTML="";
+    return;
+  }
+  emptyEl.style.display="none";
+  // shops[] is newest-first (loaded that way from Supabase); reverse for true registration order
+  const ordered=[...shops].reverse();
+  listEl.innerHTML=ordered.map((s,idx)=>`
+    <div class="shop-card">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="width:32px;height:32px;border-radius:50%;background:rgba(0,229,255,.1);color:#5eeaff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0">${idx+1}</div>
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,rgba(0,229,255,.12),rgba(179,71,255,.12));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🔧</div>
+        <div style="flex:1">
+          <div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:4px">${s.name}</div>
+          ${s.owner?`<div style="font-size:12px;color:var(--t3);margin-bottom:4px">👤 ${s.owner}</div>`:""}
+          <div style="font-size:12px;color:var(--t3);margin-bottom:9px">📍 ${s.city}${s.addr?` — ${s.addr}`:""}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">${(s.svcs||[]).slice(0,5).map(sv=>`<span class="tag">${sv}</span>`).join("")}${(s.svcs||[]).length>5?`<span style="font-size:11px;color:#5eeaff">+${s.svcs.length-5}</span>`:""}</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${s.phone?`<a href="tel:${s.phone}" style="font-size:12px;color:var(--cyan);background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.18);border-radius:9px;padding:6px 13px;font-weight:700">📞 ${s.phone}</a>`:""}
+            ${s.tel?`<a href="https://t.me/${s.tel}" target="_blank" style="font-size:12px;color:#c97eff;background:rgba(179,71,255,.07);border:1px solid rgba(179,71,255,.18);border-radius:9px;padding:6px 11px;font-weight:600">✈️ تلگرام</a>`:""}
+            ${s.insta?`<a href="https://instagram.com/${s.insta}" target="_blank" style="font-size:12px;color:#f472b6;background:rgba(236,72,153,.07);border:1px solid rgba(236,72,153,.18);border-radius:9px;padding:6px 11px;font-weight:600">📸 اینستا</a>`:""}
+          </div>
+        </div>
+      </div>
+    </div>`).join("");
 }
 
 /* ═══ RENDER ═══ */
@@ -1541,6 +1653,21 @@ function regReset(){
 /* ═══ QUICK PHOTO REGISTER ═══ */
 let quickData={name:"",phone:"",city:"",addr:"",hours:"",svcs:[],lat:null,lng:null};
 let quickImageBase64=null,quickImageMime=null;
+let earlyLocationPromise=null;
+
+function preRequestLocationThenPickPhoto(){
+  // Ask for location permission immediately on this user tap (most reliable
+  // moment for browsers, especially iOS Safari, to show the permission prompt)
+  earlyLocationPromise=new Promise(resolve=>{
+    if(!navigator.geolocation){resolve({error:"unsupported"});return;}
+    navigator.geolocation.getCurrentPosition(
+      p=>resolve({lat:p.coords.latitude,lng:p.coords.longitude}),
+      err=>resolve({error:err&&err.code===1?"denied":err&&err.code===2?"unavailable":err&&err.code===3?"timeout":"unknown"}),
+      {timeout:15000,enableHighAccuracy:true,maximumAge:60000}
+    );
+  });
+  document.getElementById("shop-photo-input").click();
+}
 
 function setRegMode(mode){
   const wrap=document.getElementById("rs3");
@@ -1580,15 +1707,17 @@ async function onShopPhotoSelected(event){
 
   document.getElementById("quick-photo-btn").style.display="none";
   document.getElementById("quick-loading").style.display="block";
-  document.getElementById("quick-loading-txt").innerHTML='<span class="fa">در حال گرفتن موقعیت مکانی...</span><span class="en" style="display:none">Getting your location...</span>';
+  document.getElementById("quick-loading-txt").innerHTML='<span class="fa">در حال خواندن اطلاعات از عکس...</span><span class="en" style="display:none">Reading info from photo...</span>';
 
-  // Get geolocation in parallel with AI analysis
-  const locPromise=new Promise(resolve=>{
-    if(!navigator.geolocation){resolve(null);return;}
+  // Reuse the location request that was already started (before the camera
+  // opened) — requesting geolocation again here, after the camera UI has
+  // taken over, is what was silently failing on iOS Safari.
+  const locPromise = earlyLocationPromise || new Promise(resolve=>{
+    if(!navigator.geolocation){resolve({error:"unsupported"});return;}
     navigator.geolocation.getCurrentPosition(
       p=>resolve({lat:p.coords.latitude,lng:p.coords.longitude}),
-      ()=>resolve(null),
-      {timeout:8000}
+      err=>resolve({error:err&&err.code===1?"denied":err&&err.code===2?"unavailable":err&&err.code===3?"timeout":"unknown"}),
+      {timeout:15000,enableHighAccuracy:true,maximumAge:60000}
     );
   });
 
@@ -1619,6 +1748,8 @@ async function onShopPhotoSelected(event){
     return;
   }
 
+  const gotLoc = loc && typeof loc.lat === "number" && typeof loc.lng === "number";
+
   quickData={
     name:(aiResult&&aiResult.name)||"",
     phone:(aiResult&&aiResult.phone)||"",
@@ -1626,8 +1757,8 @@ async function onShopPhotoSelected(event){
     addr:(aiResult&&aiResult.address)||"",
     hours:(aiResult&&aiResult.workingHours)||"",
     svcs:(aiResult&&aiResult.categories)||[],
-    lat:loc?loc.lat:null,
-    lng:loc?loc.lng:null,
+    lat:gotLoc?loc.lat:null,
+    lng:gotLoc?loc.lng:null,
   };
 
   document.getElementById("qname").value=quickData.name;
@@ -1636,17 +1767,79 @@ async function onShopPhotoSelected(event){
   document.getElementById("qhours").value=quickData.hours;
   buildQuickSvcGrid();
 
-  const locStatus=document.getElementById("quick-loc-ok");
-  if(loc){
-    locStatus.style.display="block";
-    locStatus.innerHTML='📍 <span class="fa">موقعیت مکانی ثبت شد</span><span class="en" style="display:none">Location captured</span>';
-  }else{
-    locStatus.style.display="block";
-    locStatus.style.color="#f59e0b";
-    locStatus.innerHTML='⚠️ <span class="fa">موقعیت مکانی گرفته نشد — می‌تونی بعداً از فرم دستی اضافه کنی</span><span class="en" style="display:none">Location not captured — you can add it via manual form later</span>';
-  }
-
+  renderQuickLocStatus(gotLoc, loc && loc.error);
   document.getElementById("quick-review").style.display="block";
+}
+
+function renderQuickLocStatus(gotLoc, errorReason){
+  const locStatus=document.getElementById("quick-loc-ok");
+  locStatus.style.display="block";
+  if(gotLoc){
+    locStatus.style.color="#34d399";
+    locStatus.innerHTML='📍 <span class="fa">موقعیت مکانی ثبت شد</span><span class="en" style="display:none">Location captured</span> <button class="btn btn-g btn-sm" style="margin-right:8px;padding:4px 10px;font-size:10px" onclick="pickQuickLocOnMap()">✏️ اصلاح روی نقشه</button>';
+    return;
+  }
+  const reasonText={
+    denied:{fa:"دسترسی به موقعیت مکانی رد شد — از تنظیمات مرورگر/گوشی اجازه بده",en:"Location access denied — allow it in your browser/phone settings"},
+    unavailable:{fa:"موقعیت مکانی گوشی در دسترس نبود",en:"Device location unavailable"},
+    timeout:{fa:"دریافت موقعیت مکانی خیلی طول کشید",en:"Getting location timed out"},
+    unsupported:{fa:"مرورگرت از موقعیت مکانی پشتیبانی نمی‌کنه",en:"Your browser doesn't support geolocation"},
+    unknown:{fa:"خطای نامشخص در دریافت موقعیت",en:"Unknown location error"},
+  }[errorReason||"unknown"]||{fa:"موقعیت مکانی گرفته نشد",en:"Location not captured"};
+  locStatus.style.color="#f59e0b";
+  locStatus.innerHTML=`⚠️ <span class="fa">${reasonText.fa} — می‌تونی روی نقشه انتخاب کنی</span><span class="en" style="display:none">${reasonText.en} — you can pick it on the map</span>
+    <div style="margin-top:8px;display:flex;gap:8px;justify-content:center">
+      <button class="btn btn-g btn-sm" onclick="retryQuickLocation()">🔄 <span class="fa">تلاش دوباره</span><span class="en" style="display:none">Retry</span></button>
+      <button class="btn btn-p btn-sm" onclick="pickQuickLocOnMap()">🗺️ <span class="fa">انتخاب روی نقشه</span><span class="en" style="display:none">Pick on Map</span></button>
+    </div>`;
+}
+
+function retryQuickLocation(){
+  const locStatus=document.getElementById("quick-loc-ok");
+  locStatus.style.color="var(--t3)";
+  locStatus.innerHTML='<span class="fa">در حال دریافت موقعیت...</span><span class="en" style="display:none">Getting location...</span>';
+  navigator.geolocation.getCurrentPosition(
+    p=>{
+      quickData.lat=p.coords.latitude;
+      quickData.lng=p.coords.longitude;
+      renderQuickLocStatus(true);
+    },
+    err=>{
+      renderQuickLocStatus(false, err&&err.code===1?"denied":err&&err.code===2?"unavailable":err&&err.code===3?"timeout":"unknown");
+    },
+    {timeout:15000,enableHighAccuracy:true}
+  );
+}
+
+let quickLocMap=null;
+function pickQuickLocOnMap(){
+  document.getElementById("quick-map-modal").style.display="flex";
+  setTimeout(()=>{
+    if(!window.L)return;
+    if(quickLocMap){quickLocMap.remove();quickLocMap=null;}
+    const startLat=quickData.lat||35.6892,startLng=quickData.lng||51.389;
+    quickLocMap=L.map("quick-map").setView([startLat,startLng],quickData.lat?15:11);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OSM"}).addTo(quickLocMap);
+    const icon=L.divIcon({className:"",html:`<div style="width:26px;height:26px;background:linear-gradient(135deg,#00e5ff,#b347ff);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid #fff;box-shadow:0 3px 10px rgba(0,229,255,.6)"></div>`,iconSize:[26,26],iconAnchor:[13,26]});
+    let marker=quickData.lat?L.marker([startLat,startLng],{icon}).addTo(quickLocMap):null;
+    quickLocMap.on("click",e=>{
+      if(marker)quickLocMap.removeLayer(marker);
+      marker=L.marker([e.latlng.lat,e.latlng.lng],{icon}).addTo(quickLocMap);
+      quickData._pendingLat=e.latlng.lat;
+      quickData._pendingLng=e.latlng.lng;
+    });
+  },50);
+}
+function closeQuickMapModal(){
+  document.getElementById("quick-map-modal").style.display="none";
+}
+function confirmQuickMapLoc(){
+  if(typeof quickData._pendingLat==="number"){
+    quickData.lat=quickData._pendingLat;
+    quickData.lng=quickData._pendingLng;
+    renderQuickLocStatus(true);
+  }
+  closeQuickMapModal();
 }
 
 function buildQuickSvcGrid(){

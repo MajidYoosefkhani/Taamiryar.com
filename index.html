@@ -113,7 +113,7 @@ select option{background:var(--s1);color:var(--t1)}
   background-size:50px 50px}
 .blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px)}
 body:not([data-theme="dark"]) .grid-overlay{
-  background-image:linear-gradient(rgba(0,144,200,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,144,200,.06) 1px,transparent 1px)}
+  display:none}
 body:not([data-theme="dark"]) .scanline{background:linear-gradient(90deg,transparent,rgba(0,144,200,.12),transparent)}
 .scanline{position:fixed;width:100%;height:2px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.08),transparent);
   z-index:1;pointer-events:none;animation:scanline 6s linear infinite}
@@ -263,8 +263,9 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
   transition:all .25s;width:100%}
 .cat-btn:hover{transform:translateY(-4px);border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.06);box-shadow:0 8px 20px rgba(0,229,255,.1)}
 .cat-btn.sel{border-color:rgba(0,229,255,.5);background:rgba(0,229,255,.1);box-shadow:0 0 16px rgba(0,229,255,.2)}
-.cat-ic{font-size:26px;line-height:1}
-.cat-lb{font-size:9px;color:var(--t2);line-height:1.3}
+.cat-ic{font-size:30px;line-height:1;width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  border-radius:12px;background:var(--s3);margin:0 auto 6px;filter:saturate(1.15)}
+.cat-lb{font-size:10.5px;color:var(--t1);line-height:1.35;font-weight:600}
 
 /* ══════════════════════════════════════════
    SHOP CARD
@@ -424,7 +425,7 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
 <body class="lang-fa">
 
 <!-- BG -->
-<canvas id="canvas"></canvas>
+<canvas id="canvas" style="opacity:0.45"></canvas>
 <div class="grid-overlay"></div>
 <div class="blob" style="top:-250px;right:-180px;width:700px;height:700px;background:radial-gradient(circle,rgba(0,229,255,.05),transparent 65%)"></div>
 <div class="blob" style="bottom:-200px;left:-150px;width:600px;height:600px;background:radial-gradient(circle,rgba(179,71,255,.04),transparent 65%)"></div>
@@ -853,7 +854,9 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
         <div style="height:270px;border-radius:16px;overflow:hidden;margin-bottom:12px;border:1.5px solid rgba(0,229,255,.15)">
           <div id="reg-map" style="width:100%;height:100%;border-radius:14px"></div>
         </div>
+        <button type="button" class="btn btn-g btn-sm" style="width:100%;margin-bottom:12px" onclick="useMyLocationOnRegMap()" id="reg-locate-btn">📍 <span class="fa">پیدا کردن موقعیت من</span><span class="en" style="display:none">Use my location</span><span class="ar" style="display:none">استخدم موقعي</span></button>
         <div id="pos-ok" style="display:none;font-size:11px;color:#34d399;margin-bottom:12px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);border-radius:9px;padding:8px">✅ <span class="fa">موقعیت انتخاب شد</span></div>
+        <div id="reg-locate-err" style="display:none;font-size:11px;color:#f59e0b;margin-bottom:12px;text-align:center;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);border-radius:9px;padding:8px"></div>
         <div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.12);border-radius:12px;padding:12px;margin-bottom:12px;font-size:12px;color:#9a7a00;line-height:1.8">
           💳 <strong style="color:#b89000"><span class="fa">درگاه پرداخت ریالی (زرین‌پال) — به زودی</span><span class="en" style="display:none">Rial payment gateway (ZarinPal) — coming soon</span></strong>
         </div>
@@ -1230,6 +1233,8 @@ function showPage(id){
   if(id==="find")initFindMap();
   if(id==="reg"){buildRegCity();initRegMap();}
   if(id==="all-shops")renderAllShops();
+  const canvasEl=document.getElementById("canvas");
+  if(canvasEl)canvasEl.style.opacity=(id==="home")?"0.45":"1";
   window.scrollTo(0,0);
 }
 
@@ -1280,16 +1285,25 @@ function renderAll(){
 
 function catBtnHtml(c,isSel,onclickFn){
   return `<button class="cat-btn${isSel?" sel":""}" onclick="${onclickFn}('${c.i}','${t(c.l).replace(/'/g,"\\'")}','${c.c}')"
-    style="border-color:${isSel?c.c+"55":c.c+"18"};background:${isSel?c.c+"13":c.c+"07"}"
+    style="border-color:${isSel?c.c+"55":c.c+"18"};background:${isSel?c.c+"13":c.c+"07"};display:flex;flex-direction:column;align-items:center;text-align:center"
     onmouseover="if(!this.classList.contains('sel')){this.style.background='${c.c}12';this.style.transform='translateY(-3px)'}"
     onmouseout="if(!this.classList.contains('sel')){this.style.background='${isSel?c.c+"13":c.c+"07"}';this.style.transform='none'}">
-    <div class="cat-ic">${c.i}</div><div class="cat-lb" style="${isSel?"color:"+c.c:""}">${t(c.l)}</div>
+    <div class="cat-ic" style="background:${c.c}1c">${c.i}</div><div class="cat-lb" style="${isSel?"color:"+c.c+";font-weight:800":""}">${t(c.l)}</div>
   </button>`;
 }
-function groupedCatsHtml(onclickFn,selectable){
+function groupedCatsHtml(onclickFn,selectable,withQuickBox){
   return CAT_GROUPS.map(grp=>{
     const items=CATS.filter(c=>c.g===grp.k);
     if(!items.length)return"";
+    const boxId="qdiag-"+grp.k;
+    const quickBox=withQuickBox?`
+      <div class="card" style="padding:8px;margin-top:10px;border-color:${grp.c}22">
+        <textarea id="${boxId}" rows="2" placeholder="${lang==='en'?('Describe your '+t(grp.l)+' issue...'):lang==='ar'?('صف مشكلة '+t(grp.l)+'...'):('مشکل '+t(grp.l)+'ت رو بنویس...')}" style="width:100%;background:transparent;border:none;outline:none;color:var(--t1);font-size:13.5px;padding:10px 12px 4px;resize:none;line-height:1.7"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();diagFromGroupBox('${grp.k}','${boxId}')}"></textarea>
+        <div style="display:flex;justify-content:flex-end;padding:2px 8px 8px">
+          <button class="btn btn-sm" style="background:${grp.c};color:#fff" onclick="diagFromGroupBox('${grp.k}','${boxId}')"><span class="fa">تشخیص بده ←</span><span class="en" style="display:none">Diagnose →</span><span class="ar" style="display:none">تشخيص ←</span></button>
+        </div>
+      </div>`:"";
     return `<div style="margin-bottom:18px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <div style="width:8px;height:8px;border-radius:50%;background:${grp.c};flex-shrink:0"></div>
@@ -1297,8 +1311,18 @@ function groupedCatsHtml(onclickFn,selectable){
         <div style="flex:1;height:1px;background:${grp.c}22"></div>
       </div>
       <div class="cat-grid">${items.map(c=>catBtnHtml(c,selectable&&selCat&&selCat.l===t(c.l),onclickFn)).join("")}</div>
+      ${quickBox}
     </div>`;
   }).join("");
+}
+function diagFromGroupBox(groupKey,boxId){
+  const el=document.getElementById(boxId);
+  const val=el?el.value.trim():"";
+  if(!val)return;
+  const grp=CAT_GROUPS.find(g=>g.k===groupKey);
+  if(grp)selCat={i:"",l:t(grp.l),c:grp.c};
+  document.getElementById("dq").value=val;
+  doDiag();
 }
 
 /* Compact accordion version used on the homepage: groups start collapsed
@@ -1335,7 +1359,7 @@ function renderHomeCats(){
 
 function renderDiagCats(){
   const el=document.getElementById("diag-cats");if(!el)return;
-  el.innerHTML=groupedCatsHtml("toggleCat",true);
+  el.innerHTML=groupedCatsHtml("toggleCat",true,true);
 }
 
 function renderSuggs(){
@@ -1412,7 +1436,17 @@ function renderStepsBar(){
 
 /* ═══ DIAGNOSE ═══ */
 function selCatGo(icon,label,color){selCat={i:icon,l:label,c:color};showPage("diag");renderDiagCats();showSelBar();}
-function toggleCat(icon,label,color){if(selCat&&selCat.l===label)clearCat();else{selCat={i:icon,l:label,c:color};showSelBar();}renderDiagCats();}
+function toggleCat(icon,label,color){
+  if(selCat&&selCat.l===label){clearCat();return;}
+  selCat={i:icon,l:label,c:color};showSelBar();renderDiagCats();
+  jumpToQuestionBox();
+}
+function jumpToQuestionBox(){
+  const dq=document.getElementById("dq");
+  if(!dq)return;
+  dq.scrollIntoView({behavior:"smooth",block:"center"});
+  setTimeout(()=>dq.focus(),300);
+}
 function showSelBar(){
   const bar=document.getElementById("sel-bar");
   bar.style.display="flex";bar.style.borderColor=`${selCat.c}35`;bar.style.background=`${selCat.c}09`;
@@ -1601,13 +1635,53 @@ function regBack(step){
   if(step===1){document.getElementById("rs1").style.display="none";document.getElementById("rs0").style.display="block";updateStep(0);}
   else if(step===2){document.getElementById("rs2").style.display="none";document.getElementById("rs1").style.display="block";updateStep(1);}
 }
+let regMapMarker=null;
 function initRegMap(){
   if(regMap||!window.L)return;
   regMap=L.map("reg-map").setView([35.6892,51.389],10);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OSM"}).addTo(regMap);
-  let mk=null;
   const ico=L.divIcon({className:"",html:`<div style="width:26px;height:26px;background:linear-gradient(135deg,#00e5ff,#b347ff);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid #fff;box-shadow:0 3px 10px rgba(0,229,255,.6)"></div>`,iconSize:[26,26],iconAnchor:[13,26]});
-  regMap.on("click",e=>{if(mk)regMap.removeLayer(mk);mk=L.marker([e.latlng.lat,e.latlng.lng],{icon:ico}).addTo(regMap);regData.lat=e.latlng.lat;regData.lng=e.latlng.lng;document.getElementById("pos-ok").style.display="block";});
+  regMap.on("click",e=>{
+    if(regMapMarker)regMap.removeLayer(regMapMarker);
+    regMapMarker=L.marker([e.latlng.lat,e.latlng.lng],{icon:ico}).addTo(regMap);
+    regData.lat=e.latlng.lat;regData.lng=e.latlng.lng;
+    document.getElementById("pos-ok").style.display="block";
+    document.getElementById("reg-locate-err").style.display="none";
+  });
+}
+function useMyLocationOnRegMap(){
+  const btn=document.getElementById("reg-locate-btn");
+  const errEl=document.getElementById("reg-locate-err");
+  errEl.style.display="none";
+  if(!navigator.geolocation){
+    errEl.textContent={fa:"مرورگرت از موقعیت‌یابی پشتیبانی نمی‌کنه",en:"Geolocation not supported",ar:"تحديد الموقع غير مدعوم"}[lang]||"موقعیت‌یابی پشتیبانی نمی‌شود";
+    errEl.style.display="block";
+    return;
+  }
+  btn.disabled=true;
+  const prevText=btn.innerHTML;
+  btn.innerHTML="⏳ ...";
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      const lat=pos.coords.latitude,lng=pos.coords.longitude;
+      regData.lat=lat;regData.lng=lng;
+      if(regMap){
+        regMap.setView([lat,lng],16);
+        if(regMapMarker)regMap.removeLayer(regMapMarker);
+        const ico=L.divIcon({className:"",html:`<div style="width:26px;height:26px;background:linear-gradient(135deg,#00e5ff,#b347ff);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid #fff;box-shadow:0 3px 10px rgba(0,229,255,.6)"></div>`,iconSize:[26,26],iconAnchor:[13,26]});
+        regMapMarker=L.marker([lat,lng],{icon:ico}).addTo(regMap);
+      }
+      document.getElementById("pos-ok").style.display="block";
+      btn.disabled=false;btn.innerHTML=prevText;
+    },
+    err=>{
+      const msg={fa:"دسترسی به موقعیت رد شد یا در دسترس نیست. روی نقشه کلیک کن تا دستی انتخاب کنی.",en:"Location access denied or unavailable. Tap the map to set it manually.",ar:"تم رفض الوصول للموقع. انقر على الخريطة لتحديده يدوياً."}[lang]||"دسترسی به موقعیت ممکن نشد. روی نقشه کلیک کن.";
+      errEl.textContent=msg;
+      errEl.style.display="block";
+      btn.disabled=false;btn.innerHTML=prevText;
+    },
+    {enableHighAccuracy:true,timeout:15000,maximumAge:60000}
+  );
 }
 async function submitShop(){
   const btn=document.getElementById("reg-submit-btn");btn.textContent="...";btn.disabled=true;
@@ -1640,7 +1714,7 @@ async function submitShop(){
   }
 }
 function regReset(){
-  regData={name:"",owner:"",phone:"",tel:"",insta:"",city:"",addr:"",svcs:[],lat:null,lng:null,desc:""};regMap=null;
+  regData={name:"",owner:"",phone:"",tel:"",insta:"",city:"",addr:"",svcs:[],lat:null,lng:null,desc:""};regMap=null;regMapMarker=null;
   document.getElementById("rs3").style.display="none";
   document.getElementById("reg-mode-wrap").style.display="flex";
   document.getElementById("rs0").style.display="block";["rs1","rs2"].forEach(id=>document.getElementById(id).style.display="none");

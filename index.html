@@ -451,7 +451,7 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
         <button class="lang-opt" onclick="setLang('en')">EN</button>
         <button class="lang-opt" onclick="setLang('ar')">AR</button>
       </div>
-      <button class="support-hdr" onclick="openTip()">💛 <span class="fa">حمایت</span><span class="en" style="display:none">Support</span><span class="ar" style="display:none">دعم</span></button>
+      <button class="support-hdr" onclick="openTip()">⭐ <span class="fa">عضویت ویژه</span><span class="en" style="display:none">Premium</span><span class="ar" style="display:none">عضوية مميزة</span></button>
     </div>
     <div class="header-search">
       <span style="font-size:17px;flex-shrink:0">🔍</span>
@@ -871,27 +871,44 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
 
 <!-- MODALS -->
 <div id="tip-modal" class="overlay" style="display:none" onclick="closeTip()">
-  <div class="modal" onclick="event.stopPropagation()">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:420px">
     <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:260px;height:130px;background:radial-gradient(ellipse,rgba(255,215,0,.1),transparent 70%);pointer-events:none"></div>
-    <div style="font-size:42px;text-align:center;margin-bottom:12px">💛</div>
+    <div style="font-size:42px;text-align:center;margin-bottom:12px">⭐</div>
     <h3 style="font-size:20px;font-weight:900;text-align:center;margin-bottom:8px" class="gold-text">
-      <span class="fa">حمایت مالی</span><span class="en" style="display:none">Financial Support</span><span class="ar" style="display:none">الدعم المالي</span>
+      <span class="fa">عضویت ویژه تعمیریار</span><span class="en" style="display:none">Taamiryar Premium</span><span class="ar" style="display:none">عضوية تعمیریار المميزة</span>
     </h3>
-    <p style="color:var(--t2);font-size:12px;text-align:center;margin-bottom:24px;line-height:1.9">
-      <span class="fa">تعمیریار رایگانه. با حمایتت کمک کن سرور قوی‌تر، AI بهتر و امکانات بیشتر داشته باشیم 🙏</span>
-      <span class="en" style="display:none">Taamiryar is free. With your support, help us have stronger servers, better AI, and more features 🙏</span>
-      <span class="ar" style="display:none">تعمیریار مجاني. بدعمك ساعدنا على امتلاك خوادم أقوى وذكاء اصطناعي أفضل 🙏</span>
+    <p style="color:var(--t2);font-size:12.5px;text-align:center;margin-bottom:20px;line-height:1.9">
+      <span class="fa">تعمیرکارهای عضو ویژه، بالاتر دیده می‌شن و مشتری بیشتری می‌گیرن. کاربرهای عادی هم با عضویت، تبلیغات کمتر و امکانات اضافه دارن.</span>
+      <span class="en" style="display:none">Premium shops rank higher and get more customers. Regular users get fewer ads and extra features too.</span>
+      <span class="ar" style="display:none">المحلات المميزة تظهر أعلى وتحصل على عملاء أكثر. المستخدمون العاديون يحصلون على مزايا إضافية أيضاً.</span>
     </p>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px">
+      <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.12);border-radius:10px;padding:10px 12px">
+        <span style="font-size:16px">🔝</span>
+        <span style="font-size:12px;color:var(--t1)"><span class="fa">نمایش بالاتر در نتایج جستجوی تعمیرگاه</span><span class="en" style="display:none">Higher ranking in shop search results</span><span class="ar" style="display:none">ترتيب أعلى في نتائج البحث</span></span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.12);border-radius:10px;padding:10px 12px">
+        <span style="font-size:16px">✅</span>
+        <span style="font-size:12px;color:var(--t1)"><span class="fa">بج «تأیید شده» کنار اسم تعمیرگاه</span><span class="en" style="display:none">Verified badge next to shop name</span><span class="ar" style="display:none">شارة «موثّق» بجانب اسم المحل</span></span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.12);border-radius:10px;padding:10px 12px">
+        <span style="font-size:16px">🤖</span>
+        <span style="font-size:12px;color:var(--t1)"><span class="fa">تشخیص هوشمند پیشرفته و بدون محدودیت</span><span class="en" style="display:none">Advanced AI diagnosis, unlimited use</span><span class="ar" style="display:none">تشخيص ذكي متقدم بلا حدود</span></span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
       <a href="https://buymeacoffee.com/taamiryar" target="_blank" class="btn btn-gold btn-full" style="text-decoration:none">
-        ☕ <span class="fa">Buy Me a Coffee</span><span class="en" style="display:none">Buy Me a Coffee</span><span class="ar" style="display:none">Buy Me a Coffee</span>
+        ⭐ <span class="fa">فعال‌سازی عضویت ویژه</span><span class="en" style="display:none">Activate Premium</span><span class="ar" style="display:none">تفعيل العضوية المميزة</span>
       </a>
       <a href="https://ko-fi.com/taamiryar" target="_blank" class="btn btn-g btn-full" style="text-decoration:none">
-        💛 <span class="fa">تیپ (Ko-fi)</span><span class="en" style="display:none">Tip via Ko-fi</span><span class="ar" style="display:none">Tip via Ko-fi</span>
+        💛 <span class="fa">پرداخت مبلغ دلخواه</span><span class="en" style="display:none">Pay what you want</span><span class="ar" style="display:none">ادفع المبلغ الذي تريده</span>
       </a>
     </div>
+
     <div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.12);border-radius:12px;padding:11px;margin-bottom:16px;font-size:11px;color:#9a7a00;text-align:center;line-height:1.7">
-      💳 <strong style="color:#b89000"><span class="fa">درگاه پرداخت ریالی — زرین‌پال — به زودی</span><span class="en" style="display:none">Rial Gateway — ZarinPal — Coming Soon</span></strong>
+      💳 <strong style="color:#b89000"><span class="fa">پرداخت ریالی — زرین‌پال — به زودی</span><span class="en" style="display:none">Rial Payment — ZarinPal — Coming Soon</span></strong>
     </div>
     <button class="btn btn-g btn-full" onclick="closeTip()"><span class="fa">بستن</span><span class="en" style="display:none">Close</span><span class="ar" style="display:none">إغلاق</span></button>
   </div>

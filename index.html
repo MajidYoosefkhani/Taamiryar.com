@@ -3,8 +3,15 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="تعمیریار — هوش مصنوعی تعمیرات | AI Repair Assistant | مساعد إصلاح ذكي"/>
-<title>تعمیریار | AI Repair</title>
+<meta name="description" content="تعمیریار — پیدا کردن تعمیرکار و تعمیرگاه نزدیک شما با تشخیص هوشمند مشکل دستگاه. موبایل، لپ‌تاپ، یخچال، کولر، لوله‌کشی، برق‌کاری و بیش از ۴۰ خدمت تعمیراتی دیگر در سراسر ایران."/>
+<meta name="keywords" content="تعمیرکار, تعمیرگاه, تعمیر موبایل, تعمیر لپ تاپ, تعمیر یخچال, تعمیر کولر, لوله کش, برق کار, تعمیرکار نزدیک من, تعمیریار"/>
+<title>تعمیریار | پیدا کردن تعمیرکار و تعمیرگاه نزدیک شما</title>
+<link rel="canonical" href="https://www.taamiryar.com/"/>
+<meta property="og:title" content="تعمیریار | پیدا کردن تعمیرکار و تعمیرگاه نزدیک شما"/>
+<meta property="og:description" content="تشخیص هوشمند مشکل دستگاه با AI و یافتن نزدیک‌ترین تعمیرگاه در ایران — رایگان."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://www.taamiryar.com/"/>
+<meta property="og:locale" content="fa_IR"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -190,9 +197,8 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 /* ══════════════════════════════════════════
    PAGES
 ══════════════════════════════════════════ */
-.page{display:none;padding-top:150px;padding-bottom:100px;min-height:100vh;
+.page{display:none;padding-top:calc(var(--header-h,150px) + 20px);padding-bottom:100px;min-height:100vh;
   animation:fadeUp .45s ease}
-@media(min-width:768px){.page{padding-top:110px}}
 .page.on{display:block}
 
 /* ══════════════════════════════════════════
@@ -529,7 +535,7 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
         </button>
       </div>
       <div class="scroll-hint">
-        <span class="fa">اسکرول کن</span><span class="en" style="display:none">Scroll</span>
+        <span class="fa">اسکرول کن</span><span class="en" style="display:none">Scroll</span><span class="ar" style="display:none">مرّر للأسفل</span>
         <div class="scroll-arrow"></div>
       </div>
     </section>
@@ -618,14 +624,30 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
       </div>
     </section>
 
+    <!-- SEO TEXT BLOCK -->
+    <section class="section">
+      <div class="card">
+        <h3 style="font-size:15px;font-weight:800;color:var(--t1);margin-bottom:14px">
+          <span class="fa">تعمیریار چیست؟</span><span class="en" style="display:none">What is Taamiryar?</span><span class="ar" style="display:none">ما هو تعمیریار؟</span>
+        </h3>
+        <div style="font-size:13px;color:var(--t2);line-height:2.1">
+          <p class="fa-block" style="margin-bottom:10px">تعمیریار یک پلتفرم رایگان برای <strong>پیدا کردن تعمیرکار و تعمیرگاه نزدیک شما</strong> در سراسر ایران است. با استفاده از هوش مصنوعی، مشکل دستگاه خود را توضیح دهید تا تشخیص هوشمند، راه‌حل عملی و تخمین هزینه تعمیر دریافت کنید.</p>
+          <p class="fa-block" style="margin-bottom:10px">در تعمیریار می‌توانید تعمیرکار یا تعمیرگاه مناسب برای <strong>تعمیر موبایل، تعمیر لپ‌تاپ، تعمیر یخچال و فریزر، تعمیر کولر گازی و آبی، تعمیر ماشین لباسشویی، لوله‌کشی، برق‌کاری، نجاری، کفاشی، آهنگری</strong> و بیش از ۴۰ دسته خدماتی دیگر را بر اساس شهر و موقعیت مکانی خود پیدا کنید.</p>
+          <p class="fa-block">صاحبان تعمیرگاه و کسب‌وکارهای تعمیراتی نیز می‌توانند به‌صورت رایگان و سریع — حتی فقط با یک عکس از تابلوی مغازه — در تعمیریار ثبت‌نام کنند و مشتریان بیشتری جذب نمایند.</p>
+          <p class="en-block" style="margin-bottom:10px">Taamiryar is a free platform to find repair technicians and shops near you across Iran. Describe your device problem and get an AI-powered diagnosis, practical solution, and cost estimate.</p>
+          <p class="ar-block">تعمیریار منصة مجانية للعثور على فنيي وورش الإصلاح القريبة منك في جميع أنحاء إيران.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- FOOTER -->
     <footer style="text-align:center;padding:30px 0 20px;border-top:1px solid rgba(0,229,255,.07)">
       <div class="logo-text" style="font-size:22px;margin-bottom:6px">تعمیریار</div>
       <div style="font-size:11px;color:var(--t3);margin-bottom:14px">taamiryar.com © 2025 <span onclick="openAdminLogin()" style="cursor:pointer;opacity:.4;margin-right:6px" title="Admin">🔒</span></div>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
         <button class="btn btn-g btn-sm" onclick="showPage('diag')">🤖 AI</button>
-        <button class="btn btn-g btn-sm" onclick="showPage('find')">📍 <span class="fa">تعمیرگاه</span><span class="en" style="display:none">Shop</span></button>
-        <button class="btn btn-g btn-sm" onclick="showPage('reg')">✏️ <span class="fa">ثبت‌نام</span><span class="en" style="display:none">Register</span></button>
+        <button class="btn btn-g btn-sm" onclick="showPage('find')">📍 <span class="fa">تعمیرگاه</span><span class="en" style="display:none">Shop</span><span class="ar" style="display:none">ورشة</span></button>
+        <button class="btn btn-g btn-sm" onclick="showPage('reg')">✏️ <span class="fa">ثبت‌نام</span><span class="en" style="display:none">Register</span><span class="ar" style="display:none">تسجيل</span></button>
       </div>
     </footer>
   </div>
@@ -651,7 +673,7 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
         <textarea id="dq" rows="3" style="width:100%;background:transparent;border:none;outline:none;color:var(--t1);font-size:15px;padding:13px 14px 6px;resize:none;line-height:1.8"
           onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();doDiag()}"></textarea>
         <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 12px 12px">
-          <span style="font-size:10px;color:var(--t3)"><span class="fa">Enter برای ارسال</span><span class="en" style="display:none">Enter to send</span></span>
+          <span style="font-size:10px;color:var(--t3)"><span class="fa">Enter برای ارسال</span><span class="en" style="display:none">Enter to send</span><span class="ar" style="display:none">اضغط Enter للإرسال</span></span>
           <button class="btn btn-p btn-sm" onclick="doDiag()"><span class="fa">تشخیص بده ←</span><span class="en" style="display:none">Diagnose →</span><span class="ar" style="display:none">تشخيص ←</span></button>
         </div>
       </div>
@@ -666,23 +688,23 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
         <div style="width:24px;height:24px;border-radius:50%;background:var(--g);box-shadow:0 0 30px rgba(0,229,255,.9);animation:pulse 1.5s ease-in-out infinite"></div>
       </div>
       <div class="gt" style="font-size:20px;font-weight:900;margin-bottom:10px" id="load-txt">
-        <span class="fa">در حال تشخیص</span><span class="en" style="display:none">Diagnosing</span><span id="dots">...</span>
+        <span class="fa">در حال تشخیص</span><span class="en" style="display:none">Diagnosing</span><span class="ar" style="display:none">جارٍ التشخيص</span><span id="dots">...</span>
       </div>
-      <div style="color:var(--t3);font-size:13px"><span class="fa">هوش مصنوعی مشکل رو بررسی می‌کنه</span><span class="en" style="display:none">AI is analyzing the problem</span></div>
+      <div style="color:var(--t3);font-size:13px"><span class="fa">هوش مصنوعی مشکل رو بررسی می‌کنه</span><span class="en" style="display:none">AI is analyzing the problem</span><span class="ar" style="display:none">يقوم الذكاء الاصطناعي بتحليل المشكلة</span></div>
     </div>
     <!-- Result -->
     <div id="diag-result" style="display:none">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-        <button class="btn btn-g btn-sm" onclick="resetDiag()">← <span class="fa">سوال جدید</span><span class="en" style="display:none">New Question</span></button>
+        <button class="btn btn-g btn-sm" onclick="resetDiag()">← <span class="fa">سوال جدید</span><span class="en" style="display:none">New Question</span><span class="ar" style="display:none">سؤال جديد</span></button>
         <div class="div" style="flex:1;margin:0"></div>
-        <span class="bdg bdg-g"><span class="fa">پاسخ AI</span><span class="en" style="display:none">AI Answer</span></span>
+        <span class="bdg bdg-g"><span class="fa">پاسخ AI</span><span class="en" style="display:none">AI Answer</span><span class="ar" style="display:none">إجابة الذكاء الاصطناعي</span></span>
       </div>
       <div class="card" id="result-box" style="font-size:14px;line-height:2.1;color:var(--t2);white-space:pre-wrap;min-height:200px;padding:22px;background:rgba(0,229,255,.02);border-color:rgba(0,229,255,.15)"></div>
       <div class="card" style="text-align:center;padding:20px;background:linear-gradient(135deg,rgba(0,229,255,.03),rgba(179,71,255,.03));border-color:rgba(0,229,255,.12);margin-top:0">
-        <div style="font-size:13px;color:var(--t3);margin-bottom:14px"><span class="fa">نزدیک‌ترین تعمیرگاه رو هم پیدا کن؟</span><span class="en" style="display:none">Find the nearest repair shop?</span></div>
+        <div style="font-size:13px;color:var(--t3);margin-bottom:14px"><span class="fa">نزدیک‌ترین تعمیرگاه رو هم پیدا کن؟</span><span class="en" style="display:none">Find the nearest repair shop?</span><span class="ar" style="display:none">هل تريد العثور على أقرب ورشة؟</span></div>
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-          <button class="btn btn-p btn-sm" onclick="showPage('find')">📍 <span class="fa">یافتن تعمیرگاه</span><span class="en" style="display:none">Find Shop</span></button>
-          <button class="btn btn-g btn-sm" onclick="openReview()">💬 <span class="fa">نظر بده</span><span class="en" style="display:none">Review</span></button>
+          <button class="btn btn-p btn-sm" onclick="showPage('find')">📍 <span class="fa">یافتن تعمیرگاه</span><span class="en" style="display:none">Find Shop</span><span class="ar" style="display:none">ابحث عن ورشة</span></button>
+          <button class="btn btn-g btn-sm" onclick="openReview()">💬 <span class="fa">نظر بده</span><span class="en" style="display:none">Review</span><span class="ar" style="display:none">أضف مراجعة</span></button>
         </div>
       </div>
     </div>
@@ -696,27 +718,27 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
   <div class="wrap" style="max-width:800px;margin:0 auto">
     <div style="margin-bottom:20px">
       <h2 class="sec-title gt">📍 <span class="fa">یافتن تعمیرگاه</span><span class="en" style="display:none">Find Repair Shop</span><span class="ar" style="display:none">ابحث عن ورشة</span></h2>
-      <p class="sec-sub"><span class="fa">نزدیک‌ترین تعمیرگاه رو پیدا کن</span><span class="en" style="display:none">Find the nearest repair shop</span></p>
+      <p class="sec-sub"><span class="fa">نزدیک‌ترین تعمیرگاه رو پیدا کن</span><span class="en" style="display:none">Find the nearest repair shop</span><span class="ar" style="display:none">ابحث عن أقرب ورشة</span></p>
     </div>
     <div class="card" style="padding:18px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-        <div class="fld"><label class="lbl"><span class="fa">🏙️ شهر</span><span class="en" style="display:none">🏙️ City</span></label><select class="inp" id="fcity" style="cursor:pointer;appearance:none"></select></div>
-        <div class="fld"><label class="lbl"><span class="fa">🔧 خدمات</span><span class="en" style="display:none">🔧 Service</span></label><select class="inp" id="fcat" style="cursor:pointer;appearance:none"></select></div>
+        <div class="fld"><label class="lbl"><span class="fa">🏙️ شهر</span><span class="en" style="display:none">🏙️ City</span><span class="ar" style="display:none">🏙️ المدينة</span></label><select class="inp" id="fcity" style="cursor:pointer;appearance:none"></select></div>
+        <div class="fld"><label class="lbl"><span class="fa">🔧 خدمات</span><span class="en" style="display:none">🔧 Service</span><span class="ar" style="display:none">🔧 الخدمة</span></label><select class="inp" id="fcat" style="cursor:pointer;appearance:none"></select></div>
       </div>
       <div style="display:flex;gap:10px">
-        <button class="btn btn-p" style="flex:1" onclick="doFind()">🔍 <span class="fa">جستجو</span><span class="en" style="display:none">Search</span></button>
-        <button class="btn btn-g btn-sm" style="white-space:nowrap;padding:12px 16px" onclick="getLoc()" id="loc-btn">📡 <span class="fa">موقعیت</span><span class="en" style="display:none">Location</span></button>
+        <button class="btn btn-p" style="flex:1" onclick="doFind()">🔍 <span class="fa">جستجو</span><span class="en" style="display:none">Search</span><span class="ar" style="display:none">بحث</span></button>
+        <button class="btn btn-g btn-sm" style="white-space:nowrap;padding:12px 16px" onclick="getLoc()" id="loc-btn">📡 <span class="fa">موقعیت</span><span class="en" style="display:none">Location</span><span class="ar" style="display:none">الموقع</span></button>
       </div>
-      <div id="loc-ok" style="display:none;font-size:11px;color:#34d399;margin-top:10px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:9px;padding:7px">✅ <span class="fa">موقعیت دریافت شد</span><span class="en" style="display:none">Location received</span></div>
+      <div id="loc-ok" style="display:none;font-size:11px;color:#34d399;margin-top:10px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:9px;padding:7px">✅ <span class="fa">موقعیت دریافت شد</span><span class="en" style="display:none">Location received</span><span class="ar" style="display:none">تم استلام الموقع</span></div>
     </div>
     <div id="find-empty" style="text-align:center;padding:60px 0">
       <div style="font-size:56px;margin-bottom:14px;animation:float 3s ease-in-out infinite">🏪</div>
-      <div style="font-size:15px;color:var(--t2);margin-bottom:20px"><span class="fa">هنوز تعمیرگاهی ثبت نشده</span><span class="en" style="display:none">No shops registered yet</span></div>
-      <button class="btn btn-p btn-sm" onclick="showPage('reg')">✏️ <span class="fa">اولین ثبت‌نام</span><span class="en" style="display:none">First Registration</span></button>
+      <div style="font-size:15px;color:var(--t2);margin-bottom:20px"><span class="fa">هنوز تعمیرگاهی ثبت نشده</span><span class="en" style="display:none">No shops registered yet</span><span class="ar" style="display:none">لا توجد ورش مسجلة بعد</span></div>
+      <button class="btn btn-p btn-sm" onclick="showPage('reg')">✏️ <span class="fa">اولین ثبت‌نام</span><span class="en" style="display:none">First Registration</span><span class="ar" style="display:none">أول تسجيل</span></button>
     </div>
     <div id="find-none" style="display:none;text-align:center;padding:60px 0">
       <div style="font-size:56px;margin-bottom:14px">😕</div>
-      <div style="color:var(--t2);font-size:14px"><span class="fa">نتیجه‌ای پیدا نشد</span><span class="en" style="display:none">No results found</span></div>
+      <div style="color:var(--t2);font-size:14px"><span class="fa">نتیجه‌ای پیدا نشد</span><span class="en" style="display:none">No results found</span><span class="ar" style="display:none">لم يتم العثور على نتائج</span></div>
     </div>
     <div id="find-results" style="display:none">
       <div style="height:250px;border-radius:18px;overflow:hidden;margin-bottom:16px;border:1.5px solid rgba(0,229,255,.15)">
@@ -734,7 +756,7 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
 <div id="page-all-shops" class="page">
   <div class="wrap" style="max-width:800px;margin:0 auto">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
-      <button class="btn btn-g btn-sm" onclick="showPage('home')">→ <span class="fa">بازگشت</span><span class="en" style="display:none">Back</span></button>
+      <button class="btn btn-g btn-sm" onclick="showPage('home')">→ <span class="fa">بازگشت</span><span class="en" style="display:none">Back</span><span class="ar" style="display:none">رجوع</span></button>
     </div>
     <div style="margin-bottom:20px">
       <h2 class="sec-title gt">🏪 <span class="fa">همه تعمیرگاه‌ها</span><span class="en" style="display:none">All Shops</span><span class="ar" style="display:none">جميع الورش</span></h2>
@@ -742,7 +764,7 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
     </div>
     <div id="all-shops-empty" style="display:none;text-align:center;padding:60px 0">
       <div style="font-size:56px;margin-bottom:14px">🏪</div>
-      <div style="font-size:15px;color:var(--t2)"><span class="fa">هنوز تعمیرگاهی ثبت نشده</span><span class="en" style="display:none">No shops registered yet</span></div>
+      <div style="font-size:15px;color:var(--t2)"><span class="fa">هنوز تعمیرگاهی ثبت نشده</span><span class="en" style="display:none">No shops registered yet</span><span class="ar" style="display:none">لا توجد ورش مسجلة بعد</span></div>
     </div>
     <div id="all-shops-list"></div>
   </div>
@@ -755,16 +777,16 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
   <div class="wrap" style="max-width:700px;margin:0 auto">
     <div style="margin-bottom:20px">
       <h2 class="sec-title gt">✏️ <span class="fa">ثبت تعمیرگاه</span><span class="en" style="display:none">Register Shop</span><span class="ar" style="display:none">تسجيل الورشة</span></h2>
-      <p class="sec-sub"><span class="fa">رایگان — در taamiryar.com دیده بشو</span><span class="en" style="display:none">Free — be seen on taamiryar.com</span></p>
+      <p class="sec-sub"><span class="fa">رایگان — در taamiryar.com دیده بشو</span><span class="en" style="display:none">Free — be seen on taamiryar.com</span><span class="ar" style="display:none">مجاني — كن ظاهراً على taamiryar.com</span></p>
     </div>
 
     <div id="rs3" style="display:none;text-align:center;padding:60px 20px">
       <div style="font-size:72px;margin-bottom:20px;animation:float 3s ease-in-out infinite">🎉</div>
-      <div class="sec-title gt"><span class="fa">ثبت شد!</span><span class="en" style="display:none">Registered!</span></div>
-      <div style="color:var(--t2);font-size:14px;margin-bottom:28px;line-height:2"><span class="fa">تعمیرگاهت در taamiryar.com ثبت شد</span></div>
+      <div class="sec-title gt"><span class="fa">ثبت شد!</span><span class="en" style="display:none">Registered!</span><span class="ar" style="display:none">تم التسجيل!</span></div>
+      <div style="color:var(--t2);font-size:14px;margin-bottom:28px;line-height:2"><span class="fa">تعمیرگاهت در taamiryar.com ثبت شد</span><span class="en" style="display:none">Your shop is registered on taamiryar.com</span><span class="ar" style="display:none">تم تسجيل ورشتك على taamiryar.com</span></div>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-g btn-sm" onclick="regReset()"><span class="fa">ثبت دیگری</span><span class="en" style="display:none">Register Another</span></button>
-        <button class="btn btn-p btn-sm" onclick="showPage('find')"><span class="fa">مشاهده در نقشه</span><span class="en" style="display:none">View on Map</span></button>
+        <button class="btn btn-g btn-sm" onclick="regReset()"><span class="fa">ثبت دیگری</span><span class="en" style="display:none">Register Another</span><span class="ar" style="display:none">تسجيل آخر</span></button>
+        <button class="btn btn-p btn-sm" onclick="showPage('find')"><span class="fa">مشاهده در نقشه</span><span class="en" style="display:none">View on Map</span><span class="ar" style="display:none">عرض على الخريطة</span></button>
       </div>
     </div>
 
@@ -803,23 +825,23 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
       <!-- Quick loading state -->
       <div id="quick-loading" style="display:none;text-align:center;padding:50px 0">
         <div style="width:50px;height:50px;border:3px solid rgba(0,229,255,.15);border-top-color:#00e5ff;border-radius:50%;margin:0 auto 20px;animation:spin 1s linear infinite"></div>
-        <div class="gt" style="font-size:15px;font-weight:800" id="quick-loading-txt"><span class="fa">در حال خواندن اطلاعات از عکس...</span><span class="en" style="display:none">Reading info from photo...</span></div>
+        <div class="gt" style="font-size:15px;font-weight:800" id="quick-loading-txt"><span class="fa">در حال خواندن اطلاعات از عکس...</span><span class="en" style="display:none">Reading info from photo...</span><span class="ar" style="display:none">جارٍ قراءة المعلومات من الصورة...</span></div>
       </div>
 
       <!-- Quick review/edit form (AI-filled, editable) -->
       <div id="quick-review" style="display:none" class="card">
-        <div style="font-size:13px;font-weight:800;color:#34d399;margin-bottom:14px">✅ <span class="fa">اطلاعات تشخیص داده شد — قبل از ثبت بررسی کن</span><span class="en" style="display:none">Info detected — review before submitting</span></div>
-        <div class="fld"><label class="lbl">🏪 <span class="fa">نام تعمیرگاه *</span></label><input class="inp" id="qname" placeholder="تعمیرگاه رضایی"></div>
-        <div class="fld"><label class="lbl">📞 <span class="fa">شماره تماس *</span></label><input class="inp" id="qphone" type="tel" placeholder="09121234567"></div>
-        <div class="fld"><label class="lbl">🏙️ <span class="fa">شهر *</span></label><select class="inp" id="qcity" style="cursor:pointer;appearance:none"></select></div>
-        <div class="fld"><label class="lbl">📍 <span class="fa">آدرس</span></label><textarea class="inp" id="qaddr" rows="2" style="resize:vertical"></textarea></div>
-        <div class="fld"><label class="lbl">🕐 <span class="fa">ساعت کاری</span></label><input class="inp" id="qhours" placeholder="۹ صبح تا ۸ شب"></div>
-        <div style="font-size:13px;font-weight:800;color:var(--t1);margin:16px 0 10px">🔧 <span class="fa">خدمات (تشخیص AI — قابل ویرایش)</span></div>
+        <div style="font-size:13px;font-weight:800;color:#34d399;margin-bottom:14px">✅ <span class="fa">اطلاعات تشخیص داده شد — قبل از ثبت بررسی کن</span><span class="en" style="display:none">Info detected — review before submitting</span><span class="ar" style="display:none">تم التعرف على المعلومات — راجعها قبل التسجيل</span></div>
+        <div class="fld"><label class="lbl">🏪 <span class="fa">نام تعمیرگاه *</span><span class="en" style="display:none">Shop Name *</span><span class="ar" style="display:none">اسم الورشة *</span></label><input class="inp" id="qname" placeholder="تعمیرگاه رضایی"></div>
+        <div class="fld"><label class="lbl">📞 <span class="fa">شماره تماس *</span><span class="en" style="display:none">Phone *</span><span class="ar" style="display:none">رقم الهاتف *</span></label><input class="inp" id="qphone" type="tel" placeholder="09121234567"></div>
+        <div class="fld"><label class="lbl">🏙️ <span class="fa">شهر *</span><span class="en" style="display:none">City *</span><span class="ar" style="display:none">المدينة *</span></label><select class="inp" id="qcity" style="cursor:pointer;appearance:none"></select></div>
+        <div class="fld"><label class="lbl">📍 <span class="fa">آدرس</span><span class="en" style="display:none">Address</span><span class="ar" style="display:none">العنوان</span></label><textarea class="inp" id="qaddr" rows="2" style="resize:vertical"></textarea></div>
+        <div class="fld"><label class="lbl">🕐 <span class="fa">ساعت کاری</span><span class="en" style="display:none">Working Hours</span><span class="ar" style="display:none">ساعات العمل</span></label><input class="inp" id="qhours" placeholder="۹ صبح تا ۸ شب"></div>
+        <div style="font-size:13px;font-weight:800;color:var(--t1);margin:16px 0 10px">🔧 <span class="fa">خدمات (تشخیص AI — قابل ویرایش)</span><span class="en" style="display:none">Services (AI-detected — editable)</span><span class="ar" style="display:none">الخدمات (اكتشاف الذكاء الاصطناعي — قابلة للتعديل)</span></div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px" id="qsvc-grid"></div>
         <div id="quick-loc-ok" style="display:none;font-size:11px;color:#34d399;margin-bottom:14px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);border-radius:9px;padding:8px"></div>
         <div style="display:flex;gap:10px">
-          <button class="btn btn-g btn-sm" onclick="resetQuickRegister()">↺ <span class="fa">عکس دیگه</span></button>
-          <button class="btn btn-p" style="flex:1" onclick="submitQuickShop()" id="quick-submit-btn">✅ <span class="fa">تأیید و ثبت رایگان</span><span class="en" style="display:none">Confirm & Register</span></button>
+          <button class="btn btn-g btn-sm" onclick="resetQuickRegister()">↺ <span class="fa">عکس دیگه</span><span class="en" style="display:none">Another Photo</span><span class="ar" style="display:none">صورة أخرى</span></button>
+          <button class="btn btn-p" style="flex:1" onclick="submitQuickShop()" id="quick-submit-btn">✅ <span class="fa">تأیید و ثبت رایگان</span><span class="en" style="display:none">Confirm & Register</span><span class="ar" style="display:none">تأكيد وتسجيل مجاني</span></button>
         </div>
       </div>
     </div>
@@ -828,41 +850,41 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
     <div id="reg-form" style="display:none">
       <div class="steps" id="reg-steps-bar"></div>
       <div id="rs0" class="card">
-        <div class="fld"><label class="lbl">🏪 <span class="fa">نام تعمیرگاه *</span><span class="en" style="display:none">Shop Name *</span></label><input class="inp" id="rname" placeholder="تعمیرگاه رضایی"></div>
-        <div class="fld"><label class="lbl">👤 <span class="fa">نام صاحب</span><span class="en" style="display:none">Owner Name</span></label><input class="inp" id="rowner" placeholder="علی رضایی"></div>
-        <div class="fld"><label class="lbl">📞 <span class="fa">شماره تماس *</span><span class="en" style="display:none">Phone *</span></label><input class="inp" id="rphone" placeholder="09121234567" type="tel"></div>
+        <div class="fld"><label class="lbl">🏪 <span class="fa">نام تعمیرگاه *</span><span class="en" style="display:none">Shop Name *</span><span class="ar" style="display:none">اسم الورشة *</span></label><input class="inp" id="rname" placeholder="تعمیرگاه رضایی"></div>
+        <div class="fld"><label class="lbl">👤 <span class="fa">نام صاحب</span><span class="en" style="display:none">Owner Name</span><span class="ar" style="display:none">اسم المالك</span></label><input class="inp" id="rowner" placeholder="علی رضایی"></div>
+        <div class="fld"><label class="lbl">📞 <span class="fa">شماره تماس *</span><span class="en" style="display:none">Phone *</span><span class="ar" style="display:none">رقم الهاتف *</span></label><input class="inp" id="rphone" placeholder="09121234567" type="tel"></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div class="fld"><label class="lbl">✈️ Telegram</label><input class="inp" id="rtel" placeholder="username"></div>
           <div class="fld"><label class="lbl">📸 Instagram</label><input class="inp" id="rinsta" placeholder="username"></div>
         </div>
-        <div class="fld"><label class="lbl">🏙️ <span class="fa">شهر *</span><span class="en" style="display:none">City *</span></label><select class="inp" id="rcity" style="cursor:pointer;appearance:none"></select></div>
-        <div class="fld"><label class="lbl">📍 <span class="fa">آدرس</span><span class="en" style="display:none">Address</span></label><textarea class="inp" id="raddr" rows="2" style="resize:vertical" placeholder="خیابان، کوچه، پلاک..."></textarea></div>
-        <button class="btn btn-p btn-full" onclick="regNext(0)"><span class="fa">مرحله بعد ←</span><span class="en" style="display:none">Next Step →</span></button>
+        <div class="fld"><label class="lbl">🏙️ <span class="fa">شهر *</span><span class="en" style="display:none">City *</span><span class="ar" style="display:none">المدينة *</span></label><select class="inp" id="rcity" style="cursor:pointer;appearance:none"></select></div>
+        <div class="fld"><label class="lbl">📍 <span class="fa">آدرس</span><span class="en" style="display:none">Address</span><span class="ar" style="display:none">العنوان</span></label><textarea class="inp" id="raddr" rows="2" style="resize:vertical" placeholder="خیابان، کوچه، پلاک..."></textarea></div>
+        <button class="btn btn-p btn-full" onclick="regNext(0)"><span class="fa">مرحله بعد ←</span><span class="en" style="display:none">Next Step →</span><span class="ar" style="display:none">الخطوة التالية ←</span></button>
       </div>
       <div id="rs1" style="display:none" class="card">
-        <div style="font-size:14px;font-weight:800;color:var(--t1);margin-bottom:14px">🔧 <span class="fa">خدمات ارائه شده *</span><span class="en" style="display:none">Services *</span></div>
+        <div style="font-size:14px;font-weight:800;color:var(--t1);margin-bottom:14px">🔧 <span class="fa">خدمات ارائه شده *</span><span class="en" style="display:none">Services *</span><span class="ar" style="display:none">الخدمات المقدمة *</span></div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px" id="svc-grid"></div>
-        <div class="fld"><label class="lbl">📝 <span class="fa">توضیحات</span><span class="en" style="display:none">Description</span></label><textarea class="inp" id="rdesc" rows="2" style="resize:vertical" placeholder="سابقه، گارانتی، خدمات ویژه..."></textarea></div>
+        <div class="fld"><label class="lbl">📝 <span class="fa">توضیحات</span><span class="en" style="display:none">Description</span><span class="ar" style="display:none">الوصف</span></label><textarea class="inp" id="rdesc" rows="2" style="resize:vertical" placeholder="سابقه، گارانتی، خدمات ویژه..."></textarea></div>
         <div style="display:flex;gap:10px">
-          <button class="btn btn-g btn-sm" onclick="regBack(1)">→ <span class="fa">قبلی</span></button>
-          <button class="btn btn-p" style="flex:1" onclick="regNext(1)"><span class="fa">مرحله بعد ←</span></button>
+          <button class="btn btn-g btn-sm" onclick="regBack(1)">→ <span class="fa">قبلی</span><span class="en" style="display:none">Previous</span><span class="ar" style="display:none">السابق</span></button>
+          <button class="btn btn-p" style="flex:1" onclick="regNext(1)"><span class="fa">مرحله بعد ←</span><span class="en" style="display:none">Next Step →</span><span class="ar" style="display:none">الخطوة التالية ←</span></button>
         </div>
       </div>
       <div id="rs2" style="display:none" class="card">
-        <div style="font-size:14px;font-weight:800;color:var(--t1);margin-bottom:8px">🗺️ <span class="fa">موقعیت روی نقشه (اختیاری)</span><span class="en" style="display:none">Location on Map (optional)</span></div>
-        <div style="font-size:12px;color:var(--t3);margin-bottom:12px;line-height:1.7"><span class="fa">روی نقشه کلیک کن تا موقعیت مشخص بشه</span><span class="en" style="display:none">Click on map to set location</span></div>
+        <div style="font-size:14px;font-weight:800;color:var(--t1);margin-bottom:8px">🗺️ <span class="fa">موقعیت روی نقشه (اختیاری)</span><span class="en" style="display:none">Location on Map (optional)</span><span class="ar" style="display:none">الموقع على الخريطة (اختياري)</span></div>
+        <div style="font-size:12px;color:var(--t3);margin-bottom:12px;line-height:1.7"><span class="fa">روی نقشه کلیک کن تا موقعیت مشخص بشه</span><span class="en" style="display:none">Click on map to set location</span><span class="ar" style="display:none">انقر على الخريطة لتحديد الموقع</span></div>
         <div style="height:270px;border-radius:16px;overflow:hidden;margin-bottom:12px;border:1.5px solid rgba(0,229,255,.15)">
           <div id="reg-map" style="width:100%;height:100%;border-radius:14px"></div>
         </div>
         <button type="button" class="btn btn-g btn-sm" style="width:100%;margin-bottom:12px" onclick="useMyLocationOnRegMap()" id="reg-locate-btn">📍 <span class="fa">پیدا کردن موقعیت من</span><span class="en" style="display:none">Use my location</span><span class="ar" style="display:none">استخدم موقعي</span></button>
-        <div id="pos-ok" style="display:none;font-size:11px;color:#34d399;margin-bottom:12px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);border-radius:9px;padding:8px">✅ <span class="fa">موقعیت انتخاب شد</span></div>
+        <div id="pos-ok" style="display:none;font-size:11px;color:#34d399;margin-bottom:12px;text-align:center;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);border-radius:9px;padding:8px">✅ <span class="fa">موقعیت انتخاب شد</span><span class="en" style="display:none">Location selected</span><span class="ar" style="display:none">تم اختيار الموقع</span></div>
         <div id="reg-locate-err" style="display:none;font-size:11px;color:#f59e0b;margin-bottom:12px;text-align:center;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);border-radius:9px;padding:8px"></div>
         <div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.12);border-radius:12px;padding:12px;margin-bottom:12px;font-size:12px;color:#9a7a00;line-height:1.8">
-          💳 <strong style="color:#b89000"><span class="fa">درگاه پرداخت ریالی (زرین‌پال) — به زودی</span><span class="en" style="display:none">Rial payment gateway (ZarinPal) — coming soon</span></strong>
+          💳 <strong style="color:#b89000"><span class="fa">درگاه پرداخت ریالی (زرین‌پال) — به زودی</span><span class="en" style="display:none">Rial payment gateway (ZarinPal) — coming soon</span><span class="ar" style="display:none">بوابة الدفع بالريال (زرين‌پال) — قريباً</span></strong>
         </div>
         <div style="display:flex;gap:10px">
-          <button class="btn btn-g btn-sm" onclick="regBack(2)">→ <span class="fa">قبلی</span></button>
-          <button class="btn btn-p" style="flex:1" onclick="submitShop()" id="reg-submit-btn">✅ <span class="fa">ثبت رایگان</span><span class="en" style="display:none">Free Registration</span></button>
+          <button class="btn btn-g btn-sm" onclick="regBack(2)">→ <span class="fa">قبلی</span><span class="en" style="display:none">Previous</span><span class="ar" style="display:none">السابق</span></button>
+          <button class="btn btn-p" style="flex:1" onclick="submitShop()" id="reg-submit-btn">✅ <span class="fa">ثبت رایگان</span><span class="en" style="display:none">Free Registration</span><span class="ar" style="display:none">تسجيل مجاني</span></button>
         </div>
       </div>
     </div>
@@ -908,7 +930,7 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
     </div>
 
     <div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.12);border-radius:12px;padding:11px;margin-bottom:16px;font-size:11px;color:#9a7a00;text-align:center;line-height:1.7">
-      💳 <strong style="color:#b89000"><span class="fa">پرداخت ریالی — زرین‌پال — به زودی</span><span class="en" style="display:none">Rial Payment — ZarinPal — Coming Soon</span></strong>
+      💳 <strong style="color:#b89000"><span class="fa">پرداخت ریالی — زرین‌پال — به زودی</span><span class="en" style="display:none">Rial Payment — ZarinPal — Coming Soon</span><span class="ar" style="display:none">الدفع بالريال — زرين‌پال — قريباً</span></strong>
     </div>
     <button class="btn btn-g btn-full" onclick="closeTip()"><span class="fa">بستن</span><span class="en" style="display:none">Close</span><span class="ar" style="display:none">إغلاق</span></button>
   </div>
@@ -920,15 +942,15 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
     <h3 class="gt" style="font-size:18px;font-weight:900;text-align:center;margin-bottom:20px">
       <span class="fa">نظرت رو بنویس</span><span class="en" style="display:none">Write Your Review</span><span class="ar" style="display:none">اكتب مراجعتك</span>
     </h3>
-    <div class="fld"><label class="lbl"><span class="fa">نام *</span><span class="en" style="display:none">Name *</span></label><input class="inp" id="rev-name" placeholder="علی محمدی"></div>
-    <div class="fld"><label class="lbl"><span class="fa">شهر</span><span class="en" style="display:none">City</span></label><select class="inp" id="rev-city" style="cursor:pointer;appearance:none"></select></div>
+    <div class="fld"><label class="lbl"><span class="fa">نام *</span><span class="en" style="display:none">Name *</span><span class="ar" style="display:none">الاسم *</span></label><input class="inp" id="rev-name" placeholder="علی محمدی"></div>
+    <div class="fld"><label class="lbl"><span class="fa">شهر</span><span class="en" style="display:none">City</span><span class="ar" style="display:none">المدينة</span></label><select class="inp" id="rev-city" style="cursor:pointer;appearance:none"></select></div>
     <div class="fld">
-      <label class="lbl"><span class="fa">امتیاز</span><span class="en" style="display:none">Rating</span></label>
+      <label class="lbl"><span class="fa">امتیاز</span><span class="en" style="display:none">Rating</span><span class="ar" style="display:none">التقييم</span></label>
       <div id="rev-stars" style="display:flex;gap:5px"></div>
     </div>
-    <div class="fld"><label class="lbl"><span class="fa">نظر *</span><span class="en" style="display:none">Review *</span></label><textarea class="inp" id="rev-text" rows="3" style="resize:vertical" placeholder="تجربه‌ات رو بنویس..."></textarea></div>
+    <div class="fld"><label class="lbl"><span class="fa">نظر *</span><span class="en" style="display:none">Review *</span><span class="ar" style="display:none">المراجعة *</span></label><textarea class="inp" id="rev-text" rows="3" style="resize:vertical" placeholder="تجربه‌ات رو بنویس..."></textarea></div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-p" style="flex:1" onclick="submitReview()"><span class="fa">ثبت نظر</span><span class="en" style="display:none">Submit</span></button>
+      <button class="btn btn-p" style="flex:1" onclick="submitReview()"><span class="fa">ثبت نظر</span><span class="en" style="display:none">Submit</span><span class="ar" style="display:none">إرسال</span></button>
       <button class="btn btn-g" style="padding:12px 14px" onclick="closeReview()">✕</button>
     </div>
   </div>
@@ -973,13 +995,13 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
 <!-- QUICK REGISTER: MAP LOCATION FALLBACK MODAL -->
 <div id="quick-map-modal" class="overlay" style="display:none" onclick="closeQuickMapModal()">
   <div class="modal" onclick="event.stopPropagation()" style="max-width:480px">
-    <h3 class="gt" style="font-size:16px;font-weight:900;margin-bottom:10px">🗺️ <span class="fa">موقعیت رو روی نقشه انتخاب کن</span><span class="en" style="display:none">Pick location on map</span></h3>
-    <div style="font-size:12px;color:var(--t3);margin-bottom:12px"><span class="fa">روی نقشه کلیک کن</span><span class="en" style="display:none">Click on the map</span></div>
+    <h3 class="gt" style="font-size:16px;font-weight:900;margin-bottom:10px">🗺️ <span class="fa">موقعیت رو روی نقشه انتخاب کن</span><span class="en" style="display:none">Pick location on map</span><span class="ar" style="display:none">اختر الموقع على الخريطة</span></h3>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:12px"><span class="fa">روی نقشه کلیک کن</span><span class="en" style="display:none">Click on the map</span><span class="ar" style="display:none">انقر على الخريطة</span></div>
     <div style="height:280px;border-radius:14px;overflow:hidden;margin-bottom:14px;border:1.5px solid rgba(0,229,255,.15)">
       <div id="quick-map" style="width:100%;height:100%;border-radius:12px"></div>
     </div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-p" style="flex:1" onclick="confirmQuickMapLoc()">✅ <span class="fa">تأیید موقعیت</span><span class="en" style="display:none">Confirm Location</span></button>
+      <button class="btn btn-p" style="flex:1" onclick="confirmQuickMapLoc()">✅ <span class="fa">تأیید موقعیت</span><span class="en" style="display:none">Confirm Location</span><span class="ar" style="display:none">تأكيد الموقع</span></button>
       <button class="btn btn-g" style="padding:12px 14px" onclick="closeQuickMapModal()">✕</button>
     </div>
   </div>
@@ -1068,7 +1090,39 @@ const SUGGS={fa:["یخچالم برفک می‌زنه","گوشیم شارژ نم
 /* ═══ SUPABASE ═══ */
 const SUPABASE_URL="https://zxeektrgkegyqtsroddm.supabase.co";
 const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp4ZWVrdHJna2VneXF0c3JvZGRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxMDY0NTEsImV4cCI6MjEwMzY4MjQ1MX0.R95kdM_7Jw9GMPMTPxNpyIFPx2HLAcik9LZs1kZLnSE";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const OFFLINE_ERR={message:"اتصال به پایگاه داده برقرار نیست — اینترنت یا فیلترشکن را بررسی کن"};
+function makeOfflineStub(){
+  const chain=()=>new Proxy(function(){},{
+    get:(t,k)=>k==="then"?(res)=>res({data:null,error:OFFLINE_ERR}):chain(),
+    apply:()=>chain()
+  });
+  return {from:()=>chain(),
+    auth:{getSession:async()=>({data:{session:null}}),
+          signInWithPassword:async()=>({data:null,error:OFFLINE_ERR}),
+          signOut:async()=>({})}};
+}
+function tryCreateSupabase(){
+  try{
+    if(window.supabase&&typeof window.supabase.createClient==="function")
+      return window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  }catch(e){console.warn("Supabase init failed:",e);}
+  return null;
+}
+let sb=tryCreateSupabase();
+let sbOffline=!sb;
+if(!sb)sb=makeOfflineStub();
+// If the primary CDN was blocked/slow, try a second CDN once.
+function loadSupabaseFallback(){
+  return new Promise(resolve=>{
+    try{
+      const sc=document.createElement("script");
+      sc.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+      sc.onload=()=>{const c=tryCreateSupabase();if(c){sb=c;sbOffline=false;}resolve(!sbOffline);};
+      sc.onerror=()=>resolve(false);
+      document.head.appendChild(sc);
+    }catch(e){resolve(false);}
+  });
+}
 
 /* ═══ STATE ═══ */
 let shops=[];
@@ -1113,6 +1167,12 @@ async function loadReviews(){
 }
 
 /* ═══ LANG ═══ */
+function syncHeaderOffset(){
+  try{
+    const h=document.querySelector("header");
+    if(h&&h.offsetHeight)document.documentElement.style.setProperty("--header-h",h.offsetHeight+"px");
+  }catch(e){}
+}
 function setLang(l){
   lang=l;
   document.body.className=`lang-${l}`;
@@ -1120,9 +1180,10 @@ function setLang(l){
   document.querySelectorAll(".lang-opt").forEach(b=>b.classList.toggle("active",b.textContent===l.toUpperCase()));
   // Fix inline display:none overrides that block CSS lang rules
   document.querySelectorAll("span.fa, span.en, span.ar").forEach(el=>{
-    el.style.display = el.classList.contains(l) ? (l==="en"?"inline":"inline") : "none";
+    el.style.display = el.classList.contains(l) ? "inline" : "none";
   });
   renderAll();
+  syncHeaderOffset();
 }
 
 /* ═══ THEME ═══ */
@@ -1142,7 +1203,7 @@ function toggleTheme(){applyTheme(isDarkTheme()?"light":"dark");}
 })();
 
 /* ═══ FLOATING CONSTELLATION (Path-to-Hope style, more travel) ═══ */
-(function(){
+try{(function(){
   const c=document.getElementById("canvas");const ctx=c.getContext("2d");
   let W=c.width=innerWidth,H=c.height=innerHeight;
   window.addEventListener("resize",()=>{W=c.width=innerWidth;H=c.height=innerHeight;});
@@ -1207,7 +1268,7 @@ function toggleTheme(){applyTheme(isDarkTheme()?"light":"dark");}
     requestAnimationFrame(draw);
   }
   draw();
-})();
+})();}catch(e){console.warn("background animation failed:",e);}
 
 /* ═══ GEARS ═══ */
 function drawGear(id,sz,spd,op,rev,col){
@@ -1228,12 +1289,12 @@ function drawGear(id,sz,spd,op,rev,col){
     ctx.restore();ang+=.003*spd;requestAnimationFrame(frame);
   })();
 }
-drawGear("g1",80,1,.07,false,"#00e5ff");
-drawGear("g2",95,1.3,.06,true,"#b347ff");
-drawGear("g3",37,1.8,.05,false,"#00e5ff");
-drawGear("lg1",55,4,.65,false,"#00e5ff");
-drawGear("lg2",39,2.8,.55,true,"#b347ff");
-drawGear("lg3",23,5,.45,false,"#10b981");
+try{drawGear("g1",80,1,.07,false,"#00e5ff");}catch(e){console.warn("gear failed:",e);}
+try{drawGear("g2",95,1.3,.06,true,"#b347ff");}catch(e){console.warn("gear failed:",e);}
+try{drawGear("g3",37,1.8,.05,false,"#00e5ff");}catch(e){console.warn("gear failed:",e);}
+try{drawGear("lg1",55,4,.65,false,"#00e5ff");}catch(e){console.warn("gear failed:",e);}
+try{drawGear("lg2",39,2.8,.55,true,"#b347ff");}catch(e){console.warn("gear failed:",e);}
+try{drawGear("lg3",23,5,.45,false,"#10b981");}catch(e){console.warn("gear failed:",e);}
 
 /* ═══ PAGE NAV ═══ */
 function showPage(id){
@@ -2169,8 +2230,15 @@ async function adminDeleteReview(id){
 /* ═══ INIT ═══ */
 buildFindSelects();buildRegCity();
 (async function init(){
-  await Promise.all([loadShops(),loadReviews(),checkAdminSession()]);
-  renderAll();
+  syncHeaderOffset();
+  window.addEventListener("resize",syncHeaderOffset);
+  window.addEventListener("load",syncHeaderOffset);
+  try{const hd=document.querySelector("header");if(window.ResizeObserver&&hd)new ResizeObserver(syncHeaderOffset).observe(hd);}catch(e){}
+  try{renderAll();}catch(e){console.warn("renderAll failed:",e);}
+  if(sbOffline){try{await loadSupabaseFallback();}catch(e){}}
+  try{await Promise.all([loadShops(),loadReviews(),checkAdminSession()]);}catch(e){console.warn("data load failed:",e);}
+  try{renderAll();}catch(e){console.warn("renderAll failed:",e);}
+  syncHeaderOffset();
 })();
 </script>
 </body>

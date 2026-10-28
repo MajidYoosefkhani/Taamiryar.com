@@ -12,6 +12,17 @@
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.taamiryar.com/"/>
 <meta property="og:locale" content="fa_IR"/>
+<meta property="og:image" content="https://www.taamiryar.com/og-image.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="theme-color" content="#0090c8"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png"/>
+<link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png"/>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"تعمیریار","alternateName":["Taamiryar","taamiryar.com"],"url":"https://www.taamiryar.com/","inLanguage":["fa","en","ar"]},{"@type":"Organization","name":"تعمیریار","alternateName":"Taamiryar","url":"https://www.taamiryar.com/","logo":"https://www.taamiryar.com/favicon-512.png"}]}</script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -135,9 +146,9 @@ header{position:fixed;top:0;left:0;right:0;z-index:100;
 .header-inner{display:flex;align-items:center;gap:12px;padding:12px 14px;flex-wrap:wrap}
 @media(min-width:768px){.header-inner{padding:14px 40px;flex-wrap:nowrap}}
 .logo{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0;user-select:none}
-.logo-icon{width:40px;height:40px;border-radius:12px;
-  background:var(--g);display:flex;align-items:center;justify-content:center;
-  font-size:18px;animation:pulse 3s ease-in-out infinite;flex-shrink:0}
+.logo-icon{width:31px;height:42px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;filter:drop-shadow(0 3px 9px rgba(0,174,239,.35))}
+.logo-icon svg,.hero-icon svg{width:100%;height:100%;display:block}
 .logo-text{font-size:18px;font-weight:900;letter-spacing:-.5px;
   background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .logo-sub{font-size:8px;color:var(--t3);letter-spacing:1.5px;margin-top:1px}
@@ -324,12 +335,9 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
   animation:heroText 1s ease .8s both}
 .hero-icon-wrap{position:relative;display:inline-block;margin-bottom:30px;
   animation:heroText 1s ease 0s both}
-.hero-icon{width:100px;height:100px;border-radius:28px;
-  background:linear-gradient(135deg,#0a1a28,#0d1436);
-  border:2px solid rgba(0,229,255,.22);display:flex;align-items:center;
-  justify-content:center;font-size:46px;margin:0 auto;
+.hero-icon{width:92px;height:124px;margin:0 auto;
   animation:float 4s ease-in-out infinite;
-  box-shadow:0 0 80px rgba(0,229,255,.15),inset 0 1px 0 rgba(255,255,255,.04)}
+  filter:drop-shadow(0 14px 30px rgba(0,174,239,.35))}
 .rip{position:absolute;border-radius:32px;border:1px solid rgba(0,229,255,.06);pointer-events:none}
 .scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
   display:flex;flex-direction:column;align-items:center;gap:6px;
@@ -444,7 +452,7 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
 <header>
   <div class="header-inner">
     <div class="logo" onclick="showPage('home')">
-      <div class="logo-icon">🔧</div>
+      <div class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="140 20 720 970" aria-hidden="true" focusable="false"><defs><linearGradient id="pgHdr" gradientUnits="userSpaceOnUse" x1="170" y1="50" x2="830" y2="960"><stop offset="0" stop-color="#00AEEF"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs><path fill="url(#pgHdr)" d="M500 960C420 860 170 640 170 380A330 330 0 0 1 830 380C830 640 580 860 500 960Z"/><circle cx="500" cy="380" r="212" fill="#fff"/><path fill="#0D1B2A" d="M475.3 250.3L482.1 213L517.9 213L524.7 250.3A132 132 0 0 1 556.2 260.6L556.2 260.6L583.7 234.3L612.7 255.4L596.2 289.6A132 132 0 0 1 615.7 316.4L615.7 316.4L653.3 311.3L664.4 345.4L631 363.5A132 132 0 0 1 631 396.5L631 396.5L664.4 414.6L653.3 448.7L615.7 443.6A132 132 0 0 1 596.2 470.4L596.2 470.4L612.7 504.6L583.7 525.7L556.2 499.4A132 132 0 0 1 524.7 509.7L524.7 509.7L517.9 547L482.1 547L475.3 509.7A132 132 0 0 1 443.8 499.4L443.8 499.4L416.3 525.7L387.3 504.6L403.8 470.4A132 132 0 0 1 384.3 443.6L384.3 443.6L346.7 448.7L335.6 414.6L369 396.5A132 132 0 0 1 369 363.5L369 363.5L335.6 345.4L346.7 311.3L384.3 316.4A132 132 0 0 1 403.8 289.6L403.8 289.6L387.3 255.4L416.3 234.3L443.8 260.6A132 132 0 0 1 475.3 250.3Z"/><circle cx="500" cy="380" r="52" fill="#fff"/><circle cx="500" cy="380" r="30" fill="#FFB400"/></svg></div>
       <div>
         <div class="logo-text">تعمیریار</div>
         <div class="logo-sub">taamiryar.com</div>
@@ -512,7 +520,7 @@ body[data-theme="dark"] .btn-p{color:#000;box-shadow:0 6px 28px rgba(0,229,255,.
         <span class="ar" style="display:none">مساعد إصلاح ذكي</span>
       </div>
       <div class="hero-icon-wrap">
-        <div class="hero-icon">🔧</div>
+        <div class="hero-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="140 20 720 970" aria-hidden="true" focusable="false"><defs><linearGradient id="pgHero" gradientUnits="userSpaceOnUse" x1="170" y1="50" x2="830" y2="960"><stop offset="0" stop-color="#00AEEF"/><stop offset="1" stop-color="#7B2FF7"/></linearGradient></defs><path fill="url(#pgHero)" d="M500 960C420 860 170 640 170 380A330 330 0 0 1 830 380C830 640 580 860 500 960Z"/><circle cx="500" cy="380" r="212" fill="#fff"/><path fill="#0D1B2A" d="M475.3 250.3L482.1 213L517.9 213L524.7 250.3A132 132 0 0 1 556.2 260.6L556.2 260.6L583.7 234.3L612.7 255.4L596.2 289.6A132 132 0 0 1 615.7 316.4L615.7 316.4L653.3 311.3L664.4 345.4L631 363.5A132 132 0 0 1 631 396.5L631 396.5L664.4 414.6L653.3 448.7L615.7 443.6A132 132 0 0 1 596.2 470.4L596.2 470.4L612.7 504.6L583.7 525.7L556.2 499.4A132 132 0 0 1 524.7 509.7L524.7 509.7L517.9 547L482.1 547L475.3 509.7A132 132 0 0 1 443.8 499.4L443.8 499.4L416.3 525.7L387.3 504.6L403.8 470.4A132 132 0 0 1 384.3 443.6L384.3 443.6L346.7 448.7L335.6 414.6L369 396.5A132 132 0 0 1 369 363.5L369 363.5L335.6 345.4L346.7 311.3L384.3 316.4A132 132 0 0 1 403.8 289.6L403.8 289.6L387.3 255.4L416.3 234.3L443.8 260.6A132 132 0 0 1 475.3 250.3Z"/><circle cx="500" cy="380" r="52" fill="#fff"/><circle cx="500" cy="380" r="30" fill="#FFB400"/></svg></div>
         <div class="rip" style="inset:-12px;border-radius:38px;animation:ripple 2s ease-out .4s infinite"></div>
         <div class="rip" style="inset:-24px;border-radius:50px;animation:ripple 2.5s ease-out .8s infinite"></div>
       </div>

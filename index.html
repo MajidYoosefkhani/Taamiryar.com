@@ -1140,6 +1140,7 @@ let regData={name:"",owner:"",phone:"",tel:"",insta:"",city:"",addr:"",svcs:[],l
 let regMap=null,findMap=null;
 
 /* ═══ DB HELPERS ═══ */
+function esc(v){return typeof v==="string"?v.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])):v;}
 function relTime(dateStr){
   const d=new Date(dateStr),diff=(Date.now()-d.getTime())/1000;
   const map={
